@@ -26,7 +26,7 @@ World.prototype.draw = function (){
 }
 
 World.prototype.addAnt = function(x, y){
-    var ant = new Ant(x,y);
+    var ant = new Ant(x,y, this.container);
     this.ants.push(ant);
 }
 

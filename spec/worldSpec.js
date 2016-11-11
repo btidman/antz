@@ -33,8 +33,15 @@ describe("World", function(){
     it("should have a collection of cells that comprise every location in the world", function(){
         for(var x = 0; x < 100; x++){
             for(var y = 0; y < 1000; y++){
-                expect(world.cells[y][x]).toBeDefined();
+                expect(world.cells[y][x].x).toEqual(x);
+                expect(world.cells[y][x].y).toEqual(y);
             }
         }
+    });
+
+    it("should be able to add an ant.", function(){
+        world.addAnt(1,2);
+        expect(world.ants[0].x).toEqual(1);
+        expect(world.ants[0].y).toEqual(2);
     });
 });

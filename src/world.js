@@ -9,11 +9,12 @@ function World(width, height){
     this.stage.addChild(this.container);
     
     this.cells = [];
+    this.ants = [];
 
     for(row = 0; row < this.height; row++){
         this.cells.push([]);
         for (col  = 0; col < this.width; col++){
-            var cell = 0;
+            var cell = new Cell(col, row);
             this.cells[row].push(cell);
         }
     }
@@ -24,8 +25,13 @@ World.prototype.draw = function (){
     document.body.appendChild(this.renderer.view);
 }
 
+World.prototype.addAnt = function(x, y){
+    var ant = new Ant(x,y);
+    this.ants.push(ant);
+}
+
 // Export node module.
 if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
 {
-    module.exports = InputReader;
+    module.exports = World;
 }

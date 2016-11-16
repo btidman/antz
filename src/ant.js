@@ -9,10 +9,18 @@ function Ant(x, y, cells, container){
     this.sprite = new PIXI.Sprite(texture);
     this.sprite.x = 11 * this.x;
     this.sprite.y = 11 * this.y;
+    this.sprite.anchor.x = 0.5;
+    this.sprite.anchor.y = 0.5;
     this.sprite.rotation = 0;
     this.container.addChild(this.sprite);
     this.frontCells = [];
     this.detector = new Detector(cells);
+}
+
+Ant.prototype.turn = function(newDirection){
+
+    this.direction = newDirection;
+    this.updateSpriteRotation();
 }
 
 Ant.prototype.updateSpriteRotation = function(){
@@ -33,4 +41,11 @@ Ant.prototype.updateSpriteRotation = function(){
 Ant.prototype.detectFrontCells = function(){
     
     this.frontCells = this.detector.detectFrontCells(this.x, this.y, this.direction);
+}
+
+Ant.prototype.moveToCell = function(cell){
+    this.x = cell.x;
+    this.y = cell.y;
+    this.sprite.x = 11 * this.x;
+    this.sprite.y = 11 * this.y;
 }

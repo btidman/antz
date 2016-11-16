@@ -28,7 +28,10 @@ describe("Ant", function(){
     });
 
     it("should have a sprite", function(){
+        
         expect(ant.sprite).toBeDefined();
+        expect(ant.sprite.anchor.x).toEqual(0.5);
+        expect(ant.sprite.anchor.y).toEqual(0.5);
     });
 
     it("should add the sprite to the container", function(){
@@ -68,4 +71,22 @@ describe("Ant", function(){
         expect(ant.frontCells).toContain(cells[1][0]);
         expect(ant.frontCells).toContain(cells[1][1]);
     });
+
+    it("should update x and y when moving to a new cell", function(){
+        ant.moveToCell(cells[1][0]);
+        expect(ant.x).toEqual(0);
+        expect(ant.y).toEqual(1);
+    });
+
+    it("should update sprite x and y when moving to a new cell", function(){
+        ant.moveToCell(cells[1][0]);
+        expect(ant.sprite.x).toEqual(0);
+        expect(ant.sprite.y).toEqual(11);
+    });
+
+    it("should update sprite rotation when it turns", function(){
+        ant.turn(1);
+        expect(ant.sprite.rotation).toEqual(3.14/2);
+        expect(ant.direction).toEqual(1);
+    })
 });

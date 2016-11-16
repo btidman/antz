@@ -4,7 +4,6 @@ function Cell(x, y){
     this.y = y;
 }
 
-
 // Export node module.
 if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
 {

@@ -8,8 +8,8 @@ function World(width, height){
     this.container = new PIXI.Container();
     this.stage.addChild(this.container);
     
-    this.cells = [];
     this.ants = [];
+    this.cells = [];
 
     for(row = 0; row < this.height; row++){
         this.cells.push([]);
@@ -26,7 +26,7 @@ World.prototype.draw = function (){
 }
 
 World.prototype.addAnt = function(x, y){
-    var ant = new Ant(x,y, this.container);
+    var ant = new Ant(x,y,this.cells, this.container);
     this.ants.push(ant);
 }
 

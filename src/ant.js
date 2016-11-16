@@ -1,7 +1,7 @@
 function Ant(x, y, cells, container){
     this.x = x;
     this.y = y;
-    this.direction = 0;
+    this.direction = Direction.North;
     this.cells = cells;
     this.container = container;
     var texture = PIXI.Texture.fromImage('../ant.png');
@@ -24,16 +24,16 @@ Ant.prototype.turn = function(newDirection){
 }
 
 Ant.prototype.updateSpriteRotation = function(){
-    if(this.direction == 0){
+    if(this.direction == Direction.North){
         this.sprite.rotation = 0;
     }
-    else if(this.direction == 1){
+    else if(this.direction == Direction.East){
         this.sprite.rotation = (3.14/2);
     }
-    else if(this.direction == 2){
+    else if(this.direction == Direction.South){
         this.sprite.rotation = 3.14;
     }
-    else if(this.direction == 3){
+    else if(this.direction == Direction.West){
         this.sprite.rotation = (3.14 * 1.5);
     }
 }

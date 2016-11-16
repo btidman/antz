@@ -43,19 +43,19 @@ describe("Ant", function(){
     });
 
     it("should have a default direction of north", function(){
-        expect(ant.direction).toEqual(0);
+        expect(ant.direction).toEqual(Direction.North);
     });
 
     it("should rotate the sprite based on the direction of the ant", function(){
 
         expect(ant.sprite.rotation).toEqual(0);
-        ant.direction = 1;
+        ant.direction = Direction.East;
         ant.updateSpriteRotation();
         expect(ant.sprite.rotation).toEqual((3.14/2));
-        ant.direction = 2;
+        ant.direction = Direction.South;
         ant.updateSpriteRotation();
         expect(ant.sprite.rotation).toEqual((3.14));
-        ant.direction = 3;
+        ant.direction = Direction.West;
         ant.updateSpriteRotation();
         expect(ant.sprite.rotation).toEqual((3.14 * 1.5));
     });
@@ -85,8 +85,8 @@ describe("Ant", function(){
     });
 
     it("should update sprite rotation when it turns", function(){
-        ant.turn(1);
+        ant.turn(Direction.East);
         expect(ant.sprite.rotation).toEqual(3.14/2);
-        expect(ant.direction).toEqual(1);
-    })
+        expect(ant.direction).toEqual(Direction.East);
+    });
 });

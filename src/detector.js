@@ -10,16 +10,16 @@ Detector.prototype.detectFrontCells = function(x, y, direction){
     
     var cellsToAdd = [];
 
-    if(direction == 0){
+    if(direction == Direction.North){
         cellsToAdd = this.detectCellsNorthOfLocation(x, y);
     }
-    else if(direction == 1){
+    else if(direction == Direction.East){
         cellsToAdd = this.detectCellsEastOfLocation(x, y);
     }
-    else if(direction == 2){
+    else if(direction == Direction.South){
         cellsToAdd = this.detectCellsSouthOfLocation(x, y);
     }
-    else if(direction == 3){
+    else if(direction == Direction.West){
         cellsToAdd = this.detectCellsWestOfLocation(x, y);
     }
 

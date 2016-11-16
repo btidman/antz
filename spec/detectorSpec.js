@@ -17,17 +17,17 @@ describe("Detector for ant", function(){
     });
 
     it("should know what cells are in front of a location based on a direction", function(){
-        var result = detector.detectFrontCells(1,2,0);
+        var result = detector.detectFrontCells(1,2,Direction.North);
         expect(result).toContain(cells[1][0]);
         expect(result).toContain(cells[1][1]);
 
-        result = detector.detectFrontCells(1,2,1);
+        result = detector.detectFrontCells(1,2,Direction.East);
         expect(result.length).toEqual(0);
         
-        result = detector.detectFrontCells(1,2,2);
+        result = detector.detectFrontCells(1,2,Direction.South);
         expect(result.length).toEqual(0);
         
-        result = detector.detectFrontCells(1,2,3);
+        result = detector.detectFrontCells(1,2,Direction.West);
         expect(result).toContain(cells[1][0]);
         expect(result).toContain(cells[2][0]);
     });
@@ -68,5 +68,4 @@ describe("Detector for ant", function(){
 
         expect(result.length).toEqual(0);
     });
-
 });

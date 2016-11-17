@@ -1,6 +1,7 @@
 var Direction = require("./directionEnum");
 var Detector = require("./detector");
 var Decider = require("./decider");
+var TWEEN = require('tween.js');
 
 function Ant(x, y, cells, container){
     this.x = x;
@@ -11,8 +12,8 @@ function Ant(x, y, cells, container){
     var texture = PIXI.Texture.fromImage('../ant.png');
     
     this.sprite = new PIXI.Sprite(texture);
-    this.sprite.x = 11 * this.x;
-    this.sprite.y = 11 * this.y;
+    this.sprite.x = (10 * this.x) + 5;
+    this.sprite.y = (10 * this.y) + 5;
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 0.5;
     this.sprite.rotation = 0;
@@ -20,6 +21,8 @@ function Ant(x, y, cells, container){
     this.frontCells = [];
     this.detector = new Detector(cells);
     this.decider = new Decider();
+    this.tempX = 0;
+    this.tempY = 0;
 }
 
 Ant.prototype.turn = function(newDirection){
@@ -51,8 +54,20 @@ Ant.prototype.detectFrontCells = function(){
 Ant.prototype.moveToCell = function(cell){
     this.x = cell.x;
     this.y = cell.y;
-    this.sprite.x = (10 * this.x) + 5;
-    this.sprite.y = (10 * this.y) + 5;
+
+    //this stuff is untested.
+    var newX = (10 * this.x) + 5;
+    var newY = (10 * this.y) + 5;
+    this.tempX = this.sprite.x;
+    this.tempY = this.sprite.y;
+
+    var tween = new TWEEN.Tween(this);
+    tween.to({ tempX: newX, tempY: newY}, 500);
+    tween.onUpdate(function() {
+        this.sprite.x = this.tempX;
+        this.sprite.y = this.tempY;
+    });
+    tween.start();
 }
 
 Ant.prototype.advance = function(){

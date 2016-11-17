@@ -4,5 +4,4 @@ module.exports = {
         path: 'public',
         filename: "bundle.js"
     }
-    
 };

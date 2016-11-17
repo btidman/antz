@@ -20,8 +20,8 @@ describe("Ant", function(){
     it("should have a location of 1X2", function(){
         expect(ant.x).toEqual(1);
         expect(ant.y).toEqual(2);
-        expect(ant.sprite.x).toEqual(11);
-        expect(ant.sprite.y).toEqual(22);
+        expect(ant.sprite.x).toEqual(15);
+        expect(ant.sprite.y).toEqual(25);
     });
 
     it("should have a container", function(){
@@ -79,11 +79,7 @@ describe("Ant", function(){
         expect(ant.y).toEqual(1);
     });
 
-    it("should update sprite x and y when moving to a new cell", function(){
-        ant.moveToCell(cells[1][0]);
-        expect(ant.sprite.x).toEqual(5);
-        expect(ant.sprite.y).toEqual(15);
-    });
+    
 
     it("should update sprite rotation when it turns", function(){
         ant.turn(Direction.East);

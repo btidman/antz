@@ -23,6 +23,7 @@ function Ant(x, y, cells, container){
     this.decider = new Decider();
     this.tempX = 0;
     this.tempY = 0;
+    this.tempRotation = 0;
 }
 
 Ant.prototype.turn = function(newDirection){
@@ -32,18 +33,27 @@ Ant.prototype.turn = function(newDirection){
 }
 
 Ant.prototype.updateSpriteRotation = function(){
+    var newRotation = 0;
+
     if(this.direction == Direction.North){
-        this.sprite.rotation = 0;
+        newRotation = 0;
     }
     else if(this.direction == Direction.East){
-        this.sprite.rotation = (3.14/2);
+        newRotation = (3.14/2);
     }
     else if(this.direction == Direction.South){
-        this.sprite.rotation = 3.14;
+        newRotation = 3.14;
     }
     else if(this.direction == Direction.West){
-        this.sprite.rotation = (3.14 * 1.5);
+        newRotation = (3.14 * 1.5);
     }
+
+    var tween = new TWEEN.Tween(this);
+    tween.to({ tempRotation: newRotation}, 500);
+    tween.onUpdate(function() {
+        this.sprite.rotation = this.tempRotation;
+    });
+    tween.start();
 }
 
 Ant.prototype.detectFrontCells = function(){

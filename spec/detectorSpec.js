@@ -1,5 +1,7 @@
 'use strict'
 
+var Detector = require("../src/detector");
+var Cell = require("../src/cell");
 
 describe("Detector for ant", function(){
 

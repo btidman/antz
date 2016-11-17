@@ -1,3 +1,6 @@
+var Cell = require("./cell.js");
+var Ant = require("./ant.js");
+
 function World(width, height){
     this.width = width;
     this.height = height;
@@ -34,4 +37,10 @@ World.prototype.advance = function(){
     for(var x = 0; x < this.ants.length; x++){
         this.ants[x].advance();
     }
+}
+
+// Export node module.
+if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
+{
+    module.exports = World;
 }

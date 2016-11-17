@@ -1,5 +1,7 @@
 'use strict'
 
+var Cell = require("../src/cell");
+
 describe("Cell", function(){
 
     var cell;

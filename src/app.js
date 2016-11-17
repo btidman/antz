@@ -1,6 +1,7 @@
-
+var World = require("./world.js");
 
 var world = new World(100,200);
+window.world = world;
 
 world.draw();
 
@@ -25,3 +26,4 @@ function animate () {
     world.renderer.render(world.stage);
     //requestAnimationFrame( animate );
 }
+

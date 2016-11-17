@@ -1,5 +1,7 @@
 'use strict'
 
+var Decider = require("../src/Decider");
+
 describe("Decider", function(){
 
     var decider;
@@ -11,6 +13,6 @@ describe("Decider", function(){
     it("should return a move Behavior.", function(){
         var behavior = decider.getNewBehavior();
         
-        expect(behavior instanceof MoveBehavior).toEqual(true);
+        expect(behavior.type).toEqual("Move");
     });
 });

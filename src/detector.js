@@ -2,8 +2,6 @@
 function Detector(cells){
 
     this.cells = cells;
-
-    return this;
 }
 
 Detector.prototype.detectFrontCells = function(x, y, direction){
@@ -96,4 +94,10 @@ Detector.prototype.detectCellsWestOfLocation = function(x,y){
     }
 
     return result;
+}
+
+// Export node module.
+if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
+{
+    module.exports = Detector;
 }

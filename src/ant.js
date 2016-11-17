@@ -1,3 +1,7 @@
+var Direction = require("./directionEnum");
+var Detector = require("./detector");
+var Decider = require("./decider");
+
 function Ant(x, y, cells, container){
     this.x = x;
     this.y = y;
@@ -56,4 +60,10 @@ Ant.prototype.advance = function(){
     this.detectFrontCells();
     var behavior = this.decider.getNewBehavior(this);
     behavior.doBehavior();
+}
+
+// Export node module.
+if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
+{
+    module.exports = Ant;
 }

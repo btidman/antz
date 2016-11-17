@@ -1,3 +1,6 @@
+var Ant = require("../src/ant");
+var Cell = require("../src/cell");
+
 function AntHelper(){
 
     return this;
@@ -17,3 +20,5 @@ AntHelper.prototype.createTestAnt = function(){
 
     return ant;
 }
+
+module.exports = AntHelper;

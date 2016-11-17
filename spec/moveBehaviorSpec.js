@@ -1,5 +1,8 @@
 'use strict'
 
+var AntHelper = require("../test_helpers/antHelper");
+var MoveBehavior = require("../src/moveBehavior");
+
 describe("Move Behavior", function(){
 
     var moveBehavior;
@@ -28,5 +31,9 @@ describe("Move Behavior", function(){
         ant.frontCells = [];
         moveBehavior.doBehavior();
         expect(ant.moveToCell).not.toHaveBeenCalled();
+    });
+
+    it("should have a type of Move", function(){
+        expect(moveBehavior.type).toEqual("Move");
     });
 });

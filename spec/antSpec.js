@@ -1,5 +1,9 @@
 'use strict'
 
+
+var AntHelper = require("../test_helpers/antHelper.js");
+var MoveBehavior = require("../src/moveBehavior.js");
+
 describe("Ant", function(){
 
     var ant;
@@ -77,8 +81,8 @@ describe("Ant", function(){
 
     it("should update sprite x and y when moving to a new cell", function(){
         ant.moveToCell(cells[1][0]);
-        expect(ant.sprite.x).toEqual(0);
-        expect(ant.sprite.y).toEqual(11);
+        expect(ant.sprite.x).toEqual(5);
+        expect(ant.sprite.y).toEqual(15);
     });
 
     it("should update sprite rotation when it turns", function(){

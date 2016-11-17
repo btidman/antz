@@ -11,14 +11,14 @@ module.exports = function(config) {
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
-
+    plugins: ['karma-webpack', 
+              'karma-jasmine',
+              'karma-chrome-launcher'],
 
     // list of files / patterns to load in the browser
     files: [
       'https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0/pixi.min.js',
-      'src/*.js',
-      'spec/**/*.js',
-      'app.js',
+      'spec/**/*.js'
     ],
 
 
@@ -31,8 +31,18 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      // add webpack as preprocessor
+      './test_helpers/*.js': ['webpack'],  
+      './spec/*.js': ['webpack'],  
     },
 
+    webpack: {},
+
+    webpackMiddleware: {
+      noInfo: true
+    },
+
+    
 
     // test results reporter to use
     // possible values: 'dots', 'progress'

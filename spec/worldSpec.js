@@ -44,4 +44,14 @@ describe("World", function(){
         expect(world.ants[0].x).toEqual(1);
         expect(world.ants[0].y).toEqual(2);
     });
+
+    it("should advance all ants when advance is called", function(){
+        world.addAnt(1,2);
+
+        spyOn(world.ants[0], "advance").and.callThrough();
+
+        world.advance();
+
+        expect(world.ants[0].advance).toHaveBeenCalled();
+    });
 });

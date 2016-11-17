@@ -30,8 +30,8 @@ World.prototype.addAnt = function(x, y){
     this.ants.push(ant);
 }
 
-// Export node module.
-if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
-{
-    module.exports = World;
+World.prototype.advance = function(){
+    for(var x = 0; x < this.ants.length; x++){
+        this.ants[x].advance();
+    }
 }

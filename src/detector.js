@@ -54,6 +54,7 @@ Detector.prototype.detectCellsNorthOfLocation = function(x,y){
 Detector.prototype.detectCellsSouthOfLocation = function(x,y){
     var result = [];
     var maxY = this.cells.length;
+    
     if(y + 1 < maxY){
         result.push(this.cells[y + 1][x - 1]);
         result.push(this.cells[y + 1][x]);

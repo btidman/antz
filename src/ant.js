@@ -15,6 +15,7 @@ function Ant(x, y, cells, container){
     this.container.addChild(this.sprite);
     this.frontCells = [];
     this.detector = new Detector(cells);
+    this.decider = new Decider();
 }
 
 Ant.prototype.turn = function(newDirection){
@@ -46,6 +47,13 @@ Ant.prototype.detectFrontCells = function(){
 Ant.prototype.moveToCell = function(cell){
     this.x = cell.x;
     this.y = cell.y;
-    this.sprite.x = 11 * this.x;
-    this.sprite.y = 11 * this.y;
+    this.sprite.x = (10 * this.x) + 5;
+    this.sprite.y = (10 * this.y) + 5;
+}
+
+Ant.prototype.advance = function(){
+
+    this.detectFrontCells();
+    var behavior = this.decider.getNewBehavior(this);
+    behavior.doBehavior();
 }

@@ -5,15 +5,12 @@ describe("Ant", function(){
     var ant;
     var container;
     var cells = [];
+    var helper = new AntHelper();
+    
     beforeEach(function(){
-        container = new PIXI.Container();
-        spyOn(container, "addChild");
-        cells = [];
-        cells.push([new Cell(0,0), new Cell(1,0)]);
-        cells.push([new Cell(0,1), new Cell(1,1)]);
-        cells.push([new Cell(0,2), new Cell(1,2)]);
-        
-        ant = new Ant(1,2,cells,container);
+        ant = helper.createTestAnt();
+        container = ant.container;
+        cells = ant.cells;
     });
 
     it("should have a location of 1X2", function(){
@@ -88,5 +85,17 @@ describe("Ant", function(){
         ant.turn(Direction.East);
         expect(ant.sprite.rotation).toEqual(3.14/2);
         expect(ant.direction).toEqual(Direction.East);
+    });
+
+    it("should do a Behavior when advance is called.", function(){
+
+        var moveBehavior = new MoveBehavior(ant);
+
+        spyOn(ant.decider, "getNewBehavior").and.returnValue(moveBehavior);
+        spyOn(moveBehavior, "doBehavior");
+
+        ant.advance();
+
+        expect(moveBehavior.doBehavior).toHaveBeenCalled();
     });
 });

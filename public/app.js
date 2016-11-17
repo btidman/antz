@@ -6,7 +6,7 @@ world.draw();
 
 function gameLoop(){
 
-    //world.update();
+    world.advance();
     animate();
     setTimeout(gameLoop, 50); 
 }

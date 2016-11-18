@@ -38503,6 +38503,7 @@
 	/* WEBPACK VAR INJECTION */(function(module) {
 	'use strict'
 	var MoveBehavior = __webpack_require__(186);
+	var TurnBehavior = __webpack_require__(187);
 
 	function Decider(){
 
@@ -38510,7 +38511,16 @@
 
 	Decider.prototype.getNewBehavior = function(ant){
 
-	    return new MoveBehavior(ant);
+	    var result = null;
+
+	    var randomValue = Math.random();
+
+	    if(randomValue < 0.25){
+	        return new TurnBehavior(ant);
+	    }
+	    else {
+	        return new MoveBehavior(ant);
+	    }
 	}
 
 	// Export node module.
@@ -38541,6 +38551,33 @@
 	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
 	{
 	    module.exports = MoveBehavior;
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {function TurnBehavior(ant){
+	    this.ant = ant;
+	    this.type = "Turn";
+	}
+
+	TurnBehavior.prototype.doBehavior = function(){
+	    var randomDirection = 0;
+	    
+	    do{
+	        randomDirection = Math.floor((Math.random() * 4));
+	    }while( randomDirection == this.ant.direction);
+
+	    this.ant.turn(randomDirection);
+	}
+
+	// Export node module.
+	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
+	{
+	    module.exports = TurnBehavior;
 	}
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))

@@ -8,7 +8,7 @@ TurnBehavior.prototype.doBehavior = function(){
     
     do{
         randomDirection = Math.floor((Math.random() * 4));
-    }while( randomDirection == ant.direction);
+    }while( randomDirection == this.ant.direction);
 
     this.ant.turn(randomDirection);
 }

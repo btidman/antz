@@ -50,7 +50,8 @@
 
 
 	window.ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
-	window.FOOD_TEXTURE = PIXI.Texture.fromImage('../cell.png');
+	window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
+	window.NEST_TEXTURE = PIXI.Texture.fromImage('../nest.png');
 
 	var world = new World(100,100);
 	window.world = world;
@@ -38198,6 +38199,7 @@
 
 	/* WEBPACK VAR INJECTION */(function(module) {var Cell = __webpack_require__(181);
 	var Ant = __webpack_require__(182);
+	var Nest = __webpack_require__(188);
 
 	function World(width, height){
 	    this.width = width;
@@ -38211,6 +38213,7 @@
 	    
 	    this.ants = [];
 	    this.cells = [];
+	    this.nest = null;
 
 	    for(row = 0; row < this.height; row++){
 	        this.cells.push([]);
@@ -38226,10 +38229,16 @@
 	    document.body.appendChild(this.renderer.view);
 	}
 
-	World.prototype.addAnt = function(x, y){
-	    var ant = new Ant(x,y,this.cells, this.container);
-	    this.ants.push(ant);
-	    ant.advance();
+	World.prototype.addNest = function(x,y){
+	    var newNest = new Nest(this.cells[y][x], this.cells, this.container);
+	    this.nest = newNest;
+	}
+
+	World.prototype.addAnt = function(){
+	    
+	    if(this.nest){
+	        this.nest.addAnt();
+	    }
 	}
 
 	World.prototype.addFood = function(x, y, amountOfFood){
@@ -38257,18 +38266,29 @@
 	    this.food = 0;
 	    this.container = container;
 
-	    this.sprite = new PIXI.Sprite(FOOD_TEXTURE);
-	    this.sprite.x = (10 * this.x);
-	    this.sprite.y = (10 * this.y);
-	    this.sprite.renderable = false;
-	    this.container.addChild(this.sprite);
+	    this.sprite = null; 
 	}
 
 	Cell.prototype.addFood = function(amountOfFood){
 	    this.food = amountOfFood;
 	    if(this.food > 0){
+	        this.container.removeChild(this.sprite);
+	        this.sprite = new PIXI.Sprite(FOOD_TEXTURE);
+	        this.sprite.x = (10 * this.x);
+	        this.sprite.y = (10 * this.y);
 	        this.sprite.renderable = true;
+	        this.container.addChild(this.sprite);
 	    }
+	}
+
+	Cell.prototype.addNest = function(nest){
+	    this.nest = nest;
+	    this.container.removeChild(this.sprite);
+	    this.sprite = new PIXI.Sprite(NEST_TEXTURE);
+	    this.sprite.x = (10 * this.x);
+	    this.sprite.y = (10 * this.y);
+	    this.sprite.renderable = true;
+	    this.container.addChild(this.sprite);
 	}
 
 	// Export node module.
@@ -38607,6 +38627,34 @@
 	    module.exports = TurnBehavior;
 	}
 
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {
+	var Ant = __webpack_require__(182);
+
+	function Nest(cell, allCells, container){
+	    this.cell = cell;
+	    cell.addNest(this);
+	    this.allCells = allCells;
+	    this.container = container;
+	    this.ants = [];
+	}
+
+	Nest.prototype.addAnt = function(){
+	    var ant = new Ant(this.cell.x,this.cell.y,this.allCells, this.container);
+	    this.ants.push(ant);
+	    ant.advance();
+	}
+
+	// Export node module.
+	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
+	{
+	    module.exports = Nest;
+	}
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))
 
 /***/ }

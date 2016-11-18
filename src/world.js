@@ -1,5 +1,6 @@
 var Cell = require("./cell.js");
 var Ant = require("./ant.js");
+var Nest = require("./nest.js");
 
 function World(width, height){
     this.width = width;
@@ -13,6 +14,7 @@ function World(width, height){
     
     this.ants = [];
     this.cells = [];
+    this.nest = null;
 
     for(row = 0; row < this.height; row++){
         this.cells.push([]);
@@ -28,10 +30,16 @@ World.prototype.draw = function (){
     document.body.appendChild(this.renderer.view);
 }
 
-World.prototype.addAnt = function(x, y){
-    var ant = new Ant(x,y,this.cells, this.container);
-    this.ants.push(ant);
-    ant.advance();
+World.prototype.addNest = function(x,y){
+    var newNest = new Nest(this.cells[y][x], this.cells, this.container);
+    this.nest = newNest;
+}
+
+World.prototype.addAnt = function(){
+    
+    if(this.nest){
+        this.nest.addAnt();
+    }
 }
 
 World.prototype.addFood = function(x, y, amountOfFood){

@@ -5,7 +5,7 @@ var World = require("../src/world");
 describe("World", function(){
 
     var world;
-    window.FOOD_TEXTURE = PIXI.Texture.fromImage('../cell.png');
+    window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
     beforeEach(function() { world = new World(3, 4); }); 
 
     it("should have a width of 3 and a height of 4", function(){
@@ -41,10 +41,19 @@ describe("World", function(){
         }
     });
 
-    it("should be able to add an ant.", function(){
+    it("should be able to add a nest", function(){
+        world.addNest(2, 2);
+        expect(world.nest).toBeDefined();
+        expect(world.nest.cell).toEqual(world.cells[2][2]);
+    });
+
+    it("should be able to add an ant if there is a nest.", function(){
         
-        world.addAnt(1,2);
-        expect(world.ants.length).toEqual(1);
+        world.addNest(1, 2);
+        spyOn(world.nest, "addAnt");
+        world.addAnt();
+
+        expect(world.nest.addAnt).toHaveBeenCalledWith();
     });
 
     it("should be able to add food.", function(){

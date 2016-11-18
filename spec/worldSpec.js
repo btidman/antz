@@ -5,9 +5,10 @@ var World = require("../src/world");
 describe("World", function(){
 
     var world;
+    window.FOOD_TEXTURE = PIXI.Texture.fromImage('../cell.png');
     beforeEach(function() { world = new World(3, 4); }); 
 
-    it("should have a width of 1 and a height of 2", function(){
+    it("should have a width of 3 and a height of 4", function(){
         expect(world.width).toEqual(3);
         expect(world.height).toEqual(4);
     });

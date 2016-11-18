@@ -2,9 +2,13 @@ var PIXI = require('pixi.js');
 var TWEEN = require('tween.js');
 var World = require("./world.js");
 
-var world = new World(100,200);
-window.world = world;
+
 window.ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
+window.FOOD_TEXTURE = PIXI.Texture.fromImage('../cell.png');
+
+var world = new World(100,100);
+window.world = world;
+
 
 world.draw();
     

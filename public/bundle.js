@@ -48,9 +48,13 @@
 	var TWEEN = __webpack_require__(179);
 	var World = __webpack_require__(180);
 
-	var world = new World(100,200);
-	window.world = world;
+
 	window.ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
+	window.FOOD_TEXTURE = PIXI.Texture.fromImage('../cell.png');
+
+	var world = new World(100,100);
+	window.world = world;
+
 
 	world.draw();
 	    
@@ -38211,7 +38215,7 @@
 	    for(row = 0; row < this.height; row++){
 	        this.cells.push([]);
 	        for (col  = 0; col < this.width; col++){
-	            var cell = new Cell(col, row);
+	            var cell = new Cell(col, row, this.container);
 	            this.cells[row].push(cell);
 	        }
 	    }
@@ -38228,6 +38232,11 @@
 	    ant.advance();
 	}
 
+	World.prototype.addFood = function(x, y, amountOfFood){
+	    var cell = this.cells[y][x];
+	    cell.addFood(amountOfFood);
+	}
+
 
 	// Export node module.
 	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
@@ -38242,9 +38251,24 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {
-	function Cell(x, y){
+	function Cell(x, y, container){
 	    this.x = x;
 	    this.y = y;
+	    this.food = 0;
+	    this.container = container;
+
+	    this.sprite = new PIXI.Sprite(FOOD_TEXTURE);
+	    this.sprite.x = (10 * this.x);
+	    this.sprite.y = (10 * this.y);
+	    this.sprite.renderable = false;
+	    this.container.addChild(this.sprite);
+	}
+
+	Cell.prototype.addFood = function(amountOfFood){
+	    this.food = amountOfFood;
+	    if(this.food > 0){
+	        this.sprite.renderable = true;
+	    }
 	}
 
 	// Export node module.

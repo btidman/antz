@@ -12,9 +12,9 @@ AntHelper.prototype.createTestAnt = function(){
     spyOn(container, "addChild");
     
     cells = [];
-    cells.push([new Cell(0,0), new Cell(1,0)]);
-    cells.push([new Cell(0,1), new Cell(1,1)]);
-    cells.push([new Cell(0,2), new Cell(1,2)]);
+    cells.push([new Cell(0,0, container), new Cell(1,0, container)]);
+    cells.push([new Cell(0,1, container), new Cell(1,1, container)]);
+    cells.push([new Cell(0,2, container), new Cell(1,2, container)]);
 
     ant = new Ant(1,2,cells,container);
 

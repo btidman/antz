@@ -17,7 +17,7 @@ function World(width, height){
     for(row = 0; row < this.height; row++){
         this.cells.push([]);
         for (col  = 0; col < this.width; col++){
-            var cell = new Cell(col, row);
+            var cell = new Cell(col, row, this.container);
             this.cells[row].push(cell);
         }
     }

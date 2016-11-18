@@ -7,13 +7,16 @@ describe("Detector for ant", function(){
 
     var detector;
     var cells;
+    var container = new PIXI.Container();
+    window.FOOD_TEXTURE = PIXI.Texture.fromImage('../cell.png');
+    
     beforeEach(function(){
         
         cells = [];
         
-        cells.push([new Cell(0,0), new Cell(1,0)]);
-        cells.push([new Cell(0,1), new Cell(1,1)]);
-        cells.push([new Cell(0,2), new Cell(1,2)]);
+        cells.push([new Cell(0,0, container), new Cell(1,0, container)]);
+        cells.push([new Cell(0,1, container), new Cell(1,1, container)]);
+        cells.push([new Cell(0,2, container), new Cell(1,2, container)]);
         
         detector = new Detector(cells);
     });
@@ -35,7 +38,7 @@ describe("Detector for ant", function(){
     });
 
     it("can remove undefined from a collection of cells", function(){
-        var newCell = new Cell(5,5);
+        var newCell = new Cell(5,5, container);
         var cellsToAdd = [newCell, undefined];
         var result = detector.filterUndefinedCells(cellsToAdd);
         expect(result).toContain(newCell);

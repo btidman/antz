@@ -28,9 +28,11 @@ describe("Move Behavior", function(){
 
     it("should not try and move if there are no cells available to move to", function(){
         spyOn(ant, "moveToCell");
+        spyOn(ant, "advance");
         ant.frontCells = [];
         moveBehavior.doBehavior();
         expect(ant.moveToCell).not.toHaveBeenCalled();
+        expect(ant.advance).toHaveBeenCalled();
     });
 
     it("should have a type of Move", function(){

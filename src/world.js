@@ -31,13 +31,9 @@ World.prototype.draw = function (){
 World.prototype.addAnt = function(x, y){
     var ant = new Ant(x,y,this.cells, this.container);
     this.ants.push(ant);
+    ant.advance();
 }
 
-World.prototype.advance = function(){
-    for(var x = 0; x < this.ants.length; x++){
-        this.ants[x].advance();
-    }
-}
 
 // Export node module.
 if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )

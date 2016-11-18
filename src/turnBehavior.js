@@ -4,13 +4,16 @@ function TurnBehavior(ant){
 }
 
 TurnBehavior.prototype.doBehavior = function(){
-    var randomDirection = 0;
+    var randomValue = Math.random();
+    var newDirection = -1;
     
-    do{
-        randomDirection = Math.floor((Math.random() * 4));
-    }while( randomDirection == this.ant.direction);
-
-    this.ant.turn(randomDirection);
+    if(randomValue >= 0.5){
+        this.ant.turnRight();
+    }
+    else
+    {
+        this.ant.turnLeft();
+    }
 }
 
 // Export node module.

@@ -4,18 +4,9 @@ var World = require("./world.js");
 
 var world = new World(100,200);
 window.world = world;
+window.ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
 
 world.draw();
-
-function gameLoop(){
-
-    world.advance();
-    setTimeout(gameLoop, 500); 
-}
-
-gameLoop();
-
-//var lastLoop = new Date;
     
 animate();
 function animate () {
@@ -28,7 +19,5 @@ function animate () {
     requestAnimationFrame( animate );
     TWEEN.update();
     world.renderer.render(world.stage);
-    
-    
 }
 

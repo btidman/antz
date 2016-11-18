@@ -9,6 +9,10 @@ MoveBehavior.prototype.doBehavior = function(){
         var randomIndex = Math.floor((Math.random() * this.ant.frontCells.length));
         this.ant.moveToCell(this.ant.frontCells[randomIndex]);
     }
+    else
+    {
+        this.ant.advance();
+    }
 }
 
 // Export node module.

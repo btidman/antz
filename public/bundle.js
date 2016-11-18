@@ -50,18 +50,9 @@
 
 	var world = new World(100,200);
 	window.world = world;
+	window.ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
 
 	world.draw();
-
-	function gameLoop(){
-
-	    world.advance();
-	    setTimeout(gameLoop, 500); 
-	}
-
-	gameLoop();
-
-	//var lastLoop = new Date;
 	    
 	animate();
 	function animate () {
@@ -74,8 +65,6 @@
 	    requestAnimationFrame( animate );
 	    TWEEN.update();
 	    world.renderer.render(world.stage);
-	    
-	    
 	}
 
 
@@ -38236,13 +38225,9 @@
 	World.prototype.addAnt = function(x, y){
 	    var ant = new Ant(x,y,this.cells, this.container);
 	    this.ants.push(ant);
+	    ant.advance();
 	}
 
-	World.prototype.advance = function(){
-	    for(var x = 0; x < this.ants.length; x++){
-	        this.ants[x].advance();
-	    }
-	}
 
 	// Export node module.
 	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
@@ -38284,9 +38269,8 @@
 	    this.direction = Direction.North;
 	    this.cells = cells;
 	    this.container = container;
-	    var texture = PIXI.Texture.fromImage('../ant.png');
 	    
-	    this.sprite = new PIXI.Sprite(texture);
+	    this.sprite = new PIXI.Sprite(ANT_TEXTURE);
 	    this.sprite.x = (10 * this.x) + 5;
 	    this.sprite.y = (10 * this.y) + 5;
 	    this.sprite.anchor.x = 0.5;
@@ -38299,37 +38283,46 @@
 	    this.tempX = 0;
 	    this.tempY = 0;
 	    this.tempRotation = 0;
+	    this.rotate90 = 1.5708;
+	    this.tween = new TWEEN.Tween(this);
 	}
 
-	Ant.prototype.turn = function(newDirection){
+	Ant.prototype.turnRight = function(newDirection){
+
+	    var newDirection = this.direction + 1;
+	    if(newDirection > 3){
+	        newDirection = 0;
+	    }
 
 	    this.direction = newDirection;
-	    this.updateSpriteRotation();
+
+	    this.tweenRotation(this.sprite.rotation + this.rotate90);
 	}
 
-	Ant.prototype.updateSpriteRotation = function(){
-	    var newRotation = 0;
+	Ant.prototype.turnLeft = function(newDirection){
 
-	    if(this.direction == Direction.North){
-	        newRotation = 0;
-	    }
-	    else if(this.direction == Direction.East){
-	        newRotation = (3.14/2);
-	    }
-	    else if(this.direction == Direction.South){
-	        newRotation = 3.14;
-	    }
-	    else if(this.direction == Direction.West){
-	        newRotation = (3.14 * 1.5);
+	    var newDirection = this.direction - 1;
+	    if(newDirection < 0){
+	        newDirection = 3;
 	    }
 
-	    var tween = new TWEEN.Tween(this);
-	    tween.to({ tempRotation: newRotation}, 500);
-	    tween.onUpdate(function() {
+	    this.direction = newDirection;
+
+	    this.tweenRotation(this.sprite.rotation - this.rotate90);
+	}
+
+	Ant.prototype.tweenRotation = function(newRotation){
+	    
+	    this.tween.to({ tempRotation: newRotation}, 500);
+	    this.tween.onUpdate(function() {
 	        this.sprite.rotation = this.tempRotation;
 	    });
-	    tween.start();
+	    this.tween.onComplete(function(){
+	        this.advance();
+	    });
+	    this.tween.start();
 	}
+
 
 	Ant.prototype.detectFrontCells = function(){
 	    
@@ -38346,13 +38339,16 @@
 	    this.tempX = this.sprite.x;
 	    this.tempY = this.sprite.y;
 
-	    var tween = new TWEEN.Tween(this);
-	    tween.to({ tempX: newX, tempY: newY}, 500);
-	    tween.onUpdate(function() {
+	    
+	    this.tween.to({ tempX: newX, tempY: newY}, 500);
+	    this.tween.onUpdate(function() {
 	        this.sprite.x = this.tempX;
 	        this.sprite.y = this.tempY;
 	    });
-	    tween.start();
+	    this.tween.onComplete(function(){
+	        this.advance();
+	    });
+	    this.tween.start();
 	}
 
 	Ant.prototype.advance = function(){
@@ -38545,6 +38541,10 @@
 	        var randomIndex = Math.floor((Math.random() * this.ant.frontCells.length));
 	        this.ant.moveToCell(this.ant.frontCells[randomIndex]);
 	    }
+	    else
+	    {
+	        this.ant.advance();
+	    }
 	}
 
 	// Export node module.
@@ -38565,13 +38565,16 @@
 	}
 
 	TurnBehavior.prototype.doBehavior = function(){
-	    var randomDirection = 0;
+	    var randomValue = Math.random();
+	    var newDirection = -1;
 	    
-	    do{
-	        randomDirection = Math.floor((Math.random() * 4));
-	    }while( randomDirection == this.ant.direction);
-
-	    this.ant.turn(randomDirection);
+	    if(randomValue >= 0.5){
+	        this.ant.turnRight();
+	    }
+	    else
+	    {
+	        this.ant.turnLeft();
+	    }
 	}
 
 	// Export node module.

@@ -9,9 +9,8 @@ function Ant(x, y, cells, container){
     this.direction = Direction.North;
     this.cells = cells;
     this.container = container;
-    var texture = PIXI.Texture.fromImage('../ant.png');
     
-    this.sprite = new PIXI.Sprite(texture);
+    this.sprite = new PIXI.Sprite(ANT_TEXTURE);
     this.sprite.x = (10 * this.x) + 5;
     this.sprite.y = (10 * this.y) + 5;
     this.sprite.anchor.x = 0.5;
@@ -24,37 +23,46 @@ function Ant(x, y, cells, container){
     this.tempX = 0;
     this.tempY = 0;
     this.tempRotation = 0;
+    this.rotate90 = 1.5708;
+    this.tween = new TWEEN.Tween(this);
 }
 
-Ant.prototype.turn = function(newDirection){
+Ant.prototype.turnRight = function(newDirection){
+
+    var newDirection = this.direction + 1;
+    if(newDirection > 3){
+        newDirection = 0;
+    }
 
     this.direction = newDirection;
-    this.updateSpriteRotation();
+
+    this.tweenRotation(this.sprite.rotation + this.rotate90);
 }
 
-Ant.prototype.updateSpriteRotation = function(){
-    var newRotation = 0;
+Ant.prototype.turnLeft = function(newDirection){
 
-    if(this.direction == Direction.North){
-        newRotation = 0;
-    }
-    else if(this.direction == Direction.East){
-        newRotation = (3.14/2);
-    }
-    else if(this.direction == Direction.South){
-        newRotation = 3.14;
-    }
-    else if(this.direction == Direction.West){
-        newRotation = (3.14 * 1.5);
+    var newDirection = this.direction - 1;
+    if(newDirection < 0){
+        newDirection = 3;
     }
 
-    var tween = new TWEEN.Tween(this);
-    tween.to({ tempRotation: newRotation}, 500);
-    tween.onUpdate(function() {
+    this.direction = newDirection;
+
+    this.tweenRotation(this.sprite.rotation - this.rotate90);
+}
+
+Ant.prototype.tweenRotation = function(newRotation){
+    
+    this.tween.to({ tempRotation: newRotation}, 500);
+    this.tween.onUpdate(function() {
         this.sprite.rotation = this.tempRotation;
     });
-    tween.start();
+    this.tween.onComplete(function(){
+        this.advance();
+    });
+    this.tween.start();
 }
+
 
 Ant.prototype.detectFrontCells = function(){
     
@@ -71,13 +79,16 @@ Ant.prototype.moveToCell = function(cell){
     this.tempX = this.sprite.x;
     this.tempY = this.sprite.y;
 
-    var tween = new TWEEN.Tween(this);
-    tween.to({ tempX: newX, tempY: newY}, 500);
-    tween.onUpdate(function() {
+    
+    this.tween.to({ tempX: newX, tempY: newY}, 500);
+    this.tween.onUpdate(function() {
         this.sprite.x = this.tempX;
         this.sprite.y = this.tempY;
     });
-    tween.start();
+    this.tween.onComplete(function(){
+        this.advance();
+    });
+    this.tween.start();
 }
 
 Ant.prototype.advance = function(){

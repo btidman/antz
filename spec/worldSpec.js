@@ -41,18 +41,10 @@ describe("World", function(){
     });
 
     it("should be able to add an ant.", function(){
+        
         world.addAnt(1,2);
-        expect(world.ants[0].x).toEqual(1);
-        expect(world.ants[0].y).toEqual(2);
+        expect(world.ants.length).toEqual(1);
     });
 
-    it("should advance all ants when advance is called", function(){
-        world.addAnt(1,2);
-
-        spyOn(world.ants[0], "advance").and.callThrough();
-
-        world.advance();
-
-        expect(world.ants[0].advance).toHaveBeenCalled();
-    });
+    
 });

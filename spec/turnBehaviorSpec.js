@@ -15,24 +15,24 @@ describe("Turn Behavior", function(){
         turnBehavior = new TurnBehavior(ant); 
     }); 
 
-    it("should turn to a random direction when do Behavior is called.", function(){
-        spyOn(Math, "random").and.returnValue(.5);
-        spyOn(ant, "turn");
+    it("should turn left if the random number if less than .5", function(){
+        spyOn(Math, "random").and.returnValue(0.49);
+        spyOn(ant, "turnLeft");
         
         turnBehavior.doBehavior();
-        
+
         expect(Math.random).toHaveBeenCalled();
-        expect(ant.turn).toHaveBeenCalledWith(2);
+        expect(ant.turnLeft).toHaveBeenCalledWith();
     });
 
-    it("should keep trying to turn if the same direction comes up as the ant is facing.", function(){
-        spyOn(Math, "random").and.returnValues(0, .5);
-        spyOn(ant, "turn");
+    it("should turn right if the random number is .5 or more", function(){
+        spyOn(Math, "random").and.returnValue(0.5);
+        spyOn(ant, "turnRight");
         
         turnBehavior.doBehavior();
-        
+
         expect(Math.random).toHaveBeenCalled();
-        expect(ant.turn).toHaveBeenCalledWith(2);
+        expect(ant.turnRight).toHaveBeenCalledWith();
     });
 
     it("should have a type of Move", function(){

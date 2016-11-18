@@ -34,6 +34,11 @@ World.prototype.addAnt = function(x, y){
     ant.advance();
 }
 
+World.prototype.addFood = function(x, y, amountOfFood){
+    var cell = this.cells[y][x];
+    cell.addFood(amountOfFood);
+}
+
 
 // Export node module.
 if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )

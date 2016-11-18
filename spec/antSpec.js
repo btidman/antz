@@ -10,6 +10,7 @@ describe("Ant", function(){
     var container;
     var cells = [];
     var helper = new AntHelper();
+    window.ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
     
     beforeEach(function(){
         ant = helper.createTestAnt();
@@ -86,4 +87,6 @@ describe("Ant", function(){
 
         expect(moveBehavior.doBehavior).toHaveBeenCalled();
     });
+
+
 });

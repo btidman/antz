@@ -46,5 +46,11 @@ describe("World", function(){
         expect(world.ants.length).toEqual(1);
     });
 
+    it("should be able to add food.", function(){
+        var cell = world.cells[1][0];
+        spyOn(cell, "addFood");
+        world.addFood(0,1,1000);
+        expect(cell.addFood).toHaveBeenCalledWith(1000);
+    });
     
 });

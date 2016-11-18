@@ -11,4 +11,9 @@ describe("Cell", function(){
         expect(cell.x).toEqual(1);
         expect(cell.y).toEqual(2);
     });
+
+    it("should add food", function(){
+        cell.addFood(1000);
+        expect(cell.food).toEqual(1000);
+    });
 });

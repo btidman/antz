@@ -55,7 +55,7 @@ describe("Ant", function(){
     it("should be able to retrieve the front cells", function(){
         spyOn(ant.detector, "detectFrontCells").and.returnValue([cells[1][0], cells[1][1]]);
         ant.detectFrontCells();
-        expect(ant.detector.detectFrontCells).toHaveBeenCalledWith(ant.x, ant.y, ant.direction);
+        expect(ant.detector.detectFrontCells).toHaveBeenCalled();
         expect(ant.frontCells).toContain(cells[1][0]);
         expect(ant.frontCells).toContain(cells[1][1]);
     });
@@ -88,5 +88,19 @@ describe("Ant", function(){
         expect(moveBehavior.doBehavior).toHaveBeenCalled();
     });
 
+    it("should store the starting cell to the trail.", function(){
 
+        expect(ant.trail[0].x).toEqual(1);
+        expect(ant.trail[0].y).toEqual(2);
+    });
+
+    it("should store the trail of cells that it has moved over.", function(){
+
+        ant.moveToCell(cells[1][1]);
+
+        expect(ant.trail[1].x).toEqual(1);
+        expect(ant.trail[1].y).toEqual(1);
+    });
+
+    
 });

@@ -2,39 +2,41 @@
 
 var Detector = require("../src/detector");
 var Cell = require("../src/cell");
+var AntHelper = require("../test_helpers/antHelper");
 
 describe("Detector for ant", function(){
 
     var detector;
-    var cells;
+    
+    var antHelper = new AntHelper();
+    var ant; 
     var container = new PIXI.Container();
     window.FOOD_TEXTURE = PIXI.Texture.fromImage('../cell.png');
     
     beforeEach(function(){
         
-        cells = [];
+        ant = antHelper.createTestAnt();
         
-        cells.push([new Cell(0,0, container), new Cell(1,0, container)]);
-        cells.push([new Cell(0,1, container), new Cell(1,1, container)]);
-        cells.push([new Cell(0,2, container), new Cell(1,2, container)]);
-        
-        detector = new Detector(cells);
+        detector = new Detector(ant);
     });
 
-    it("should know what cells are in front of a location based on a direction", function(){
-        var result = detector.detectFrontCells(1,2,Direction.North);
-        expect(result).toContain(cells[1][0]);
-        expect(result).toContain(cells[1][1]);
+    it("should know what cells are in front of ant based on a direction", function(){
+        var result = detector.detectFrontCells();
+        expect(result).toContain(ant.cells[1][0]);
+        expect(result).toContain(ant.cells[1][1]);
 
-        result = detector.detectFrontCells(1,2,Direction.East);
+        ant.direction = Direction.East;
+        result = detector.detectFrontCells();
         expect(result.length).toEqual(0);
         
-        result = detector.detectFrontCells(1,2,Direction.South);
+        ant.direction = Direction.South;
+        result = detector.detectFrontCells();
         expect(result.length).toEqual(0);
         
-        result = detector.detectFrontCells(1,2,Direction.West);
-        expect(result).toContain(cells[1][0]);
-        expect(result).toContain(cells[2][0]);
+        ant.direction = Direction.West;
+        result = detector.detectFrontCells();
+        expect(result).toContain(ant.cells[1][0]);
+        expect(result).toContain(ant.cells[2][0]);
     });
 
     it("can remove undefined from a collection of cells", function(){
@@ -48,8 +50,8 @@ describe("Detector for ant", function(){
     it("should be able to detect what cells are north", function(){
         var result = detector.detectCellsNorthOfLocation(1,2);
 
-        expect(result).toContain(cells[1][0]);
-        expect(result).toContain(cells[1][1]);
+        expect(result).toContain(ant.cells[1][0]);
+        expect(result).toContain(ant.cells[1][1]);
         expect(result.length).toEqual(3);
     });
 
@@ -64,8 +66,8 @@ describe("Detector for ant", function(){
         var result = detector.detectCellsWestOfLocation(1,2);
 
         expect(result.length).toEqual(2);
-        expect(result).toContain(cells[1][0]);
-        expect(result).toContain(cells[2][0]);
+        expect(result).toContain(ant.cells[1][0]);
+        expect(result).toContain(ant.cells[2][0]);
     });
 
     it("should be able to detect what cells are south", function(){

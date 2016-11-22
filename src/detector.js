@@ -1,24 +1,24 @@
 
-function Detector(cells){
+function Detector(ant){
 
-    this.cells = cells;
+    this.ant = ant;
 }
 
-Detector.prototype.detectFrontCells = function(x, y, direction){
+Detector.prototype.detectFrontCells = function(){
     
     var cellsToAdd = [];
 
-    if(direction == Direction.North){
-        cellsToAdd = this.detectCellsNorthOfLocation(x, y);
+    if(this.ant.direction == Direction.North){
+        cellsToAdd = this.detectCellsNorthOfLocation(this.ant.x, this.ant.y);
     }
-    else if(direction == Direction.East){
-        cellsToAdd = this.detectCellsEastOfLocation(x, y);
+    else if(this.ant.direction == Direction.East){
+        cellsToAdd = this.detectCellsEastOfLocation(this.ant.x, this.ant.y);
     }
-    else if(direction == Direction.South){
-        cellsToAdd = this.detectCellsSouthOfLocation(x, y);
+    else if(this.ant.direction == Direction.South){
+        cellsToAdd = this.detectCellsSouthOfLocation(this.ant.x, this.ant.y);
     }
-    else if(direction == Direction.West){
-        cellsToAdd = this.detectCellsWestOfLocation(x, y);
+    else if(this.ant.direction == Direction.West){
+        cellsToAdd = this.detectCellsWestOfLocation(this.ant.x, this.ant.y);
     }
 
     return this.filterUndefinedCells(cellsToAdd);
@@ -41,9 +41,9 @@ Detector.prototype.detectCellsNorthOfLocation = function(x,y){
     var result = [];
     
     if(y - 1 >= 0){
-        result.push(this.cells[y - 1][x - 1]);
-        result.push(this.cells[y - 1][x]);
-        result.push(this.cells[y - 1][x + 1]);
+        result.push(this.ant.cells[y - 1][x - 1]);
+        result.push(this.ant.cells[y - 1][x]);
+        result.push(this.ant.cells[y - 1][x + 1]);
     }
 
     return result;
@@ -51,12 +51,12 @@ Detector.prototype.detectCellsNorthOfLocation = function(x,y){
 
 Detector.prototype.detectCellsSouthOfLocation = function(x,y){
     var result = [];
-    var maxY = this.cells.length;
+    var maxY = this.ant.cells.length;
     
     if(y + 1 < maxY){
-        result.push(this.cells[y + 1][x - 1]);
-        result.push(this.cells[y + 1][x]);
-        result.push(this.cells[y + 1][x + 1]);
+        result.push(this.ant.cells[y + 1][x - 1]);
+        result.push(this.ant.cells[y + 1][x]);
+        result.push(this.ant.cells[y + 1][x + 1]);
     }
 
     return result;
@@ -64,16 +64,16 @@ Detector.prototype.detectCellsSouthOfLocation = function(x,y){
 
 Detector.prototype.detectCellsEastOfLocation = function(x,y){
     var result = [];
-    var maxY = this.cells.length;
+    var maxY = this.ant.cells.length;
 
     if(y - 1 >= 0){
-        result.push(this.cells[y - 1][x + 1]);
+        result.push(this.ant.cells[y - 1][x + 1]);
     }
 
-    result.push(this.cells[y][x + 1]);
+    result.push(this.ant.cells[y][x + 1]);
     
     if(y + 1 < maxY){
-        result.push(this.cells[y + 1][x + 1]);
+        result.push(this.ant.cells[y + 1][x + 1]);
     }
 
     return result;
@@ -81,16 +81,16 @@ Detector.prototype.detectCellsEastOfLocation = function(x,y){
 
 Detector.prototype.detectCellsWestOfLocation = function(x,y){
     var result = [];
-    var maxY = this.cells.length;
+    var maxY = this.ant.cells.length;
 
     if(y - 1 >= 0){
-        result.push(this.cells[y - 1][x - 1]);
+        result.push(this.ant.cells[y - 1][x - 1]);
     }
 
-    result.push(this.cells[y][x - 1]);
+    result.push(this.ant.cells[y][x - 1]);
     
     if(y + 1 < maxY){
-        result.push(this.cells[y + 1][x - 1]);
+        result.push(this.ant.cells[y + 1][x - 1]);
     }
 
     return result;

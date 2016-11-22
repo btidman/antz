@@ -53,7 +53,7 @@
 	window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
 	window.NEST_TEXTURE = PIXI.Texture.fromImage('../nest.png');
 
-	var world = new World(100,100);
+	var world = new World(10,10);
 	window.world = world;
 
 
@@ -38199,7 +38199,7 @@
 
 	/* WEBPACK VAR INJECTION */(function(module) {var Cell = __webpack_require__(181);
 	var Ant = __webpack_require__(182);
-	var Nest = __webpack_require__(188);
+	var Nest = __webpack_require__(189);
 
 	function World(width, height){
 	    this.width = width;
@@ -38322,7 +38322,8 @@
 	    this.sprite.rotation = 0;
 	    this.container.addChild(this.sprite);
 	    this.frontCells = [];
-	    this.detector = new Detector(cells);
+	    this.trail = [cells[y][x]];
+	    this.detector = new Detector(this);
 	    this.decider = new Decider();
 	    this.tempX = 0;
 	    this.tempY = 0;
@@ -38370,19 +38371,20 @@
 
 	Ant.prototype.detectFrontCells = function(){
 	    
-	    this.frontCells = this.detector.detectFrontCells(this.x, this.y, this.direction);
+	    this.frontCells = this.detector.detectFrontCells();
 	}
 
 	Ant.prototype.moveToCell = function(cell){
 	    this.x = cell.x;
 	    this.y = cell.y;
 
+	    this.trail.push(this.cells[this.y][this.x]);    
+
 	    //this stuff is untested.
 	    var newX = (10 * this.x) + 5;
 	    var newY = (10 * this.y) + 5;
 	    this.tempX = this.sprite.x;
 	    this.tempY = this.sprite.y;
-
 	    
 	    this.tween.to({ tempX: newX, tempY: newY}, 500);
 	    this.tween.onUpdate(function() {
@@ -38432,26 +38434,26 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {
-	function Detector(cells){
+	function Detector(ant){
 
-	    this.cells = cells;
+	    this.ant = ant;
 	}
 
-	Detector.prototype.detectFrontCells = function(x, y, direction){
+	Detector.prototype.detectFrontCells = function(){
 	    
 	    var cellsToAdd = [];
 
-	    if(direction == Direction.North){
-	        cellsToAdd = this.detectCellsNorthOfLocation(x, y);
+	    if(this.ant.direction == Direction.North){
+	        cellsToAdd = this.detectCellsNorthOfLocation(this.ant.x, this.ant.y);
 	    }
-	    else if(direction == Direction.East){
-	        cellsToAdd = this.detectCellsEastOfLocation(x, y);
+	    else if(this.ant.direction == Direction.East){
+	        cellsToAdd = this.detectCellsEastOfLocation(this.ant.x, this.ant.y);
 	    }
-	    else if(direction == Direction.South){
-	        cellsToAdd = this.detectCellsSouthOfLocation(x, y);
+	    else if(this.ant.direction == Direction.South){
+	        cellsToAdd = this.detectCellsSouthOfLocation(this.ant.x, this.ant.y);
 	    }
-	    else if(direction == Direction.West){
-	        cellsToAdd = this.detectCellsWestOfLocation(x, y);
+	    else if(this.ant.direction == Direction.West){
+	        cellsToAdd = this.detectCellsWestOfLocation(this.ant.x, this.ant.y);
 	    }
 
 	    return this.filterUndefinedCells(cellsToAdd);
@@ -38474,9 +38476,9 @@
 	    var result = [];
 	    
 	    if(y - 1 >= 0){
-	        result.push(this.cells[y - 1][x - 1]);
-	        result.push(this.cells[y - 1][x]);
-	        result.push(this.cells[y - 1][x + 1]);
+	        result.push(this.ant.cells[y - 1][x - 1]);
+	        result.push(this.ant.cells[y - 1][x]);
+	        result.push(this.ant.cells[y - 1][x + 1]);
 	    }
 
 	    return result;
@@ -38484,12 +38486,12 @@
 
 	Detector.prototype.detectCellsSouthOfLocation = function(x,y){
 	    var result = [];
-	    var maxY = this.cells.length;
+	    var maxY = this.ant.cells.length;
 	    
 	    if(y + 1 < maxY){
-	        result.push(this.cells[y + 1][x - 1]);
-	        result.push(this.cells[y + 1][x]);
-	        result.push(this.cells[y + 1][x + 1]);
+	        result.push(this.ant.cells[y + 1][x - 1]);
+	        result.push(this.ant.cells[y + 1][x]);
+	        result.push(this.ant.cells[y + 1][x + 1]);
 	    }
 
 	    return result;
@@ -38497,16 +38499,16 @@
 
 	Detector.prototype.detectCellsEastOfLocation = function(x,y){
 	    var result = [];
-	    var maxY = this.cells.length;
+	    var maxY = this.ant.cells.length;
 
 	    if(y - 1 >= 0){
-	        result.push(this.cells[y - 1][x + 1]);
+	        result.push(this.ant.cells[y - 1][x + 1]);
 	    }
 
-	    result.push(this.cells[y][x + 1]);
+	    result.push(this.ant.cells[y][x + 1]);
 	    
 	    if(y + 1 < maxY){
-	        result.push(this.cells[y + 1][x + 1]);
+	        result.push(this.ant.cells[y + 1][x + 1]);
 	    }
 
 	    return result;
@@ -38514,16 +38516,16 @@
 
 	Detector.prototype.detectCellsWestOfLocation = function(x,y){
 	    var result = [];
-	    var maxY = this.cells.length;
+	    var maxY = this.ant.cells.length;
 
 	    if(y - 1 >= 0){
-	        result.push(this.cells[y - 1][x - 1]);
+	        result.push(this.ant.cells[y - 1][x - 1]);
 	    }
 
-	    result.push(this.cells[y][x - 1]);
+	    result.push(this.ant.cells[y][x - 1]);
 	    
 	    if(y + 1 < maxY){
-	        result.push(this.cells[y + 1][x - 1]);
+	        result.push(this.ant.cells[y + 1][x - 1]);
 	    }
 
 	    return result;
@@ -38544,6 +38546,7 @@
 	'use strict'
 	var MoveBehavior = __webpack_require__(186);
 	var TurnBehavior = __webpack_require__(187);
+	var GetFoodBehavior = __webpack_require__(188);
 
 	function Decider(){
 
@@ -38554,14 +38557,26 @@
 	    var result = null;
 
 	    var randomValue = Math.random();
+	    var hasFoodInFront = false;
 
-	    if(randomValue < 0.25){
-	        return new TurnBehavior(ant);
+	    for(var x = 0; x < ant.frontCells.length; x++){
+	        if(ant.frontCells[x].food > 0){
+	            hasFoodInFront = true;
+	        }
 	    }
-	    else {
-	        return new MoveBehavior(ant);
+
+	    if(hasFoodInFront){
+	        return new GetFoodBehavior(ant);
+	    }else{
+	        if(randomValue < 0.25){
+	            return new TurnBehavior(ant);
+	        }
+	        else {
+	            return new MoveBehavior(ant);
+	        }
 	    }
 	}
+
 
 	// Export node module.
 	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
@@ -38631,6 +38646,27 @@
 
 /***/ },
 /* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {function GetFoodBehavior(ant){
+	    this.type = "Get_Food";
+	    this.ant = ant;
+	}
+
+	GetFoodBehavior.prototype.doBehavior = function(){
+	    this.ant.hasFood = true;
+	}
+
+	// Export node module.
+	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
+	{
+	    module.exports = GetFoodBehavior;
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))
+
+/***/ },
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {

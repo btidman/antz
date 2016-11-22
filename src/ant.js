@@ -18,7 +18,8 @@ function Ant(x, y, cells, container){
     this.sprite.rotation = 0;
     this.container.addChild(this.sprite);
     this.frontCells = [];
-    this.detector = new Detector(cells);
+    this.trail = [cells[y][x]];
+    this.detector = new Detector(this);
     this.decider = new Decider();
     this.tempX = 0;
     this.tempY = 0;
@@ -66,19 +67,20 @@ Ant.prototype.tweenRotation = function(newRotation){
 
 Ant.prototype.detectFrontCells = function(){
     
-    this.frontCells = this.detector.detectFrontCells(this.x, this.y, this.direction);
+    this.frontCells = this.detector.detectFrontCells();
 }
 
 Ant.prototype.moveToCell = function(cell){
     this.x = cell.x;
     this.y = cell.y;
 
+    this.trail.push(this.cells[this.y][this.x]);    
+
     //this stuff is untested.
     var newX = (10 * this.x) + 5;
     var newY = (10 * this.y) + 5;
     this.tempX = this.sprite.x;
     this.tempY = this.sprite.y;
-
     
     this.tween.to({ tempX: newX, tempY: newY}, 500);
     this.tween.onUpdate(function() {

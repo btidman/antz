@@ -38199,7 +38199,7 @@
 
 	/* WEBPACK VAR INJECTION */(function(module) {var Cell = __webpack_require__(181);
 	var Ant = __webpack_require__(182);
-	var Nest = __webpack_require__(189);
+	var Nest = __webpack_require__(191);
 
 	function World(width, height){
 	    this.width = width;
@@ -38305,6 +38305,7 @@
 	/* WEBPACK VAR INJECTION */(function(module) {var Direction = __webpack_require__(183);
 	var Detector = __webpack_require__(184);
 	var Decider = __webpack_require__(185);
+	var Constants = __webpack_require__(190);
 	var TWEEN = __webpack_require__(179);
 
 	function Ant(x, y, cells, container){
@@ -38376,9 +38377,7 @@
 
 	Ant.prototype.moveToCell = function(cell){
 	    this.x = cell.x;
-	    this.y = cell.y;
-
-	    this.trail.push(this.cells[this.y][this.x]);    
+	    this.y = cell.y;  
 
 	    //this stuff is untested.
 	    var newX = (10 * this.x) + 5;
@@ -38547,6 +38546,7 @@
 	var MoveBehavior = __webpack_require__(186);
 	var TurnBehavior = __webpack_require__(187);
 	var GetFoodBehavior = __webpack_require__(188);
+	var ReturnFoodToNestBehavior = __webpack_require__(189);
 
 	function Decider(){
 
@@ -38558,6 +38558,11 @@
 
 	    var randomValue = Math.random();
 	    var hasFoodInFront = false;
+
+	    if(ant.hasFood){
+	        
+	        return new ReturnFoodToNestBehavior(ant);
+	    }
 
 	    for(var x = 0; x < ant.frontCells.length; x++){
 	        if(ant.frontCells[x].food > 0){
@@ -38598,7 +38603,9 @@
 
 	    if(this.ant.frontCells.length > 0){
 	        var randomIndex = Math.floor((Math.random() * this.ant.frontCells.length));
-	        this.ant.moveToCell(this.ant.frontCells[randomIndex]);
+	        var cell = this.ant.frontCells[randomIndex];
+	        this.ant.moveToCell(cell);
+	        this.ant.trail.push(cell);  
 	    }
 	    else
 	    {
@@ -38655,6 +38662,7 @@
 
 	GetFoodBehavior.prototype.doBehavior = function(){
 	    this.ant.hasFood = true;
+	    this.ant.advance();
 	}
 
 	// Export node module.
@@ -38667,6 +38675,34 @@
 
 /***/ },
 /* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {function ReturnFoodToNestBehavior(ant){
+	    this.type = "Return_Food";
+	    this.ant = ant;
+	}
+
+	ReturnFoodToNestBehavior.prototype.doBehavior = function(){
+	    this.ant.moveToCell(this.ant.trail.pop());
+	}
+
+	// Export node module.
+	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
+	{
+	    module.exports = ReturnFoodToNestBehavior;
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))
+
+/***/ },
+/* 190 */
+/***/ function(module, exports) {
+
+	
+	var ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
+
+/***/ },
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {

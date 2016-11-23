@@ -24,7 +24,7 @@ describe("Return food to nest behavior.", function(){
 
     it("should move back towards nest.", function(){
 
-        ant.moveToCell(ant.cells[1][1]);
+        ant.trail.push(ant.cells[1][1]);
         
         spyOn(ant, "moveToCell");
 

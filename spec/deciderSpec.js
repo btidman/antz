@@ -39,4 +39,11 @@ describe("Decider", function(){
 
         expect(behavior.type).toEqual("Get_Food");
     });
+
+    it("should return to nest if the ant has food.", function(){
+        ant.hasFood = true;
+        var behavior = decider.getNewBehavior(ant);
+        
+        expect(behavior.type).toEqual("Return_Food");
+    });
 });

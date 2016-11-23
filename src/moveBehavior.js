@@ -7,7 +7,9 @@ MoveBehavior.prototype.doBehavior = function(){
 
     if(this.ant.frontCells.length > 0){
         var randomIndex = Math.floor((Math.random() * this.ant.frontCells.length));
-        this.ant.moveToCell(this.ant.frontCells[randomIndex]);
+        var cell = this.ant.frontCells[randomIndex];
+        this.ant.moveToCell(cell);
+        this.ant.trail.push(cell);  
     }
     else
     {

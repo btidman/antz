@@ -19,20 +19,11 @@ describe("Nest", function(){
         
     });
 
-    it("should have a cell that represents it's location", function(){
+    it("should set up the nest correctly", function(){
 
         expect(nest.cell).toEqual(cell);
-    });
-
-    it("should have a cell that knows it has a nest on it", function(){
         expect(nest.cell.nest).toEqual(nest);
-    });
-
-    it("should have a container", function(){
         expect(nest.container).toEqual(container);
-    });
-
-    it("should have the collection of all cells", function(){
         expect(nest.allCells).toEqual(allCells);
     });
 

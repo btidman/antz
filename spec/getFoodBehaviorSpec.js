@@ -11,6 +11,7 @@ describe("Get food behavior.", function(){
     beforeEach(function(){
         
         ant = antHelper.createTestAnt(ant);
+        spyOn(ant, "advance");
         getFoodBehavior = new GetFoodBehavior(ant);
     });
 
@@ -26,5 +27,10 @@ describe("Get food behavior.", function(){
 
         getFoodBehavior.doBehavior();
         expect(ant.hasFood).toEqual(true);
+    });
+    it("should tell the ant to advance during doBehavior.", function(){
+        
+        getFoodBehavior.doBehavior();
+        expect(ant.advance).toHaveBeenCalled();
     });
 });

@@ -38,4 +38,15 @@ describe("Move Behavior", function(){
     it("should have a type of Move", function(){
         expect(moveBehavior.type).toEqual("Move");
     });
+
+    it("should store the trail of cells that it moved to.", function(){
+
+        spyOn(Math, "random").and.returnValue(0);
+        spyOn(ant, "moveToCell");
+        
+        moveBehavior.doBehavior();
+
+        expect(ant.trail[1].x).toEqual(0);
+        expect(ant.trail[1].y).toEqual(1);
+    });
 });

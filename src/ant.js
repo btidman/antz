@@ -1,6 +1,7 @@
 var Direction = require("./directionEnum");
 var Detector = require("./detector");
 var Decider = require("./decider");
+var Constants = require("./constants");
 var TWEEN = require('tween.js');
 
 function Ant(x, y, cells, container){
@@ -72,9 +73,7 @@ Ant.prototype.detectFrontCells = function(){
 
 Ant.prototype.moveToCell = function(cell){
     this.x = cell.x;
-    this.y = cell.y;
-
-    this.trail.push(this.cells[this.y][this.x]);    
+    this.y = cell.y;  
 
     //this stuff is untested.
     var newX = (10 * this.x) + 5;

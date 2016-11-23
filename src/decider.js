@@ -3,6 +3,7 @@
 var MoveBehavior = require("./moveBehavior");
 var TurnBehavior = require("./turnBehavior");
 var GetFoodBehavior = require("./getFoodBehavior");
+var ReturnFoodToNestBehavior = require("./returnFoodToNestBehavior");
 
 function Decider(){
 
@@ -14,6 +15,11 @@ Decider.prototype.getNewBehavior = function(ant){
 
     var randomValue = Math.random();
     var hasFoodInFront = false;
+
+    if(ant.hasFood){
+        
+        return new ReturnFoodToNestBehavior(ant);
+    }
 
     for(var x = 0; x < ant.frontCells.length; x++){
         if(ant.frontCells[x].food > 0){

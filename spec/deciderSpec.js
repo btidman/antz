@@ -12,7 +12,7 @@ describe("Decider", function(){
     beforeEach(function() { 
         decider = new Decider(); 
         ant = antHelper.createTestAnt();
-        ant.detectFrontCells();
+        ant.detectCells();
     }); 
 
     it("should return a move Behavior.", function(){
@@ -23,17 +23,9 @@ describe("Decider", function(){
         expect(behavior.type).toEqual("Move");
     });
 
-    it("should return a turn behavior.", function(){
-        spyOn(Math, "random").and.returnValue(0.24);
-
-        var behavior = decider.getNewBehavior(ant);
-
-        expect(behavior.type).toEqual("Turn");
-    });
-
     it("should return the pick up food behavior when food is in front of the ant.", function(){
         
-        ant.frontCells[0].food = 100;
+        ant.surroundingCells[0].food = 100;
 
         var behavior = decider.getNewBehavior(ant);
 

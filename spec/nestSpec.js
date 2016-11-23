@@ -14,7 +14,8 @@ describe("Nest", function(){
 
     beforeEach(function(){
         cell = new Cell(0, 0, container);
-        allCells = [[cell]];
+        
+        allCells = [[cell, new Cell(1, 0, container)]];
         nest = new Nest(cell, allCells, container);
         
     });
@@ -28,6 +29,7 @@ describe("Nest", function(){
     });
 
     it("should be able to add ants", function(){
+        //TODO: this test is failing because the ant has already advanced and moved to the next cell.
         nest.addAnt();
         expect(nest.ants.length).toEqual(1);
         expect(nest.ants[0].x).toEqual(cell.x);

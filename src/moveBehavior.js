@@ -5,9 +5,9 @@ function MoveBehavior(ant){
 
 MoveBehavior.prototype.doBehavior = function(){
 
-    if(this.ant.frontCells.length > 0){
-        var randomIndex = Math.floor((Math.random() * this.ant.frontCells.length));
-        var cell = this.ant.frontCells[randomIndex];
+    if(this.ant.surroundingCells.length > 0){
+        var randomIndex = Math.floor((Math.random() * this.ant.surroundingCells.length));
+        var cell = this.ant.surroundingCells[randomIndex];
         this.ant.moveToCell(cell);
         this.ant.trail.push(cell);  
     }

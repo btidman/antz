@@ -17,7 +17,7 @@ function Ant(x, y, cells, container){
     this.sprite.anchor.y = 0.5;
     this.sprite.rotation = 0;
     this.container.addChild(this.sprite);
-    this.frontCells = [];
+    this.surroundingCells = [];
     this.trail = [cells[y][x]];
     this.detector = new Detector(this);
     this.decider = new Decider();
@@ -65,9 +65,9 @@ Ant.prototype.tweenRotation = function(newRotation){
 }
 
 
-Ant.prototype.detectFrontCells = function(){
+Ant.prototype.detectCells = function(){
     
-    this.frontCells = this.detector.detectFrontCells();
+    this.surroundingCells = this.detector.detectCells();
 }
 
 Ant.prototype.moveToCell = function(cell){
@@ -95,7 +95,7 @@ Ant.prototype.moveToCell = function(cell){
 
 Ant.prototype.advance = function(){
 
-    this.detectFrontCells();
+    this.detectCells();
     var behavior = this.decider.getNewBehavior(this);
     behavior.doBehavior();
 }

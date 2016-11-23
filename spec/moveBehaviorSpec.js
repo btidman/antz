@@ -11,25 +11,25 @@ describe("Move Behavior", function(){
 
     beforeEach(function() { 
         ant = helper.createTestAnt();
-        ant.detectFrontCells();
+        ant.detectCells();
         moveBehavior = new MoveBehavior(ant); 
     }); 
 
     it("should move to a random front cell when do Behavior is called.", function(){
-        var frontCells = ant.frontCells;
+        var surroundingCells = ant.surroundingCells;
         spyOn(Math, "random").and.returnValue(0);
         spyOn(ant, "moveToCell");
         
         moveBehavior.doBehavior();
         
         expect(Math.random).toHaveBeenCalled();
-        expect(ant.moveToCell).toHaveBeenCalledWith(frontCells[0]);
+        expect(ant.moveToCell).toHaveBeenCalledWith(surroundingCells[0]);
     });
 
     it("should not try and move if there are no cells available to move to", function(){
         spyOn(ant, "moveToCell");
         spyOn(ant, "advance");
-        ant.frontCells = [];
+        ant.surroundingCells = [];
         moveBehavior.doBehavior();
         expect(ant.moveToCell).not.toHaveBeenCalled();
         expect(ant.advance).toHaveBeenCalled();

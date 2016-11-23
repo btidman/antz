@@ -20,23 +20,20 @@ describe("Detector for ant", function(){
         detector = new Detector(ant);
     });
 
-    it("should know what cells are in front of ant based on a direction", function(){
-        var result = detector.detectFrontCells();
+    it("should know what cells are around the ant", function(){
+        var result = detector.detectCells();
         expect(result).toContain(ant.cells[1][0]);
         expect(result).toContain(ant.cells[1][1]);
-
-        ant.direction = Direction.East;
-        result = detector.detectFrontCells();
-        expect(result.length).toEqual(0);
-        
-        ant.direction = Direction.South;
-        result = detector.detectFrontCells();
-        expect(result.length).toEqual(0);
-        
-        ant.direction = Direction.West;
-        result = detector.detectFrontCells();
-        expect(result).toContain(ant.cells[1][0]);
         expect(result).toContain(ant.cells[2][0]);
+
+        ant.moveToCell(ant.cells[1][0]);
+
+        var result = detector.detectCells();
+        expect(result).toContain(ant.cells[0][0]);
+        expect(result).toContain(ant.cells[0][1]);
+        expect(result).toContain(ant.cells[1][1]);
+        expect(result).toContain(ant.cells[2][0]);
+        expect(result).toContain(ant.cells[2][1]);
     });
 
     it("can remove undefined from a collection of cells", function(){
@@ -47,32 +44,5 @@ describe("Detector for ant", function(){
         expect(result).not.toContain(undefined);
     });
 
-    it("should be able to detect what cells are north", function(){
-        var result = detector.detectCellsNorthOfLocation(1,2);
-
-        expect(result).toContain(ant.cells[1][0]);
-        expect(result).toContain(ant.cells[1][1]);
-        expect(result.length).toEqual(3);
-    });
-
-    it("should be able to detect what cells are east", function(){
-        var result = detector.detectCellsEastOfLocation(1,2);
-
-        expect(result.length).toEqual(2);
-        expect(result).toContain(undefined);
-    });
-
-    it("should be able to detect what cells are west", function(){
-        var result = detector.detectCellsWestOfLocation(1,2);
-
-        expect(result.length).toEqual(2);
-        expect(result).toContain(ant.cells[1][0]);
-        expect(result).toContain(ant.cells[2][0]);
-    });
-
-    it("should be able to detect what cells are south", function(){
-        var result = detector.detectCellsSouthOfLocation(1,2);
-
-        expect(result.length).toEqual(0);
-    });
+    
 });

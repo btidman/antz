@@ -1,7 +1,6 @@
 
 'use strict'
 var MoveBehavior = require("./moveBehavior");
-var TurnBehavior = require("./turnBehavior");
 var GetFoodBehavior = require("./getFoodBehavior");
 var ReturnFoodToNestBehavior = require("./returnFoodToNestBehavior");
 
@@ -21,8 +20,8 @@ Decider.prototype.getNewBehavior = function(ant){
         return new ReturnFoodToNestBehavior(ant);
     }
 
-    for(var x = 0; x < ant.frontCells.length; x++){
-        if(ant.frontCells[x].food > 0){
+    for(var x = 0; x < ant.surroundingCells.length; x++){
+        if(ant.surroundingCells[x].food > 0){
             hasFoodInFront = true;
         }
     }
@@ -30,12 +29,7 @@ Decider.prototype.getNewBehavior = function(ant){
     if(hasFoodInFront){
         return new GetFoodBehavior(ant);
     }else{
-        if(randomValue < 0.25){
-            return new TurnBehavior(ant);
-        }
-        else {
-            return new MoveBehavior(ant);
-        }
+        return new MoveBehavior(ant);
     }
 }
 

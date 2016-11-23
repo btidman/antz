@@ -52,12 +52,12 @@ describe("Ant", function(){
         expect(ant.detector).toBeDefined();
     });
 
-    it("should be able to retrieve the front cells", function(){
-        spyOn(ant.detector, "detectFrontCells").and.returnValue([cells[1][0], cells[1][1]]);
-        ant.detectFrontCells();
-        expect(ant.detector.detectFrontCells).toHaveBeenCalled();
-        expect(ant.frontCells).toContain(cells[1][0]);
-        expect(ant.frontCells).toContain(cells[1][1]);
+    it("should be able to retrieve the surronding cells", function(){
+        spyOn(ant.detector, "detectCells").and.returnValue([cells[1][0], cells[1][1]]);
+        ant.detectCells();
+        expect(ant.detector.detectCells).toHaveBeenCalled();
+        expect(ant.surroundingCells).toContain(cells[1][0]);
+        expect(ant.surroundingCells).toContain(cells[1][1]);
     });
 
     it("should update x and y when moving to a new cell", function(){

@@ -43,4 +43,22 @@ describe("Cell", function(){
         expect(cell.sprite.texture).toEqual(NEST_TEXTURE);
 
     });
+
+    it("should have pheromone added to the cell.", function(){
+
+        cell.addPheromone(10);
+        expect(cell.pheromone).toEqual(10);
+    });
+
+    it("should lose pheromone as time advances.", function(){
+        cell.addPheromone(10);
+        cell.advance();
+        expect(cell.pheromone).toEqual(9);
+    });
+
+    it("should not have pheromone less than 0 as time advances", function(){
+        cell.addPheromone(0);
+        cell.advance();
+        expect(cell.pheromone).toEqual(0);
+    });
 });

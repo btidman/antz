@@ -4,6 +4,7 @@ function Cell(x, y, container){
     this.y = y;
     this.food = 0;
     this.container = container;
+    this.pheromone = 0;
 
     this.sprite = null; 
 }
@@ -28,6 +29,16 @@ Cell.prototype.addNest = function(nest){
     this.sprite.y = (10 * this.y);
     this.sprite.renderable = true;
     this.container.addChild(this.sprite);
+}
+
+Cell.prototype.addPheromone = function(pheromoneAmount){
+    this.pheromone = pheromoneAmount;
+}
+
+Cell.prototype.advance = function(){
+    if(this.pheromone > 0){
+        this.pheromone--;
+    }
 }
 
 // Export node module.

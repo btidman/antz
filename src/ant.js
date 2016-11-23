@@ -1,7 +1,6 @@
 var Direction = require("./directionEnum");
 var Detector = require("./detector");
 var Decider = require("./decider");
-var Constants = require("./constants");
 var TWEEN = require('tween.js');
 
 function Ant(x, y, cells, container){

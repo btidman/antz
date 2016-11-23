@@ -80,6 +80,8 @@ Ant.prototype.moveToCell = function(cell){
     this.tempX = this.sprite.x;
     this.tempY = this.sprite.y;
     
+    cell.addPheromone(10);
+
     this.tween.to({ tempX: newX, tempY: newY}, 500);
     this.tween.onUpdate(function() {
         this.sprite.x = this.tempX;

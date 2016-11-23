@@ -93,4 +93,10 @@ describe("Ant", function(){
         expect(ant.trail[0].x).toEqual(1);
         expect(ant.trail[0].y).toEqual(2);
     });    
+
+    it("should drop pheromone every time it moves to a new cell.", function(){
+        spyOn(cells[1][0], "addPheromone");
+        ant.moveToCell(cells[1][0]);
+        expect(cells[1][0].addPheromone).toHaveBeenCalledWith(10);
+    });
 });

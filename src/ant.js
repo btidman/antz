@@ -58,9 +58,6 @@ Ant.prototype.tweenRotation = function(newRotation){
     this.tween.onUpdate(function() {
         this.sprite.rotation = this.tempRotation;
     });
-    this.tween.onComplete(function(){
-        this.advance();
-    });
     this.tween.start();
 }
 
@@ -87,9 +84,6 @@ Ant.prototype.moveToCell = function(cell){
         this.sprite.x = this.tempX;
         this.sprite.y = this.tempY;
     });
-    this.tween.onComplete(function(){
-        this.advance();
-    });
     this.tween.start();
 }
 
@@ -98,7 +92,13 @@ Ant.prototype.advance = function(){
     this.detectCells();
     var behavior = this.decider.getNewBehavior(this);
     behavior.doBehavior();
+
+    setTimeout(function(ant) {
+        ant.advance();
+    }, 500, this);
 }
+
+
 
 // Export node module.
 if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )

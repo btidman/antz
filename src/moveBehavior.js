@@ -9,11 +9,14 @@ MoveBehavior.prototype.doBehavior = function(){
         var randomIndex = Math.floor((Math.random() * this.ant.surroundingCells.length));
         var cell = this.ant.surroundingCells[randomIndex];
         this.ant.moveToCell(cell);
-        this.ant.trail.push(cell);  
-    }
-    else
-    {
-        this.ant.advance();
+
+        if(this.ant.trail.indexOf(cell) == -1){
+            this.ant.trail.push(cell);  
+        }else{ 
+            while(this.ant.trail[this.ant.trail.length - 1] != cell){
+                this.ant.trail.pop();
+            }
+        }
     }
 }
 

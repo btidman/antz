@@ -28,9 +28,4 @@ describe("Get food behavior.", function(){
         getFoodBehavior.doBehavior();
         expect(ant.hasFood).toEqual(true);
     });
-    it("should tell the ant to advance during doBehavior.", function(){
-        
-        getFoodBehavior.doBehavior();
-        expect(ant.advance).toHaveBeenCalled();
-    });
 });

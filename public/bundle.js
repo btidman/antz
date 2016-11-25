@@ -38199,7 +38199,7 @@
 
 	/* WEBPACK VAR INJECTION */(function(module) {var Cell = __webpack_require__(181);
 	var Ant = __webpack_require__(182);
-	var Nest = __webpack_require__(191);
+	var Nest = __webpack_require__(189);
 
 	function World(width, height){
 	    this.width = width;
@@ -38265,6 +38265,7 @@
 	    this.y = y;
 	    this.food = 0;
 	    this.container = container;
+	    this.pheromone = 0;
 
 	    this.sprite = null; 
 	}
@@ -38291,6 +38292,16 @@
 	    this.container.addChild(this.sprite);
 	}
 
+	Cell.prototype.addPheromone = function(pheromoneAmount){
+	    this.pheromone = pheromoneAmount;
+	}
+
+	Cell.prototype.advance = function(){
+	    if(this.pheromone > 0){
+	        this.pheromone--;
+	    }
+	}
+
 	// Export node module.
 	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
 	{
@@ -38305,7 +38316,6 @@
 	/* WEBPACK VAR INJECTION */(function(module) {var Direction = __webpack_require__(183);
 	var Detector = __webpack_require__(184);
 	var Decider = __webpack_require__(185);
-	var Constants = __webpack_require__(190);
 	var TWEEN = __webpack_require__(179);
 
 	function Ant(x, y, cells, container){
@@ -38322,7 +38332,7 @@
 	    this.sprite.anchor.y = 0.5;
 	    this.sprite.rotation = 0;
 	    this.container.addChild(this.sprite);
-	    this.frontCells = [];
+	    this.surroundingCells = [];
 	    this.trail = [cells[y][x]];
 	    this.detector = new Detector(this);
 	    this.decider = new Decider();
@@ -38363,16 +38373,13 @@
 	    this.tween.onUpdate(function() {
 	        this.sprite.rotation = this.tempRotation;
 	    });
-	    this.tween.onComplete(function(){
-	        this.advance();
-	    });
 	    this.tween.start();
 	}
 
 
-	Ant.prototype.detectFrontCells = function(){
+	Ant.prototype.detectCells = function(){
 	    
-	    this.frontCells = this.detector.detectFrontCells();
+	    this.surroundingCells = this.detector.detectCells();
 	}
 
 	Ant.prototype.moveToCell = function(cell){
@@ -38385,23 +38392,28 @@
 	    this.tempX = this.sprite.x;
 	    this.tempY = this.sprite.y;
 	    
+	    cell.addPheromone(10);
+
 	    this.tween.to({ tempX: newX, tempY: newY}, 500);
 	    this.tween.onUpdate(function() {
 	        this.sprite.x = this.tempX;
 	        this.sprite.y = this.tempY;
-	    });
-	    this.tween.onComplete(function(){
-	        this.advance();
 	    });
 	    this.tween.start();
 	}
 
 	Ant.prototype.advance = function(){
 
-	    this.detectFrontCells();
+	    this.detectCells();
 	    var behavior = this.decider.getNewBehavior(this);
 	    behavior.doBehavior();
+
+	    setTimeout(function(ant) {
+	        ant.advance();
+	    }, 500, this);
 	}
+
+
 
 	// Export node module.
 	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
@@ -38438,21 +38450,27 @@
 	    this.ant = ant;
 	}
 
-	Detector.prototype.detectFrontCells = function(){
+	Detector.prototype.detectCells = function(){
 	    
+	    var maxY = this.ant.cells.length;
 	    var cellsToAdd = [];
+	    var x = this.ant.x;
+	    var y = this.ant.y;
 
-	    if(this.ant.direction == Direction.North){
-	        cellsToAdd = this.detectCellsNorthOfLocation(this.ant.x, this.ant.y);
+
+	    if(y - 1 >= 0){
+	        cellsToAdd.push(this.ant.cells[y - 1][x - 1]);
+	        cellsToAdd.push(this.ant.cells[y - 1][x]);
+	        cellsToAdd.push(this.ant.cells[y - 1][x + 1]);
 	    }
-	    else if(this.ant.direction == Direction.East){
-	        cellsToAdd = this.detectCellsEastOfLocation(this.ant.x, this.ant.y);
-	    }
-	    else if(this.ant.direction == Direction.South){
-	        cellsToAdd = this.detectCellsSouthOfLocation(this.ant.x, this.ant.y);
-	    }
-	    else if(this.ant.direction == Direction.West){
-	        cellsToAdd = this.detectCellsWestOfLocation(this.ant.x, this.ant.y);
+
+	    cellsToAdd.push(this.ant.cells[y][x - 1]);
+	    cellsToAdd.push(this.ant.cells[y][x + 1]);
+
+	    if(y + 1 < maxY){
+	        cellsToAdd.push(this.ant.cells[y + 1][x - 1]);
+	        cellsToAdd.push(this.ant.cells[y + 1][x]);
+	        cellsToAdd.push(this.ant.cells[y + 1][x + 1]);
 	    }
 
 	    return this.filterUndefinedCells(cellsToAdd);
@@ -38471,64 +38489,6 @@
 	    return result;
 	}
 
-	Detector.prototype.detectCellsNorthOfLocation = function(x,y){
-	    var result = [];
-	    
-	    if(y - 1 >= 0){
-	        result.push(this.ant.cells[y - 1][x - 1]);
-	        result.push(this.ant.cells[y - 1][x]);
-	        result.push(this.ant.cells[y - 1][x + 1]);
-	    }
-
-	    return result;
-	}
-
-	Detector.prototype.detectCellsSouthOfLocation = function(x,y){
-	    var result = [];
-	    var maxY = this.ant.cells.length;
-	    
-	    if(y + 1 < maxY){
-	        result.push(this.ant.cells[y + 1][x - 1]);
-	        result.push(this.ant.cells[y + 1][x]);
-	        result.push(this.ant.cells[y + 1][x + 1]);
-	    }
-
-	    return result;
-	}
-
-	Detector.prototype.detectCellsEastOfLocation = function(x,y){
-	    var result = [];
-	    var maxY = this.ant.cells.length;
-
-	    if(y - 1 >= 0){
-	        result.push(this.ant.cells[y - 1][x + 1]);
-	    }
-
-	    result.push(this.ant.cells[y][x + 1]);
-	    
-	    if(y + 1 < maxY){
-	        result.push(this.ant.cells[y + 1][x + 1]);
-	    }
-
-	    return result;
-	}
-
-	Detector.prototype.detectCellsWestOfLocation = function(x,y){
-	    var result = [];
-	    var maxY = this.ant.cells.length;
-
-	    if(y - 1 >= 0){
-	        result.push(this.ant.cells[y - 1][x - 1]);
-	    }
-
-	    result.push(this.ant.cells[y][x - 1]);
-	    
-	    if(y + 1 < maxY){
-	        result.push(this.ant.cells[y + 1][x - 1]);
-	    }
-
-	    return result;
-	}
 
 	// Export node module.
 	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
@@ -38544,9 +38504,8 @@
 	/* WEBPACK VAR INJECTION */(function(module) {
 	'use strict'
 	var MoveBehavior = __webpack_require__(186);
-	var TurnBehavior = __webpack_require__(187);
-	var GetFoodBehavior = __webpack_require__(188);
-	var ReturnFoodToNestBehavior = __webpack_require__(189);
+	var GetFoodBehavior = __webpack_require__(187);
+	var ReturnFoodToNestBehavior = __webpack_require__(188);
 
 	function Decider(){
 
@@ -38564,8 +38523,8 @@
 	        return new ReturnFoodToNestBehavior(ant);
 	    }
 
-	    for(var x = 0; x < ant.frontCells.length; x++){
-	        if(ant.frontCells[x].food > 0){
+	    for(var x = 0; x < ant.surroundingCells.length; x++){
+	        if(ant.surroundingCells[x].food > 0){
 	            hasFoodInFront = true;
 	        }
 	    }
@@ -38573,12 +38532,7 @@
 	    if(hasFoodInFront){
 	        return new GetFoodBehavior(ant);
 	    }else{
-	        if(randomValue < 0.25){
-	            return new TurnBehavior(ant);
-	        }
-	        else {
-	            return new MoveBehavior(ant);
-	        }
+	        return new MoveBehavior(ant);
 	    }
 	}
 
@@ -38601,15 +38555,11 @@
 
 	MoveBehavior.prototype.doBehavior = function(){
 
-	    if(this.ant.frontCells.length > 0){
-	        var randomIndex = Math.floor((Math.random() * this.ant.frontCells.length));
-	        var cell = this.ant.frontCells[randomIndex];
+	    if(this.ant.surroundingCells.length > 0){
+	        var randomIndex = Math.floor((Math.random() * this.ant.surroundingCells.length));
+	        var cell = this.ant.surroundingCells[randomIndex];
 	        this.ant.moveToCell(cell);
 	        this.ant.trail.push(cell);  
-	    }
-	    else
-	    {
-	        this.ant.advance();
 	    }
 	}
 
@@ -38625,36 +38575,6 @@
 /* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {function TurnBehavior(ant){
-	    this.ant = ant;
-	    this.type = "Turn";
-	}
-
-	TurnBehavior.prototype.doBehavior = function(){
-	    var randomValue = Math.random();
-	    var newDirection = -1;
-	    
-	    if(randomValue >= 0.5){
-	        this.ant.turnRight();
-	    }
-	    else
-	    {
-	        this.ant.turnLeft();
-	    }
-	}
-
-	// Export node module.
-	if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
-	{
-	    module.exports = TurnBehavior;
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))
-
-/***/ },
-/* 188 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(module) {function GetFoodBehavior(ant){
 	    this.type = "Get_Food";
 	    this.ant = ant;
@@ -38662,7 +38582,6 @@
 
 	GetFoodBehavior.prototype.doBehavior = function(){
 	    this.ant.hasFood = true;
-	    this.ant.advance();
 	}
 
 	// Export node module.
@@ -38674,7 +38593,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))
 
 /***/ },
-/* 189 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {function ReturnFoodToNestBehavior(ant){
@@ -38695,14 +38614,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))
 
 /***/ },
-/* 190 */
-/***/ function(module, exports) {
-
-	
-	var ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
-
-/***/ },
-/* 191 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {

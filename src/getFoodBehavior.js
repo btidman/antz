@@ -5,7 +5,6 @@ function GetFoodBehavior(ant){
 
 GetFoodBehavior.prototype.doBehavior = function(){
     this.ant.hasFood = true;
-    this.ant.advance();
 }
 
 // Export node module.

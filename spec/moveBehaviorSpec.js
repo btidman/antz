@@ -32,7 +32,6 @@ describe("Move Behavior", function(){
         ant.surroundingCells = [];
         moveBehavior.doBehavior();
         expect(ant.moveToCell).not.toHaveBeenCalled();
-        expect(ant.advance).toHaveBeenCalled();
     });
 
     it("should have a type of Move", function(){
@@ -48,5 +47,21 @@ describe("Move Behavior", function(){
 
         expect(ant.trail[1].x).toEqual(0);
         expect(ant.trail[1].y).toEqual(1);
+    });
+
+    it("should eliminate loops in stored trail that it has moved over.", function(){
+        spyOn(Math, "random").and.returnValues(0, 0, .5, .99);
+        
+        moveBehavior.doBehavior();
+        ant.detectCells();
+        moveBehavior.doBehavior();
+        ant.detectCells();
+        moveBehavior.doBehavior();
+        ant.detectCells();
+        moveBehavior.doBehavior();
+
+        expect(ant.trail.length).toEqual(1);
+        expect(ant.trail[0].x).toEqual(1);
+        expect(ant.trail[0].y).toEqual(2);
     });
 });

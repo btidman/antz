@@ -9,6 +9,7 @@ describe("Cell", function(){
     var container = new PIXI.Container();
     window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
     window.NEST_TEXTURE = PIXI.Texture.fromImage('../nest.png');
+    window.PHEROMONE_TEXTURE = PIXI.Texture.fromImage('../pheromone.png');
     
     beforeEach(function() { cell = new Cell(0, 0, container); }); 
 
@@ -60,5 +61,11 @@ describe("Cell", function(){
         cell.addPheromone(0);
         cell.advance();
         expect(cell.pheromone).toEqual(0);
+    });
+
+    it("should show if it has pheromone.", function(){
+        cell.addPheromone(50);
+        expect(cell.sprite.renderable).toEqual(true);
+        expect(cell.sprite.texture).toEqual(PHEROMONE_TEXTURE);
     });
 });

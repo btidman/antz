@@ -33,6 +33,12 @@ Cell.prototype.addNest = function(nest){
 
 Cell.prototype.addPheromone = function(pheromoneAmount){
     this.pheromone = pheromoneAmount;
+    this.container.removeChild(this.sprite);
+    this.sprite = new PIXI.Sprite(PHEROMONE_TEXTURE);
+    this.sprite.x = (10 * this.x);
+    this.sprite.y = (10 * this.y);
+    this.sprite.renderable = true;
+    this.container.addChild(this.sprite);
 }
 
 Cell.prototype.advance = function(){

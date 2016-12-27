@@ -36,4 +36,10 @@ describe("Return food to nest behavior.", function(){
         expect(ant.trail.length).toEqual(1);
         expect(ant.trail).toContain(ant.cells[2][1]);
     });
+
+    it("should drop pheromone every time it moves to back down the trail.", function(){
+        spyOn(cells[2][1], "addPheromone");
+        returnFoodToNestBehavior.doBehavior();
+        expect(cells[2][1].addPheromone).toHaveBeenCalledWith(10);
+    });
 });

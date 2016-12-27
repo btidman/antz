@@ -4,7 +4,9 @@ function ReturnFoodToNestBehavior(ant){
 }
 
 ReturnFoodToNestBehavior.prototype.doBehavior = function(){
-    this.ant.moveToCell(this.ant.trail.pop());
+    var nextCell = this.ant.trail.pop();
+    nextCell.addPheromone(10);
+    this.ant.moveToCell(nextCell);
 }
 
 // Export node module.

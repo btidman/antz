@@ -6,6 +6,8 @@ var World = require("./world.js");
 window.ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
 window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
 window.NEST_TEXTURE = PIXI.Texture.fromImage('../nest.png');
+window.PHEROMONE_TEXTURE = PIXI.Texture.fromImage('../pheromone.png');
+
 
 var world = new World(10,10);
 window.world = world;

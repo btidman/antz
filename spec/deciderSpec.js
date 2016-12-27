@@ -38,4 +38,13 @@ describe("Decider", function(){
         
         expect(behavior.type).toEqual("Return_Food");
     });
+
+    it("should drop food if it has food and is on nest", function(){
+        ant = antHelper.createTestAnt()
+        ant.cells[ant.y][ant.x].nest = "Pretend this is a nest object";
+        ant.hasFood = true;
+        var behavior = decider.getNewBehavior(ant);
+        
+        expect(behavior.type).toEqual("Drop_Food");
+    });
 });

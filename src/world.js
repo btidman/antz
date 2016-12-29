@@ -47,6 +47,15 @@ World.prototype.addFood = function(x, y, amountOfFood){
     cell.addFood(amountOfFood);
 }
 
+World.prototype.advance = function(){
+    for(row = 0; row < this.height; row++){
+        for (col = 0; col < this.width; col++){
+            this.cells[row][col].advance();
+        }
+    }
+}
+
+
 
 // Export node module.
 if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )

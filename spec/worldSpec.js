@@ -62,5 +62,22 @@ describe("World", function(){
         world.addFood(0,1,1000);
         expect(cell.addFood).toHaveBeenCalledWith(1000);
     });
+
+    it("should advance the state of each cell in the world.", function(){
+        
+        for(var x = 0; x < 3; x++){
+            for(var y = 0; y < 4; y++){
+                spyOn(world.cells[y][x], "advance");
+            }
+        }
+
+        world.advance();
+
+        for(var x = 0; x < 3; x++){
+            for(var y = 0; y < 4; y++){
+                expect(world.cells[y][x].advance).toHaveBeenCalled();
+            }
+        }
+    });
     
 });

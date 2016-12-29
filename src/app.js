@@ -11,9 +11,16 @@ window.PHEROMONE_TEXTURE = PIXI.Texture.fromImage('../pheromone.png');
 
 var world = new World(10,10);
 window.world = world;
-
-
 world.draw();
+
+function gameLoop(){
+
+    world.advance();
+    setTimeout(gameLoop, 500); 
+}
+
+gameLoop();
+
     
 animate();
 function animate () {

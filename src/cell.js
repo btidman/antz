@@ -32,18 +32,24 @@ Cell.prototype.addNest = function(nest){
 }
 
 Cell.prototype.addPheromone = function(pheromoneAmount){
-    this.pheromone = pheromoneAmount;
-    this.container.removeChild(this.sprite);
-    this.sprite = new PIXI.Sprite(PHEROMONE_TEXTURE);
-    this.sprite.x = (10 * this.x);
-    this.sprite.y = (10 * this.y);
-    this.sprite.renderable = true;
-    this.container.addChild(this.sprite);
+    if(!this.nest){
+        this.pheromone = pheromoneAmount;
+        this.container.removeChild(this.sprite);
+        this.sprite = new PIXI.Sprite(PHEROMONE_TEXTURE);
+        this.sprite.x = (10 * this.x);
+        this.sprite.y = (10 * this.y);
+        this.sprite.renderable = true;
+        
+        this.container.addChildAt(this.sprite, 0);
+    }
 }
 
 Cell.prototype.advance = function(){
     if(this.pheromone > 0){
         this.pheromone--;
+    }
+    else if(this.sprite && this.sprite.texture === PHEROMONE_TEXTURE){
+        this.container.removeChild(this.sprite);
     }
 }
 

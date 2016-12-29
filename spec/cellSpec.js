@@ -46,7 +46,6 @@ describe("Cell", function(){
     });
 
     it("should have pheromone added to the cell.", function(){
-
         cell.addPheromone(10);
         expect(cell.pheromone).toEqual(10);
     });
@@ -67,5 +66,39 @@ describe("Cell", function(){
         cell.addPheromone(50);
         expect(cell.sprite.renderable).toEqual(true);
         expect(cell.sprite.texture).toEqual(PHEROMONE_TEXTURE);
+    });
+
+    it("should not show pheromone anymore when there is none left.", function(){
+        cell.addPheromone(1);
+        expect(cell.sprite.renderable).toEqual(true);
+        expect(cell.sprite.texture).toEqual(PHEROMONE_TEXTURE);
+        spyOn(container, "removeChild");
+        cell.advance();
+        cell.advance();
+        expect(container.removeChild).toHaveBeenCalledWith(cell.sprite);
+    });
+
+    it("should not remove other sprites if there is no pheromone", function(){
+        var allCells = [[cell]];
+        var nest = new Nest(cell, allCells, container);
+
+        cell.addNest(nest);
+        
+        expect(cell.nest).toEqual(nest);
+        expect(cell.sprite.renderable).toEqual(true);
+        expect(cell.sprite.texture).toEqual(NEST_TEXTURE);
+        spyOn(container, "removeChild");
+
+        cell.advance();
+
+        expect(container.removeChild).not.toHaveBeenCalledWith(cell.sprite);
+    });
+
+    it("should not show pheromone if this cell is a nest.", function(){
+        var pretendNest = "pretend this is a nest";
+        cell.addNest(pretendNest)
+        cell.addPheromone(1);
+        expect(cell.pheromone).toEqual(0);
+        expect(cell.sprite.texture).toEqual(NEST_TEXTURE);
     });
 });

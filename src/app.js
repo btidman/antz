@@ -8,15 +8,18 @@ window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
 window.NEST_TEXTURE = PIXI.Texture.fromImage('../nest.png');
 window.PHEROMONE_TEXTURE = PIXI.Texture.fromImage('../pheromone.png');
 
+window.evaporationSpeed = 5000;
+window.antSpeed = 500;
 
-var world = new World(10,10);
+
+var world = new World(100,100);
 window.world = world;
 world.draw();
 
 function gameLoop(){
 
     world.advance();
-    setTimeout(gameLoop, 500); 
+    setTimeout(gameLoop, evaporationSpeed); 
 }
 
 gameLoop();

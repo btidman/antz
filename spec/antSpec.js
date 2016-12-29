@@ -11,6 +11,8 @@ describe("Ant", function(){
     var cells = [];
     var helper = new AntHelper();
     window.ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
+    window.evaporationSpeed = 5000;
+    window.antSpeed = 500;
     
     beforeEach(function(){
         ant = helper.createTestAnt();
@@ -66,15 +68,15 @@ describe("Ant", function(){
         expect(ant.y).toEqual(1);
     });
 
-    it("should update direction when it turns right", function(){
-        ant.turnRight();
-        expect(ant.direction).toEqual(Direction.East);
-    });
+    // it("should update direction when it turns right", function(){
+    //     ant.turnRight();
+    //     expect(ant.direction).toEqual(Direction.East);
+    // });
 
-    it("should update direction when it turns left", function(){
-        ant.turnLeft();
-        expect(ant.direction).toEqual(Direction.West);
-    });
+    // it("should update direction when it turns left", function(){
+    //     ant.turnLeft();
+    //     expect(ant.direction).toEqual(Direction.West);
+    // });
 
     it("should do a Behavior when advance is called.", function(){
 

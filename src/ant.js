@@ -54,7 +54,7 @@ Ant.prototype.turnLeft = function(newDirection){
 
 Ant.prototype.tweenRotation = function(newRotation){
     
-    this.tween.to({ tempRotation: newRotation}, 500);
+    this.tween.to({ tempRotation: newRotation}, antSpeed);
     this.tween.onUpdate(function() {
         this.sprite.rotation = this.tempRotation;
     });
@@ -77,7 +77,7 @@ Ant.prototype.moveToCell = function(cell){
     this.tempX = this.sprite.x;
     this.tempY = this.sprite.y;
 
-    this.tween.to({ tempX: newX, tempY: newY}, 500);
+    this.tween.to({ tempX: newX, tempY: newY}, antSpeed);
     this.tween.onUpdate(function() {
         this.sprite.x = this.tempX;
         this.sprite.y = this.tempY;
@@ -93,7 +93,7 @@ Ant.prototype.advance = function(){
 
     setTimeout(function(ant) {
         ant.advance();
-    }, 500, this);
+    }, antSpeed, this);
 }
 
 

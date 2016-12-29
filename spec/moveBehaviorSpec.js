@@ -17,7 +17,7 @@ describe("Move Behavior", function(){
 
     it("should move to a random front cell when do Behavior is called.", function(){
         var surroundingCells = ant.surroundingCells;
-        spyOn(Math, "random").and.returnValue(0);
+        spyOn(Math, "random").and.returnValue(.99,0);
         spyOn(ant, "moveToCell");
         
         moveBehavior.doBehavior();
@@ -32,6 +32,15 @@ describe("Move Behavior", function(){
         ant.surroundingCells = [];
         moveBehavior.doBehavior();
         expect(ant.moveToCell).not.toHaveBeenCalled();
+    });
+
+    it("should be more likely to move to a cell that has pheromone on it", function(){
+        ant.cells[1][1].addPheromone(10);
+        spyOn(Math, "random").and.returnValues(0, 0, 0);
+        moveBehavior.doBehavior();
+
+        expect(ant.trail[1].x).toEqual(1);
+        expect(ant.trail[1].y).toEqual(1);
     });
 
     it("should have a type of Move", function(){
@@ -50,7 +59,10 @@ describe("Move Behavior", function(){
     });
 
     it("should eliminate loops in stored trail that it has moved over.", function(){
-        spyOn(Math, "random").and.returnValues(0, 0, .5, .99);
+        spyOn(Math, "random").and.returnValues(.99, 0, 0,
+                                               .99,0,0,0,0,
+                                               0,0,.99,
+                                               0,0,0,0,.99);
         
         moveBehavior.doBehavior();
         ant.detectCells();
@@ -63,5 +75,17 @@ describe("Move Behavior", function(){
         expect(ant.trail.length).toEqual(1);
         expect(ant.trail[0].x).toEqual(1);
         expect(ant.trail[0].y).toEqual(2);
+    });
+
+    it("should not move to the cell it just came from.", function(){
+        spyOn(Math, "random").and.returnValues(0, 0, 0,
+                                                0, 0, 0, 0, .99);
+        moveBehavior.doBehavior();
+        ant.detectCells();
+        moveBehavior.doBehavior();
+
+        expect(ant.trail.length).toEqual(3);
+        expect(ant.trail[2].x).toEqual(0);
+        expect(ant.trail[2].y).toEqual(0);
     });
 });

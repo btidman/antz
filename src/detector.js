@@ -73,6 +73,8 @@ Detector.prototype.detectCellsNorthOfLocation = function(){
         result.push(this.ant.cells[y - 1][x]);
         result.push(this.ant.cells[y - 1][x + 1]);
     }
+    result.push(this.ant.cells[y][x + 1]);
+    result.push(this.ant.cells[y][x - 1]);
 
     return result;
 }
@@ -88,6 +90,8 @@ Detector.prototype.detectCellsSouthOfLocation = function(){
         result.push(this.ant.cells[y + 1][x]);
         result.push(this.ant.cells[y + 1][x + 1]);
     }
+    result.push(this.ant.cells[y][x + 1]);
+    result.push(this.ant.cells[y][x - 1]);
 
     return result;
 }
@@ -100,12 +104,14 @@ Detector.prototype.detectCellsEastOfLocation = function(){
 
     if(y - 1 >= 0){
         result.push(this.ant.cells[y - 1][x + 1]);
+        result.push(this.ant.cells[y - 1][x]);
     }
 
     result.push(this.ant.cells[y][x + 1]);
     
     if(y + 1 < maxY){
         result.push(this.ant.cells[y + 1][x + 1]);
+        result.push(this.ant.cells[y + 1][x]);
     }
 
     return result;
@@ -119,12 +125,14 @@ Detector.prototype.detectCellsWestOfLocation = function(){
 
     if(y - 1 >= 0){
         result.push(this.ant.cells[y - 1][x - 1]);
+        result.push(this.ant.cells[y - 1][x]);
     }
 
     result.push(this.ant.cells[y][x - 1]);
     
     if(y + 1 < maxY){
         result.push(this.ant.cells[y + 1][x - 1]);
+        result.push(this.ant.cells[y + 1][x]);
     }
 
     return result;
@@ -137,7 +145,7 @@ Detector.prototype.pickNextCell = function(cellsToPickFrom){
 
     for(var x = 0; x < cellsToPickFrom.length; x++){
         var randomValue = Math.random();
-        randomValue += (cellsToPickFrom[x].pheromone / 200);
+        randomValue += (cellsToPickFrom[x].pheromone / 100);
         
         if(randomValue > highestValue && lastCell != cellsToPickFrom[x]){
             highestValue = randomValue;

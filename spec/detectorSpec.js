@@ -68,7 +68,7 @@ describe("Detector for ant", function(){
 
     it("should be more likely to pick a cell that has pheromone on it", function(){
         ant.cells[1][0].addPheromone(10);
-        spyOn(Math, "random").and.returnValues(0, .049, .049);
+        spyOn(Math, "random").and.returnValues(0, .099, .099);
         
         ant.detectCells();
         var actualCell = detector.pickNextCell(ant.surroundingCells);
@@ -130,17 +130,23 @@ describe("Detector for ant", function(){
         var result = detector.detectFrontCells();
         expect(result).toContain(ant.cells[1][0]);
         expect(result).toContain(ant.cells[1][1]);
+        expect(result).toContain(ant.cells[2][0]);
+        expect(result.length).toEqual(3);
 
         ant.turnRight();
         result = detector.detectFrontCells();
-        expect(result.length).toEqual(0);
+        expect(result).toContain(ant.cells[1][1]);
+        expect(result.length).toEqual(1);
         
         ant.turnRight();
         result = detector.detectFrontCells();
-        expect(result.length).toEqual(0);
+        expect(result).toContain(ant.cells[2][0]);
+        expect(result.length).toEqual(1);
         
         ant.turnRight();
         result = detector.detectFrontCells();
+        expect(result.length).toEqual(3);
+        expect(result).toContain(ant.cells[1][1]);
         expect(result).toContain(ant.cells[1][0]);
         expect(result).toContain(ant.cells[2][0]);
     });
@@ -150,28 +156,33 @@ describe("Detector for ant", function(){
 
         expect(result).toContain(ant.cells[1][0]);
         expect(result).toContain(ant.cells[1][1]);
-        expect(result.length).toEqual(3);
+        expect(result).toContain(ant.cells[2][0]);
+        expect(result).toContain(undefined);
+        expect(result.length).toEqual(5);
     });
 
     it("should be able to detect what cells are east", function(){
         var result = detector.detectCellsEastOfLocation();
-
-        expect(result.length).toEqual(2);
+        
+        expect(result.length).toEqual(3);
+        expect(result).toContain(ant.cells[1][1]);
         expect(result).toContain(undefined);
     });
 
     it("should be able to detect what cells are west", function(){
         var result = detector.detectCellsWestOfLocation();
 
-        expect(result.length).toEqual(2);
+        expect(result.length).toEqual(3);
         expect(result).toContain(cells[1][0]);
         expect(result).toContain(cells[2][0]);
+        expect(result).toContain(cells[1][1]);
     });
 
     it("should be able to detect what cells are south", function(){
         var result = detector.detectCellsSouthOfLocation();
-
-        expect(result.length).toEqual(0);
+        expect(result).toContain(undefined);
+        expect(result).toContain(cells[2][0]);
+        expect(result.length).toEqual(2);
     });
 
     

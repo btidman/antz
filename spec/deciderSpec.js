@@ -24,7 +24,7 @@ describe("Decider", function(){
     });
 
     it("should return a random move Behavior.", function(){
-        spyOn(Math, "random").and.returnValue(0.25);
+        spyOn(Math, "random").and.returnValue(0.50);
 
         var behavior = decider.getNewBehavior(ant);
         
@@ -41,7 +41,7 @@ describe("Decider", function(){
     });
 
     it("should return a random turn behavior.", function(){
-        spyOn(Math, "random").and.returnValue(0.24);
+        spyOn(Math, "random").and.returnValue(0.49);
 
         var behavior = decider.getNewBehavior(ant);
         
@@ -71,5 +71,9 @@ describe("Decider", function(){
         var behavior = decider.getNewBehavior(ant);
         
         expect(behavior.type).toEqual("Drop_Food");
+    });
+
+    it("should decide to return to the nest if it's trail is too long", function(){
+        fail();
     });
 });

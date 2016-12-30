@@ -38,7 +38,7 @@ Decider.prototype.getNewBehavior = function(ant){
         return new MoveBehavior(ant);
     }else if(ant.detector.hasPheromoneNearby()){
         return new TurnBehavior(ant);
-    }else if(randomValue < .25){
+    }else if(randomValue < .50){
         return new TurnBehavior(ant);
     }else{
         return new MoveBehavior(ant);

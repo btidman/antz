@@ -8,11 +8,11 @@ window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
 window.NEST_TEXTURE = PIXI.Texture.fromImage('../nest.png');
 window.PHEROMONE_TEXTURE = PIXI.Texture.fromImage('../pheromone.png');
 
-window.evaporationSpeed = 500;
-window.antSpeed = 50;
+window.evaporationSpeed = 100;
+window.antSpeed = 10;
 
 
-var world = new World(100,100);
+var world = new World(200,200);
 window.world = world;
 world.draw();
 
@@ -38,3 +38,7 @@ function animate () {
     world.renderer.render(world.stage);
 }
 
+world.addNest(100,100);
+world.addFood(50,50, 1000);
+world.addFood(150,150,1000);
+for(var x = 0; x<100; x++ ){ world.addAnt()}

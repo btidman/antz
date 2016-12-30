@@ -68,15 +68,15 @@ describe("Ant", function(){
         expect(ant.y).toEqual(1);
     });
 
-    // it("should update direction when it turns right", function(){
-    //     ant.turnRight();
-    //     expect(ant.direction).toEqual(Direction.East);
-    // });
+    it("should update direction when it turns right", function(){
+        ant.turnRight();
+        expect(ant.direction).toEqual(Direction.East);
+    });
 
-    // it("should update direction when it turns left", function(){
-    //     ant.turnLeft();
-    //     expect(ant.direction).toEqual(Direction.West);
-    // });
+    it("should update direction when it turns left", function(){
+        ant.turnLeft();
+        expect(ant.direction).toEqual(Direction.West);
+    });
 
     it("should do a Behavior when advance is called.", function(){
 

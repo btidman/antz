@@ -5,28 +5,17 @@ function MoveBehavior(ant){
 
 MoveBehavior.prototype.doBehavior = function(){
 
-    var highestValue = -1;
-    var indexToMoveTo = -1;
-    var lastCell = this.ant.trail[this.ant.trail.length-2];
+    var frontCells = this.ant.detector.detectFrontCells();
 
-    for(var x = 0; x < this.ant.surroundingCells.length; x++){
-        var randomValue = Math.random();
-        randomValue += (this.ant.surroundingCells[x].pheromone / 10);
-        
-        if(randomValue > highestValue && lastCell != this.ant.surroundingCells[x]){
-            highestValue = randomValue;
-            indexToMoveTo = x;
-        }
-    }
+    var nextCell = this.ant.detector.pickNextCell(frontCells);
 
-    if(indexToMoveTo >= 0){
-        var cell = this.ant.surroundingCells[indexToMoveTo];
-        this.ant.moveToCell(cell);
+    if(nextCell){
+        this.ant.moveToCell(nextCell);
 
-        if(this.ant.trail.indexOf(cell) == -1){
-            this.ant.trail.push(cell);  
+        if(this.ant.trail.indexOf(nextCell) == -1){
+            this.ant.trail.push(nextCell);  
         }else{ 
-            while(this.ant.trail[this.ant.trail.length - 1] != cell){
+            while(this.ant.trail[this.ant.trail.length - 1] != nextCell){
                 this.ant.trail.pop();
             }
         }

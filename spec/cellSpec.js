@@ -78,6 +78,27 @@ describe("Cell", function(){
         expect(container.removeChild).toHaveBeenCalledWith(cell.sprite);
     });
 
+    it("should not be able to add more than 100 pheromone", function(){
+        cell.addPheromone(101);
+        expect(cell.pheromone).toEqual(100);
+    });
+
+    it("should be able to add pheromone on top of the pheromone already there.", function(){
+        cell.addPheromone(10);
+        cell.addPheromone(10);
+        expect(cell.pheromone).toEqual(20);
+    });
+
+    it("the trail should be more opaque when it's lighter", function(){
+        cell.addPheromone(1);
+        expect(cell.sprite.alpha).toEqual(.01);
+    });
+    
+    it("the trail should be not opaque when it's heavier", function(){
+        cell.addPheromone(100);
+        expect(cell.sprite.alpha).toEqual(1);
+    });
+
     it("should not remove other sprites if there is no pheromone", function(){
         var allCells = [[cell]];
         var nest = new Nest(cell, allCells, container);

@@ -24,7 +24,7 @@ function Ant(x, y, cells, container){
     this.tempX = 0;
     this.tempY = 0;
     this.tempRotation = 0;
-    this.rotate90 = 1.5708;
+    this.rotate90 = Math.PI/2;
     this.tween = new TWEEN.Tween(this);
 }
 
@@ -54,11 +54,12 @@ Ant.prototype.turnLeft = function(newDirection){
 
 Ant.prototype.tweenRotation = function(newRotation){
     
-    this.tween.to({ tempRotation: newRotation}, antSpeed);
-    this.tween.onUpdate(function() {
-        this.sprite.rotation = this.tempRotation;
-    });
-    this.tween.start();
+    this.sprite.rotation = newRotation;
+    // this.tween.to({ tempRotation: newRotation}, antSpeed);
+    // this.tween.onUpdate(function() {
+    //     this.sprite.rotation = this.tempRotation;
+    // });
+    // this.tween.start();
 }
 
 

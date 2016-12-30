@@ -28,17 +28,22 @@ Cell.prototype.addNest = function(nest){
     this.sprite.x = (10 * this.x);
     this.sprite.y = (10 * this.y);
     this.sprite.renderable = true;
+    
     this.container.addChild(this.sprite);
 }
 
 Cell.prototype.addPheromone = function(pheromoneAmount){
     if(!this.nest){
-        this.pheromone = pheromoneAmount;
+        this.pheromone += pheromoneAmount;
+        if(this.pheromone > 100){
+           this.pheromone = 100; 
+        }
         this.container.removeChild(this.sprite);
         this.sprite = new PIXI.Sprite(PHEROMONE_TEXTURE);
         this.sprite.x = (10 * this.x);
         this.sprite.y = (10 * this.y);
         this.sprite.renderable = true;
+        this.sprite.alpha = this.pheromone/100;
         
         this.container.addChildAt(this.sprite, 0);
     }

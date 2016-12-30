@@ -43,6 +43,131 @@ Detector.prototype.filterUndefinedCells = function(newCells){
     return result;
 }
 
+Detector.prototype.detectFrontCells = function(){
+    
+    var cellsToAdd = [];
+
+    if(this.ant.direction == 0){
+        cellsToAdd = this.detectCellsNorthOfLocation();
+    }
+    else if(this.ant.direction == 1){
+        cellsToAdd = this.detectCellsEastOfLocation();
+    }
+    else if(this.ant.direction == 2){
+        cellsToAdd = this.detectCellsSouthOfLocation();
+    }
+    else if(this.ant.direction == 3){
+        cellsToAdd = this.detectCellsWestOfLocation();
+    }
+
+    return this.filterUndefinedCells(cellsToAdd);
+}
+
+Detector.prototype.detectCellsNorthOfLocation = function(){
+    var result = [];
+    var x = this.ant.x;
+    var y = this.ant.y;
+    
+    if(y - 1 >= 0){
+        result.push(this.ant.cells[y - 1][x - 1]);
+        result.push(this.ant.cells[y - 1][x]);
+        result.push(this.ant.cells[y - 1][x + 1]);
+    }
+
+    return result;
+}
+
+Detector.prototype.detectCellsSouthOfLocation = function(){
+    var result = [];
+    var maxY = this.ant.cells.length;
+    var x = this.ant.x;
+    var y = this.ant.y;
+
+    if(y + 1 < maxY){
+        result.push(this.ant.cells[y + 1][x - 1]);
+        result.push(this.ant.cells[y + 1][x]);
+        result.push(this.ant.cells[y + 1][x + 1]);
+    }
+
+    return result;
+}
+
+Detector.prototype.detectCellsEastOfLocation = function(){
+    var result = [];
+    var maxY = this.ant.cells.length;
+    var x = this.ant.x;
+    var y = this.ant.y;
+
+    if(y - 1 >= 0){
+        result.push(this.ant.cells[y - 1][x + 1]);
+    }
+
+    result.push(this.ant.cells[y][x + 1]);
+    
+    if(y + 1 < maxY){
+        result.push(this.ant.cells[y + 1][x + 1]);
+    }
+
+    return result;
+}
+
+Detector.prototype.detectCellsWestOfLocation = function(){
+    var result = [];
+    var maxY = this.ant.cells.length;
+    var x = this.ant.x;
+    var y = this.ant.y;
+
+    if(y - 1 >= 0){
+        result.push(this.ant.cells[y - 1][x - 1]);
+    }
+
+    result.push(this.ant.cells[y][x - 1]);
+    
+    if(y + 1 < maxY){
+        result.push(this.ant.cells[y + 1][x - 1]);
+    }
+
+    return result;
+}
+
+Detector.prototype.pickNextCell = function(cellsToPickFrom){
+    var highestValue = -1;
+    var indexToMoveTo = -1;
+    var lastCell = this.ant.trail[this.ant.trail.length-2];
+
+    for(var x = 0; x < cellsToPickFrom.length; x++){
+        var randomValue = Math.random();
+        randomValue += (cellsToPickFrom[x].pheromone / 200);
+        
+        if(randomValue > highestValue && lastCell != cellsToPickFrom[x]){
+            highestValue = randomValue;
+            indexToMoveTo = x;
+        }
+    }
+
+    return cellsToPickFrom[indexToMoveTo];
+}
+
+Detector.prototype.hasPheromoneInFront = function(){
+    var cellsToConsider = this.detectFrontCells();
+    return this.hasPheromoneInCells(cellsToConsider);
+}
+
+Detector.prototype.hasPheromoneNearby = function(){
+    var cellsToConsider = this.ant.surroundingCells; 
+    return this.hasPheromoneInCells(cellsToConsider);
+}
+
+Detector.prototype.hasPheromoneInCells = function(cellsToConsider){
+    var result = false;
+    for(var x = 0; x < cellsToConsider.length; x++){
+        if(cellsToConsider[x].pheromone > 0){
+            result = true;
+        }
+    }
+
+    return result;
+}
 
 // Export node module.
 if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )

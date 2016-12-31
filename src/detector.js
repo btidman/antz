@@ -149,7 +149,7 @@ Detector.prototype.pickNextCell = function(cellsToPickFrom){
         var randomValue = Math.random();
         var randomValue2 = Math.random();
         
-        if(randomValue2 < .95 ){
+        if(randomValue2 < .95 && cellsToPickFrom[x].pheromone){
             var toAdd = cellsToPickFrom[x].pheromone;
 
             if(this.ant.trail.indexOf(cellsToPickFrom[x]) != -1){

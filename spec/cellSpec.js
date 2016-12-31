@@ -52,10 +52,11 @@ describe("Cell", function(){
 
     it("should lose pheromone as time advances.", function(){
         cell.addPheromone(10);
-        expect(cell.sprite.alpha).toEqual(.1);
+        expect(cell.sprite.alpha).toEqual(.99);
         cell.advance();
-        expect(cell.pheromone).toEqual(9);
-        expect(cell.sprite.alpha).toEqual(.09);
+        cell.advance();
+        expect(cell.pheromone).toEqual(9.8);
+        expect(cell.sprite.alpha).toEqual(.98);
     });
 
     it("should not have pheromone less than 0 as time advances", function(){
@@ -71,7 +72,7 @@ describe("Cell", function(){
     });
 
     it("should not show pheromone anymore when there is none left.", function(){
-        cell.addPheromone(1);
+        cell.addPheromone(.1);
         expect(cell.sprite.renderable).toEqual(true);
         expect(cell.sprite.texture).toEqual(PHEROMONE_TEXTURE);
         spyOn(container, "removeChild");
@@ -80,24 +81,24 @@ describe("Cell", function(){
         expect(container.removeChild).toHaveBeenCalledWith(cell.sprite);
     });
 
-    it("should not be able to add more than 100 pheromone", function(){
-        cell.addPheromone(101);
-        expect(cell.pheromone).toEqual(100);
+    it("should not be able to add more than 10 pheromone", function(){
+        cell.addPheromone(11);
+        expect(cell.pheromone).toEqual(10);
     });
 
     it("should be able to add pheromone on top of the pheromone already there.", function(){
-        cell.addPheromone(10);
-        cell.addPheromone(10);
-        expect(cell.pheromone).toEqual(20);
+        cell.addPheromone(1);
+        cell.addPheromone(1);
+        expect(cell.pheromone).toEqual(2);
     });
 
     it("the trail should be more opaque when it's lighter", function(){
         cell.addPheromone(1);
-        expect(cell.sprite.alpha).toEqual(.01);
+        expect(cell.sprite.alpha).toEqual(.1);
     });
     
     it("the trail should be not opaque when it's heavier", function(){
-        cell.addPheromone(100);
+        cell.addPheromone(10);
         expect(cell.sprite.alpha).toEqual(.99);
     });
 

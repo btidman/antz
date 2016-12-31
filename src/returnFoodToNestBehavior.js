@@ -5,7 +5,7 @@ function ReturnFoodToNestBehavior(ant){
 
 ReturnFoodToNestBehavior.prototype.doBehavior = function(){
     var nextCell = this.ant.trail.pop();
-    nextCell.addPheromone(20);
+    nextCell.addPheromone(50);
     this.ant.moveToCell(nextCell);
 }
 

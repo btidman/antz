@@ -142,14 +142,40 @@ Detector.prototype.pickNextCell = function(cellsToPickFrom){
     var highestValue = -1;
     var indexToMoveTo = -1;
     var lastCell = this.ant.trail[this.ant.trail.length-2];
+    var ignoreTrail = false;
 
     for(var x = 0; x < cellsToPickFrom.length; x++){
+
         var randomValue = Math.random();
-        randomValue += (cellsToPickFrom[x].pheromone / 100);
+        var randomValue2 = Math.random();
         
-        if(randomValue > highestValue && lastCell != cellsToPickFrom[x]){
+        if(randomValue2 < .95 ){
+            var toAdd = cellsToPickFrom[x].pheromone;
+
+            if(this.ant.trail.indexOf(cellsToPickFrom[x]) != -1){
+                toAdd = toAdd/1.6;
+            }
+
+            randomValue += toAdd;
+        }
+
+        if(randomValue > highestValue && 
+            cellsToPickFrom[x] != lastCell){
+            
             highestValue = randomValue;
             indexToMoveTo = x;
+        }
+    }
+
+    if(indexToMoveTo == -1){
+        for(var x = 0; x < cellsToPickFrom.length; x++){
+
+            var randomValue = Math.random();
+            
+            if(randomValue > highestValue){
+                highestValue = randomValue;
+                indexToMoveTo = x;
+            }
         }
     }
 

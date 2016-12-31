@@ -98,7 +98,7 @@ describe("Cell", function(){
     
     it("the trail should be not opaque when it's heavier", function(){
         cell.addPheromone(100);
-        expect(cell.sprite.alpha).toEqual(1);
+        expect(cell.sprite.alpha).toEqual(.99);
     });
 
     it("should not remove other sprites if there is no pheromone", function(){

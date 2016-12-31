@@ -5,9 +5,9 @@ function MoveBehavior(ant){
 
 MoveBehavior.prototype.doBehavior = function(){
 
-    var frontCells = this.ant.detector.detectFrontCells();
+    //var frontCells = this.ant.detector.detectFrontCells();
 
-    var nextCell = this.ant.detector.pickNextCell(frontCells);
+    var nextCell = this.ant.detector.pickNextCell(this.ant.surroundingCells);
 
     if(nextCell){
         this.ant.moveToCell(nextCell);
@@ -20,7 +20,7 @@ MoveBehavior.prototype.doBehavior = function(){
             }
         }
 
-        if(this.ant.trail.length >= (this.ant.cells.length + this.ant.cells[0].length)){
+        if(this.ant.trail.length >= (this.ant.cells.length + this.ant.cells[0].length)*2){
             this.ant.returnToNest = true;
         }
     }

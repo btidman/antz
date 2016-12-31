@@ -41,7 +41,6 @@ describe("Move Behavior", function(){
     });
 
     it("should eliminate loops in stored trail that it has moved over.", function(){
-        spyOn(ant.detector, "detectFrontCells");
         spyOn(ant.detector, "pickNextCell").and.returnValues(ant.cells[1][0], ant.cells[0][0], ant.cells[1][1], ant.cells[2][1]);
         
         moveBehavior.doBehavior();
@@ -57,22 +56,16 @@ describe("Move Behavior", function(){
         expect(ant.trail[0].y).toEqual(2);
     });
     
-    it("should detect cells in front of it.", function(){
-        spyOn(ant.detector, "detectFrontCells");
-        spyOn(ant.detector, "pickNextCell").and.returnValue(undefined);
-        moveBehavior.doBehavior();
-        expect(ant.detector.detectFrontCells).toHaveBeenCalled();
-    });
+    
 
-    it("should pick a to move to.", function(){
+    it("should pick a cell to move to.", function(){
         spyOn(ant.detector, "pickNextCell");
-        spyOn(ant.detector, "detectFrontCells").and.returnValues(ant.surroundingCells);
         moveBehavior.doBehavior();
         expect(ant.detector.pickNextCell).toHaveBeenCalledWith(ant.surroundingCells);
     });
 
-    it("should mark the cell as return to nest if the trail is too long.", function(){
-        for(var x = 0; x < 6; x++){
+    it("should mark the ant as return to nest if the trail is too long.", function(){
+        for(var x = 0; x < 12; x++){
             ant.trail.push(new Cell());
         }
 

@@ -57,7 +57,7 @@ describe("Detector for ant", function(){
 
     it("should be more likely to pick a cell that has pheromone on it", function(){
         ant.cells[1][1].addPheromone(10);
-        spyOn(Math, "random").and.returnValues(0, 0, 0);
+        spyOn(Math, "random").and.returnValue(0);
         
         ant.detectCells();
         var actualCell = detector.pickNextCell(ant.surroundingCells);
@@ -66,20 +66,31 @@ describe("Detector for ant", function(){
         expect(actualCell.y).toEqual(1);
     });
 
-    it("should be more likely to pick a cell that has pheromone on it", function(){
+    it("should be more likely to pick a cell that has pheromone on it that's not in the trail", function(){
+        ant.cells[2][1].addPheromone(15);
         ant.cells[1][0].addPheromone(10);
-        spyOn(Math, "random").and.returnValues(0, .099, .099);
+        ant.cells[1][1].addPheromone(10);
+        ant.cells[0][1].addPheromone(10);
+        
+        ant.trail.push(ant.cells[1][0])
+        ant.trail.push(ant.cells[1][1]);
+        ant.moveToCell(ant.cells[1][1]);
         
         ant.detectCells();
+
+        spyOn(Math, "random").and.returnValue(0);
+        
         var actualCell = detector.pickNextCell(ant.surroundingCells);
 
-        expect(actualCell.x).toEqual(0);
-        expect(actualCell.y).toEqual(1);
+        expect(actualCell.x).toEqual(1);
+        expect(actualCell.y).toEqual(0);
     });
 
-    it("should always have a chance to pick a new path", function(){
-        ant.cells[1][1].addPheromone(9);
-        spyOn(Math, "random").and.returnValues(0, .05, 0);
+    it("should occasionally not consider the pheromone in order to generate some new paths", function(){
+        ant.cells[1][0].addPheromone(9);
+        spyOn(Math, "random").and.returnValues(0, .95, 
+                                                .1, 0,
+                                                0, 0);
         
         ant.detectCells();
         var actualCell = detector.pickNextCell(ant.surroundingCells);
@@ -88,11 +99,30 @@ describe("Detector for ant", function(){
         expect(actualCell.y).toEqual(1);
     });
     
+    
     it("should not pick a cell the ant just came from.", function(){
-        spyOn(Math, "random").and.returnValues(0, 0, 0, 0, .99);
+        spyOn(Math, "random").and.returnValues(0, 0, 
+                                                0, 0, 
+                                                0, 0,
+                                                0, 0,
+                                                .99,0);
         
         ant.moveToCell(ant.cells[1][0]);
         ant.trail.push(ant.cells[1][0]);
+        ant.detectCells();
+        var actualCell = detector.pickNextCell(ant.surroundingCells);
+
+        expect(actualCell.x).toEqual(0);
+        expect(actualCell.y).toEqual(0);
+    });
+
+    it("should not pick a cell from the trail if there is pheromone nearby.", function(){
+        spyOn(Math, "random").and.returnValues(0, 0, 0, 0, .99);
+        ant.cells[0][0].addPheromone(10);
+        ant.moveToCell(ant.cells[1][0]);
+        ant.trail.push(ant.cells[1][0]);
+        ant.moveToCell(ant.cells[1][1]);
+        ant.trail.push(ant.cells[1][1]);
         ant.detectCells();
         var actualCell = detector.pickNextCell(ant.surroundingCells);
 
@@ -184,6 +214,4 @@ describe("Detector for ant", function(){
         expect(result).toContain(cells[2][0]);
         expect(result.length).toEqual(2);
     });
-
-    
 });

@@ -37,13 +37,12 @@ Decider.prototype.getNewBehavior = function(ant){
         return new GetFoodBehavior(ant);
     }else if(ant.returnToNest){
         return new ReturnToNestBehavior(ant);
-    }else if(ant.detector.hasPheromoneInFront()){
-        return new MoveBehavior(ant);
     }else if(ant.detector.hasPheromoneNearby()){
-         return new TurnBehavior(ant);
+        return new MoveBehavior(ant);
     }else if(randomValue < .25){
         return new TurnBehavior(ant);
-    }else{
+    }
+    else{
         return new MoveBehavior(ant);
     }
 }

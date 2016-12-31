@@ -43,7 +43,11 @@ Cell.prototype.addPheromone = function(pheromoneAmount){
         this.sprite.x = (10 * this.x);
         this.sprite.y = (10 * this.y);
         this.sprite.renderable = true;
-        this.sprite.alpha = this.pheromone/100;
+        var alpha = this.pheromone/100;
+        if(alpha >= 1){
+            alpha = .99
+        }
+        this.sprite.alpha = alpha;
         
         this.container.addChildAt(this.sprite, 0);
     }
@@ -52,7 +56,11 @@ Cell.prototype.addPheromone = function(pheromoneAmount){
 Cell.prototype.advance = function(){
     if(this.pheromone > 0){
         this.pheromone--;
-        this.sprite.alpha = this.pheromone/100;
+        var alpha = this.pheromone/100;
+        if(alpha >= 1){
+            alpha = .99
+        }
+        this.sprite.alpha = alpha;
     }
     else if(this.sprite && this.sprite.texture === PHEROMONE_TEXTURE){
         this.container.removeChild(this.sprite);

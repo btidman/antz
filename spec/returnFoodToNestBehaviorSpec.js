@@ -40,6 +40,6 @@ describe("Return food to nest behavior.", function(){
     it("should drop pheromone every time it moves to back down the trail.", function(){
         spyOn(cells[2][1], "addPheromone");
         returnFoodToNestBehavior.doBehavior();
-        expect(cells[2][1].addPheromone).toHaveBeenCalledWith(20);
+        expect(cells[2][1].addPheromone).toHaveBeenCalledWith(50);
     });
 });

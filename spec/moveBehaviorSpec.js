@@ -2,6 +2,7 @@
 
 var AntHelper = require("../test_helpers/antHelper");
 var MoveBehavior = require("../src/moveBehavior");
+var Cell = require("../src/cell");
 
 describe("Move Behavior", function(){
 
@@ -68,5 +69,15 @@ describe("Move Behavior", function(){
         spyOn(ant.detector, "detectFrontCells").and.returnValues(ant.surroundingCells);
         moveBehavior.doBehavior();
         expect(ant.detector.pickNextCell).toHaveBeenCalledWith(ant.surroundingCells);
+    });
+
+    it("should mark the cell as return to nest if the trail is too long.", function(){
+        for(var x = 0; x < 6; x++){
+            ant.trail.push(new Cell());
+        }
+
+        moveBehavior.doBehavior();
+
+        expect(ant.returnToNest).toEqual(true);
     });
 });

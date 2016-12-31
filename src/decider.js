@@ -5,6 +5,7 @@ var GetFoodBehavior = require("./getFoodBehavior");
 var ReturnFoodToNestBehavior = require("./returnFoodToNestBehavior");
 var DropFoodBehavior = require("./dropFoodBehavior");
 var TurnBehavior = require("./turnBehavior");
+var ReturnToNestBehavior = require("./returnToNestBehavior");
 
 function Decider(){
 
@@ -34,11 +35,13 @@ Decider.prototype.getNewBehavior = function(ant){
 
     if(hasFoodNextToIt){
         return new GetFoodBehavior(ant);
+    }else if(ant.returnToNest){
+        return new ReturnToNestBehavior(ant);
     }else if(ant.detector.hasPheromoneInFront()){
         return new MoveBehavior(ant);
     }else if(ant.detector.hasPheromoneNearby()){
-        return new TurnBehavior(ant);
-    }else if(randomValue < .50){
+         return new TurnBehavior(ant);
+    }else if(randomValue < .25){
         return new TurnBehavior(ant);
     }else{
         return new MoveBehavior(ant);

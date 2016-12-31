@@ -12,7 +12,7 @@ window.evaporationSpeed = 100;
 window.antSpeed = 10;
 
 
-var world = new World(200,200);
+var world = new World(100,100);
 window.world = world;
 world.draw();
 
@@ -38,7 +38,7 @@ function animate () {
     world.renderer.render(world.stage);
 }
 
-world.addNest(100,100);
-world.addFood(50,50, 1000);
-world.addFood(150,150,1000);
-for(var x = 0; x<100; x++ ){ world.addAnt()}
+world.addNest(50,50);
+world.addFood(30,20, 1000);
+world.addFood(80,70,1000);
+for(var x = 0; x<50; x++ ){ world.addAnt()}

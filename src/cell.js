@@ -52,6 +52,7 @@ Cell.prototype.addPheromone = function(pheromoneAmount){
 Cell.prototype.advance = function(){
     if(this.pheromone > 0){
         this.pheromone--;
+        this.sprite.alpha = this.pheromone/100;
     }
     else if(this.sprite && this.sprite.texture === PHEROMONE_TEXTURE){
         this.container.removeChild(this.sprite);

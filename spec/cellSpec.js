@@ -52,8 +52,10 @@ describe("Cell", function(){
 
     it("should lose pheromone as time advances.", function(){
         cell.addPheromone(10);
+        expect(cell.sprite.alpha).toEqual(.1);
         cell.advance();
         expect(cell.pheromone).toEqual(9);
+        expect(cell.sprite.alpha).toEqual(.09);
     });
 
     it("should not have pheromone less than 0 as time advances", function(){

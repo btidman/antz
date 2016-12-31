@@ -19,6 +19,10 @@ MoveBehavior.prototype.doBehavior = function(){
                 this.ant.trail.pop();
             }
         }
+
+        if(this.ant.trail.length >= (this.ant.cells.length + this.ant.cells[0].length)){
+            this.ant.returnToNest = true;
+        }
     }
 }
 

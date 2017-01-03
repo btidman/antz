@@ -12,7 +12,7 @@ ReturnFoodToNestBehavior.prototype.doBehavior = function(){
 
     nextCell.addPheromone(pheromone);
     for(var x = 0; x < this.ant.surroundingCells.length; x++){
-        this.ant.surroundingCells[x].addPheromone(pheromone);
+        this.ant.surroundingCells[x].addPheromone(pheromone/2);
     }
     this.ant.stepsTowardNest++;
     

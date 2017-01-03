@@ -16,6 +16,10 @@ describe("Move Behavior", function(){
         moveBehavior = new MoveBehavior(ant); 
     }); 
 
+    it("should know the max trail length.", function(){
+    expect(moveBehavior.maxTrailLength).toEqual((ant.cells.length * ant.cells[0].length));
+    });
+
     it("should not try and move if there are no cells available to move to", function(){
         spyOn(ant, "moveToCell");
         spyOn(ant.detector, "pickNextCell").and.returnValue(undefined);
@@ -39,25 +43,7 @@ describe("Move Behavior", function(){
         expect(ant.trail[1].x).toEqual(0);
         expect(ant.trail[1].y).toEqual(1);
     });
-
-    it("should eliminate loops in stored trail that it has moved over.", function(){
-        spyOn(ant.detector, "pickNextCell").and.returnValues(ant.cells[1][0], ant.cells[0][0], ant.cells[1][1], ant.cells[2][1]);
-        
-        moveBehavior.doBehavior();
-        ant.detectCells();
-        moveBehavior.doBehavior();
-        ant.detectCells();
-        moveBehavior.doBehavior();
-        ant.detectCells();
-        moveBehavior.doBehavior();
-
-        expect(ant.trail.length).toEqual(1);
-        expect(ant.trail[0].x).toEqual(1);
-        expect(ant.trail[0].y).toEqual(2);
-    });
     
-    
-
     it("should pick a cell to move to.", function(){
         spyOn(ant.detector, "pickNextCell");
         moveBehavior.doBehavior();
@@ -65,7 +51,7 @@ describe("Move Behavior", function(){
     });
 
     it("should mark the ant as return to nest if the trail is too long.", function(){
-        for(var x = 0; x < 12; x++){
+        for(var x = 0; x < 6; x++){
             ant.trail.push(new Cell());
         }
 

@@ -29,9 +29,9 @@ describe("Get food behavior.", function(){
         expect(ant.hasFood).toEqual(true);
     });
 
-    it("should record the length of the trail on the ant.", function(){
-        ant.trail.push(ant.cells[1][1]);
+    it("should detect and remove loops from trail.", function(){
+        spyOn(ant.detector, "detectAndRemoveLoops");
         getFoodBehavior.doBehavior();
-        expect(ant.trailLength).toEqual(2);
+        expect(ant.detector.detectAndRemoveLoops).toHaveBeenCalled();
     });
 });

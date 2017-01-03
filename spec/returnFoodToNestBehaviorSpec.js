@@ -46,6 +46,21 @@ describe("Return food to nest behavior.", function(){
         expect(cells[2][1].addPheromone).toHaveBeenCalledWith(3.5);
     });
 
+    it("should drop half pheromone on surronding cells every time it moves to back down the trail.", function(){
+        
+        spyOn(Math, "log10").and.returnValue(0);
+        spyOn(cells[2][1], "addPheromone");
+        spyOn(cells[2][0], "addPheromone");
+        spyOn(cells[1][1], "addPheromone");
+        spyOn(cells[1][0], "addPheromone");
+        ant.detectCells();
+        returnFoodToNestBehavior.doBehavior();
+        expect(cells[2][1].addPheromone).toHaveBeenCalledWith(4);
+        expect(cells[2][0].addPheromone).toHaveBeenCalledWith(2);
+        expect(cells[1][1].addPheromone).toHaveBeenCalledWith(2);
+        expect(cells[1][0].addPheromone).toHaveBeenCalledWith(2);
+    });
+
     it("should record how many steps it's taken back to the nest.", function(){
         returnFoodToNestBehavior.doBehavior();
         expect(ant.stepsTowardNest).toEqual(1);

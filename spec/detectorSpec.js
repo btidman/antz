@@ -78,7 +78,7 @@ describe("Detector for ant", function(){
         
         ant.detectCells();
 
-        spyOn(Math, "random").and.returnValue(0);
+        spyOn(Math, "random").and.returnValue(.1);
         
         var actualCell = detector.pickNextCell(ant.surroundingCells);
 
@@ -214,4 +214,15 @@ describe("Detector for ant", function(){
         expect(result).toContain(cells[2][0]);
         expect(result.length).toEqual(2);
     });
+
+    it("should detect and remove lops in trail", function(){
+        
+        ant.trail.push(ant.cells[2][0]);
+        ant.trail.push(ant.cells[1][0]);
+        ant.trail.push(ant.cells[1][1]);
+        ant.trail.push(ant.cells[2][1]);
+        detector.detectAndRemoveLoops();
+        expect(ant.trail.length).toEqual(1);
+        expect(ant.trail).toContain(ant.cells[2][1]);
+    })
 });

@@ -5,7 +5,7 @@ function GetFoodBehavior(ant){
 
 GetFoodBehavior.prototype.doBehavior = function(){
     this.ant.hasFood = true;
-    this.ant.trailLength = this.ant.trail.length;
+    this.ant.detector.detectAndRemoveLoops();
 }
 
 // Export node module.

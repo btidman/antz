@@ -153,7 +153,7 @@ Detector.prototype.pickNextCell = function(cellsToPickFrom){
             var toAdd = cellsToPickFrom[x].pheromone;
 
             if(this.ant.trail.indexOf(cellsToPickFrom[x]) != -1){
-                toAdd = toAdd/1.6;
+                toAdd = toAdd/5;
             }
 
             randomValue += toAdd;
@@ -201,6 +201,21 @@ Detector.prototype.hasPheromoneInCells = function(cellsToConsider){
     }
 
     return result;
+}
+
+Detector.prototype.detectAndRemoveLoops = function(){
+    var newTrail = [];
+    for(var x = 0; x < this.ant.trail.length; x++){
+        var nextCell = this.ant.trail[x];
+        if(newTrail.indexOf(nextCell) == -1){
+            newTrail.push(nextCell);  
+        }else{ 
+            while(newTrail[newTrail.length - 1] != nextCell){
+                newTrail.pop();
+            }
+        }
+    }
+    this.ant.trail = newTrail;
 }
 
 // Export node module.

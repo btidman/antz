@@ -5,9 +5,9 @@ var Nest = require("./nest.js");
 function World(width, height){
     this.width = width;
     this.height = height;
-    this.background = 'FFFFFF';
+    this.background = 0xFFFFFF;
 
-    this.renderer = PIXI.autoDetectRenderer(this.width*10, this.height*10,{backgroundColor : 0xFFFFFF});
+    this.renderer = PIXI.autoDetectRenderer(this.width*10, this.height*10,{backgroundColor : this.background});
     this.stage = new PIXI.Container();
     this.container = new PIXI.Container();
     this.stage.addChild(this.container);

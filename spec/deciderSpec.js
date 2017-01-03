@@ -64,10 +64,11 @@ describe("Decider", function(){
         expect(behavior.type).toEqual("Drop_Food");
     });
 
-    it("should decide to return to the nest if it's trail is too long", function(){
+    it("should decide to return to the nest if its trail is too long", function(){
         ant.returnToNest = true;
         var behavior = decider.getNewBehavior(ant);
         expect(behavior.type).toEqual("Return_To_Nest");
     });
 
 });
+

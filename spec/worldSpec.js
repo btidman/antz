@@ -7,19 +7,20 @@ describe("World", function(){
     var world;
     window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
     beforeEach(function() { world = new World(3, 4); }); 
+    var expectedBackground = 0xFFFFFF;
 
     it("should have a width of 3 and a height of 4", function(){
         expect(world.width).toEqual(3);
         expect(world.height).toEqual(4);
     });
 
-    it("should have a background color of FFFFFF", function(){
-        expect(world.background).toEqual('FFFFFF');
+    it("should have the expected background color", function(){
+        expect(world.background).toEqual(expectedBackground);
     });
 
     it("should set up and hold reference to a pixi stage.", function(){
         expect(world.renderer).toBeDefined();
-        expect(world.renderer.backgroundColor).toEqual(16777215);
+        expect(world.renderer.backgroundColor).toEqual(expectedBackground);
         expect(world.renderer.width).toEqual(30);
         expect(world.renderer.height).toEqual(40);
         expect(world.stage).toBeDefined();

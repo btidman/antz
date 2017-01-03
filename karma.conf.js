@@ -14,6 +14,7 @@ module.exports = function(config) {
     plugins: ['karma-webpack', 
               'karma-jasmine',
               'karma-chrome-launcher',
+              'karma-sourcemap-loader',
               'karma-spec-reporter'],
 
     // list of files / patterns to load in the browser
@@ -33,11 +34,13 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       // add webpack as preprocessor
-      './test_helpers/*.js': ['webpack'],  
-      './spec/*.js': ['webpack'],  
+      './test_helpers/*.js': ['webpack', 'sourcemap'],
+      './spec/*.js': ['webpack', 'sourcemap'],
     },
 
-    webpack: {},
+    webpack: {
+      devtool: 'inline-source-map'
+    },
 
     webpackMiddleware: {
       noInfo: true

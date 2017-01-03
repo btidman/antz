@@ -53,7 +53,7 @@ describe("Return food to nest behavior.", function(){
         spyOn(cells[2][0], "addPheromone");
         spyOn(cells[1][1], "addPheromone");
         spyOn(cells[1][0], "addPheromone");
-        spyOn(ant.detector, "detectCloseCells").and.returnValue([cells[2][0]], cells[1][0], cells[1][1]);
+        spyOn(ant.detector, "detectCloseCells").and.returnValue([cells[2][0], cells[1][0], cells[1][1]]);
         
         returnFoodToNestBehavior.doBehavior();
         expect(cells[2][1].addPheromone).toHaveBeenCalledWith(4);

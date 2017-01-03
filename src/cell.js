@@ -33,21 +33,21 @@ Cell.prototype.addNest = function(nest){
 }
 
 Cell.prototype.addPheromone = function(pheromoneAmount){
-    if(pheromoneAmount > 3){
-        pheromoneAmount = 3;
+    if(pheromoneAmount > 4){
+        pheromoneAmount = 4;
     }
 
     if(!this.nest && !this.food){
         this.pheromone += pheromoneAmount;
-        if(this.pheromone > 10){
-           this.pheromone = 10;
+        if(this.pheromone > 4){
+           this.pheromone = 4;
         }
         this.container.removeChild(this.sprite);
         this.sprite = new PIXI.Sprite(PHEROMONE_TEXTURE);
         this.sprite.x = (10 * this.x);
         this.sprite.y = (10 * this.y);
         this.sprite.renderable = true;
-        var alpha = +(this.pheromone/10).toFixed(2);
+        var alpha = +(this.pheromone/4).toFixed(2);
         if(alpha >= 1){
             alpha = .99
         }
@@ -60,7 +60,7 @@ Cell.prototype.addPheromone = function(pheromoneAmount){
 Cell.prototype.advance = function(){
     if(this.pheromone > 0){
         this.pheromone = +(this.pheromone - .1).toFixed(2);
-        var alpha = +(this.pheromone/10).toFixed(2);
+        var alpha = +(this.pheromone/4).toFixed(2);
         if(alpha >= 1){
             alpha = .99
         }

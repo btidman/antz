@@ -43,6 +43,23 @@ describe("Move Behavior", function(){
         expect(ant.trail[1].x).toEqual(0);
         expect(ant.trail[1].y).toEqual(0);
     });
+
+    it("should eliminate loops in stored trail that it has moved over.", function(){
+        spyOn(ant.detector, "pickNextCell").and.returnValues(ant.cells[1][0], ant.cells[0][0], ant.cells[1][1], ant.cells[2][1]);
+        
+        moveBehavior.doBehavior();
+        ant.detectCells();
+        moveBehavior.doBehavior();
+        ant.detectCells();
+        moveBehavior.doBehavior();
+        ant.detectCells();
+        moveBehavior.doBehavior();
+
+        expect(ant.trail.length).toEqual(1);
+        expect(ant.trail[0].x).toEqual(1);
+        expect(ant.trail[0].y).toEqual(2);
+    });
+
     
     it("should pick a cell to move to.", function(){
         spyOn(ant.detector, "pickNextCell");

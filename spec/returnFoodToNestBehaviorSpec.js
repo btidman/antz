@@ -57,9 +57,9 @@ describe("Return food to nest behavior.", function(){
         
         returnFoodToNestBehavior.doBehavior();
         expect(cells[2][1].addPheromone).toHaveBeenCalledWith(4);
-        expect(cells[2][0].addPheromone).toHaveBeenCalledWith(4);
-        expect(cells[1][0].addPheromone).toHaveBeenCalledWith(4);
-        expect(cells[1][1].addPheromone).toHaveBeenCalledWith(4);
+        expect(cells[2][0].addPheromone).toHaveBeenCalledWith(2);
+        expect(cells[1][0].addPheromone).toHaveBeenCalledWith(2);
+        expect(cells[1][1].addPheromone).toHaveBeenCalledWith(2);
     });
 
     it("should record how many steps it's taken back to the nest.", function(){

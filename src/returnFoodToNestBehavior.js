@@ -13,7 +13,7 @@ ReturnFoodToNestBehavior.prototype.doBehavior = function(){
     nextCell.addPheromone(pheromone);
     var closeCells = this.ant.detector.detectCloseCells();
     for(var x = 0; x < closeCells.length; x++){
-        closeCells[x].addPheromone(pheromone);
+        closeCells[x].addPheromone(pheromone/2);
     }
     this.ant.stepsTowardNest++;
     

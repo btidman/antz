@@ -15,3 +15,6 @@
     world.addFood(2,2,1000)
     world.addAnt() (requires a nest to exist)
 
+    // This does the 3 steps above, plus adds 50 ants:
+    window.setupAndStart()
+

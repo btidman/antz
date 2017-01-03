@@ -46,17 +46,17 @@ describe("Cell", function(){
     });
 
     it("should have pheromone added to the cell.", function(){
-        cell.addPheromone(10);
-        expect(cell.pheromone).toEqual(10);
+        cell.addPheromone(2);
+        expect(cell.pheromone).toEqual(2);
     });
 
     it("should lose pheromone as time advances.", function(){
-        cell.addPheromone(10);
-        expect(cell.sprite.alpha).toEqual(.99);
+        cell.addPheromone(1.5);
+        expect(cell.sprite.alpha).toEqual(.5);
         cell.advance();
         cell.advance();
-        expect(cell.pheromone).toEqual(9.8);
-        expect(cell.sprite.alpha).toEqual(.98);
+        expect(cell.pheromone).toEqual(1.3);
+        expect(cell.sprite.alpha).toEqual(.43);
     });
 
     it("should not have pheromone less than 0 as time advances", function(){
@@ -81,9 +81,11 @@ describe("Cell", function(){
         expect(container.removeChild).toHaveBeenCalledWith(cell.sprite);
     });
 
-    it("should not be able to add more than 10 pheromone", function(){
-        cell.addPheromone(11);
-        expect(cell.pheromone).toEqual(10);
+    it("should not be able to add more than 3 pheromone", function(){
+        cell.addPheromone(2);
+        cell.addPheromone(.9);
+        cell.addPheromone(1);
+        expect(cell.pheromone).toEqual(2.9);
     });
 
     it("should be able to add pheromone on top of the pheromone already there.", function(){
@@ -94,11 +96,12 @@ describe("Cell", function(){
 
     it("the trail should be more opaque when it's lighter", function(){
         cell.addPheromone(1);
-        expect(cell.sprite.alpha).toEqual(.1);
+        expect(cell.sprite.alpha).toEqual(.33);
     });
     
     it("the trail should be not opaque when it's heavier", function(){
-        cell.addPheromone(10);
+        cell.addPheromone(2);
+        cell.addPheromone(.99);
         expect(cell.sprite.alpha).toEqual(.99);
     });
 
@@ -124,5 +127,10 @@ describe("Cell", function(){
         cell.addPheromone(1);
         expect(cell.pheromone).toEqual(0);
         expect(cell.sprite.texture).toEqual(NEST_TEXTURE);
+    });
+
+    it("should only be able to add a maximum of 2 pheromone at a time", function(){
+        cell.addPheromone(2.5);
+        expect(cell.pheromone).toEqual(2);
     });
 });

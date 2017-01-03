@@ -1,5 +1,6 @@
 
 var ReturnFoodToNestBehavior = require("../src/returnFoodToNestBehavior");
+var Decider = require("../src/decider");
 var AntHelper = require("../test_helpers/antHelper");
 
 describe("Return food to nest behavior.", function(){
@@ -38,8 +39,10 @@ describe("Return food to nest behavior.", function(){
     });
 
     it("should drop pheromone every time it moves to back down the trail.", function(){
+        
+        spyOn(ant.decider, "getPheromoneAmountFromTrailLength").and.returnValue(2);
         spyOn(cells[2][1], "addPheromone");
         returnFoodToNestBehavior.doBehavior();
-        expect(cells[2][1].addPheromone).toHaveBeenCalledWith(5);
+        expect(cells[2][1].addPheromone).toHaveBeenCalledWith(2);
     });
 });

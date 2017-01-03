@@ -33,17 +33,21 @@ Cell.prototype.addNest = function(nest){
 }
 
 Cell.prototype.addPheromone = function(pheromoneAmount){
+    if(pheromoneAmount > 2){
+        pheromoneAmount = 2;
+    }
+
     if(!this.nest){
-        this.pheromone += pheromoneAmount;
-        if(this.pheromone > 10){
-           this.pheromone = 10; 
+        if(this.pheromone + pheromoneAmount < 3){
+           this.pheromone += pheromoneAmount
+           this.pheromone = +this.pheromone.toFixed(2);
         }
         this.container.removeChild(this.sprite);
         this.sprite = new PIXI.Sprite(PHEROMONE_TEXTURE);
         this.sprite.x = (10 * this.x);
         this.sprite.y = (10 * this.y);
         this.sprite.renderable = true;
-        var alpha = this.pheromone/10;
+        var alpha = +(this.pheromone/3).toFixed(2);
         if(alpha >= 1){
             alpha = .99
         }
@@ -56,7 +60,7 @@ Cell.prototype.addPheromone = function(pheromoneAmount){
 Cell.prototype.advance = function(){
     if(this.pheromone > 0){
         this.pheromone = +(this.pheromone - .1).toFixed(2);
-        var alpha = +(this.pheromone/10).toFixed(2);
+        var alpha = +(this.pheromone/3).toFixed(2);
         if(alpha >= 1){
             alpha = .99
         }

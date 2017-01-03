@@ -69,4 +69,14 @@ describe("Decider", function(){
         var behavior = decider.getNewBehavior(ant);
         expect(behavior.type).toEqual("Return_To_Nest");
     });
+
+    it("should decide how much pheromone to lay based on trail length", function(){
+        ant.trailLength = 3;
+        var a = ant.cells.length;
+        var b = ant.cells[0].length;
+        var expected = (Math.sqrt((a*a) + (b*b))/ant.trailLength) + 1;
+        var actual = decider.getPheromoneAmountFromTrailLength(ant);
+        
+        expect(actual).toEqual(expected);
+    });
 });

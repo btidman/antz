@@ -28,4 +28,10 @@ describe("Get food behavior.", function(){
         getFoodBehavior.doBehavior();
         expect(ant.hasFood).toEqual(true);
     });
+
+    it("should record the length of the trail on the ant.", function(){
+        ant.trail.push(ant.cells[1][1]);
+        getFoodBehavior.doBehavior();
+        expect(ant.trailLength).toEqual(2);
+    });
 });

@@ -1,3 +1,5 @@
+var Decider = require("./decider");
+
 function ReturnFoodToNestBehavior(ant){
     this.type = "Return_Food";
     this.ant = ant;
@@ -5,7 +7,8 @@ function ReturnFoodToNestBehavior(ant){
 
 ReturnFoodToNestBehavior.prototype.doBehavior = function(){
     var nextCell = this.ant.trail.pop();
-    nextCell.addPheromone(5);
+    var pheromone = this.ant.decider.getPheromoneAmountFromTrailLength(this.ant);
+    nextCell.addPheromone(pheromone);
     this.ant.moveToCell(nextCell);
 }
 

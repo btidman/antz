@@ -20,6 +20,22 @@ describe("Detector for ant", function(){
         detector = new Detector(ant);
     });
 
+    it("should know what cells are immediatly close to it", function(){
+        var result = detector.detectCloseCells();
+        expect(result).toContain(ant.cells[1][0]);
+        expect(result).toContain(ant.cells[1][1]);
+        expect(result).toContain(ant.cells[2][0]);
+
+        ant.moveToCell(ant.cells[1][0]);
+
+        var result = detector.detectCloseCells();
+        expect(result).toContain(ant.cells[0][0]);
+        expect(result).toContain(ant.cells[0][1]);
+        expect(result).toContain(ant.cells[1][1]);
+        expect(result).toContain(ant.cells[2][0]);
+        expect(result).toContain(ant.cells[2][1]);
+    });
+
     it("should know what cells are around the ant", function(){
         ant = antHelper.createTestAntInBigWorld();
         detector = new Detector(ant);

@@ -47,11 +47,6 @@ Decider.prototype.getNewBehavior = function(ant){
     }
 }
 
-Decider.prototype.getPheromoneAmountFromTrailLength = function(ant){
-    return (Math.sqrt((ant.cells.length * ant.cells.length) + (ant.cells[0].length*ant.cells[0].length))/ant.trailLength) + 1;
-}
-
-
 // Export node module.
 if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
 {

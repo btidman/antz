@@ -81,11 +81,11 @@ describe("Cell", function(){
         expect(container.removeChild).toHaveBeenCalledWith(cell.sprite);
     });
 
-    it("should not be able to add more than 3 pheromone", function(){
+    it("should not be able to add more than 5 pheromone", function(){
         cell.addPheromone(2);
-        cell.addPheromone(.9);
-        cell.addPheromone(1);
-        expect(cell.pheromone).toEqual(2.9);
+        cell.addPheromone(2);
+        cell.addPheromone(2);
+        expect(cell.pheromone).toEqual(5);
     });
 
     it("should be able to add pheromone on top of the pheromone already there.", function(){
@@ -100,6 +100,7 @@ describe("Cell", function(){
     });
     
     it("the trail should be not opaque when it's heavier", function(){
+        cell.addPheromone(2);
         cell.addPheromone(2);
         cell.addPheromone(.99);
         expect(cell.sprite.alpha).toEqual(.99);
@@ -129,8 +130,8 @@ describe("Cell", function(){
         expect(cell.sprite.texture).toEqual(NEST_TEXTURE);
     });
 
-    it("should only be able to add a maximum of 2 pheromone at a time", function(){
-        cell.addPheromone(2.5);
-        expect(cell.pheromone).toEqual(2);
+    it("should only be able to add a maximum of 3 pheromone at a time", function(){
+        cell.addPheromone(4);
+        expect(cell.pheromone).toEqual(3);
     });
 });

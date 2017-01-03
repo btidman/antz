@@ -7,6 +7,7 @@ DropFoodBehavior.prototype.doBehavior = function(){
 
     this.ant.hasFood = false;
     this.ant.trail.push(this.ant.cells[this.ant.y][this.ant.x]);
+    this.ant.stepsTowardNest = 0;
 }
 
 // Export node module.

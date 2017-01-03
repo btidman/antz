@@ -26,6 +26,7 @@ function Ant(x, y, cells, container){
     this.tempRotation = 0;
     this.rotate90 = Math.PI/2;
     this.tween = new TWEEN.Tween(this);
+    this.stepsTowardNest = 0;
 }
 
 Ant.prototype.turnRight = function(newDirection){

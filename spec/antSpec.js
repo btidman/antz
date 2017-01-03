@@ -20,6 +20,10 @@ describe("Ant", function(){
         cells = ant.cells;
     });
 
+    it("should start with 0 steps back towards nest", function(){
+        expect(ant.stepsTowardNest).toEqual(0);
+    });
+
     it("should have a location of 1X2", function(){
         expect(ant.x).toEqual(1);
         expect(ant.y).toEqual(2);

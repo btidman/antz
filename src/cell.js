@@ -33,14 +33,14 @@ Cell.prototype.addNest = function(nest){
 }
 
 Cell.prototype.addPheromone = function(pheromoneAmount){
-    if(pheromoneAmount > 2){
-        pheromoneAmount = 2;
+    if(pheromoneAmount > 3){
+        pheromoneAmount = 3;
     }
 
     if(!this.nest){
-        if(this.pheromone + pheromoneAmount < 3){
-           this.pheromone += pheromoneAmount
-           this.pheromone = +this.pheromone.toFixed(2);
+        this.pheromone += pheromoneAmount;
+        if(this.pheromone > 5){
+           this.pheromone = 5;
         }
         this.container.removeChild(this.sprite);
         this.sprite = new PIXI.Sprite(PHEROMONE_TEXTURE);

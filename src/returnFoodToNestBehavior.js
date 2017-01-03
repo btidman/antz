@@ -7,8 +7,10 @@ function ReturnFoodToNestBehavior(ant){
 
 ReturnFoodToNestBehavior.prototype.doBehavior = function(){
     var nextCell = this.ant.trail.pop();
-    var pheromone = this.ant.decider.getPheromoneAmountFromTrailLength(this.ant);
+    //var pheromone = this.ant.decider.getPheromoneAmountFromTrailLength(this.ant);
+    var pheromone = 4 - Math.log10(this.ant.stepsTowardNest);
     nextCell.addPheromone(pheromone);
+    this.ant.stepsTowardNest++;
     this.ant.moveToCell(nextCell);
 }
 

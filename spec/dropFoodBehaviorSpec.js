@@ -30,6 +30,11 @@ describe("Drop Food Behavior", function(){
         var currentCell = ant.trail[0];
         expect(currentCell.x).toEqual(ant.x);
         expect(currentCell.y).toEqual(ant.y);
+    });
 
+    it("should clear steps toward nest.", function(){
+        ant.stepsTowardNest = 10;
+        dropFoodBehavior.doBehavior();
+        expect(ant.stepsTowardNest).toEqual(0);
     });
 });

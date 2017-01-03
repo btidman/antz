@@ -41,7 +41,7 @@ describe("Move Behavior", function(){
         moveBehavior.doBehavior();
 
         expect(ant.trail[1].x).toEqual(0);
-        expect(ant.trail[1].y).toEqual(1);
+        expect(ant.trail[1].y).toEqual(0);
     });
     
     it("should pick a cell to move to.", function(){

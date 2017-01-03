@@ -11,20 +11,39 @@ Detector.prototype.detectCells = function(){
     var x = this.ant.x;
     var y = this.ant.y;
 
-
+    if(y - 2 >= 0){
+        cellsToAdd.push(this.ant.cells[y - 2][x - 2]);
+        cellsToAdd.push(this.ant.cells[y - 2][x - 1]);
+        cellsToAdd.push(this.ant.cells[y - 2][x]);
+        cellsToAdd.push(this.ant.cells[y - 2][x + 1]);
+        cellsToAdd.push(this.ant.cells[y - 2][x + 2]);
+    }
     if(y - 1 >= 0){
+        cellsToAdd.push(this.ant.cells[y - 1][x - 2]);
         cellsToAdd.push(this.ant.cells[y - 1][x - 1]);
         cellsToAdd.push(this.ant.cells[y - 1][x]);
         cellsToAdd.push(this.ant.cells[y - 1][x + 1]);
+        cellsToAdd.push(this.ant.cells[y - 1][x + 2]);
     }
 
+    cellsToAdd.push(this.ant.cells[y][x - 2]);
     cellsToAdd.push(this.ant.cells[y][x - 1]);
     cellsToAdd.push(this.ant.cells[y][x + 1]);
+    cellsToAdd.push(this.ant.cells[y][x + 2]);
 
     if(y + 1 < maxY){
+        cellsToAdd.push(this.ant.cells[y + 1][x - 2]);
         cellsToAdd.push(this.ant.cells[y + 1][x - 1]);
         cellsToAdd.push(this.ant.cells[y + 1][x]);
         cellsToAdd.push(this.ant.cells[y + 1][x + 1]);
+        cellsToAdd.push(this.ant.cells[y + 1][x + 2]);
+    }
+    if(y + 2 < maxY){
+        cellsToAdd.push(this.ant.cells[y + 2][x - 2]);
+        cellsToAdd.push(this.ant.cells[y + 2][x - 1]);
+        cellsToAdd.push(this.ant.cells[y + 2][x]);
+        cellsToAdd.push(this.ant.cells[y + 2][x + 1]);
+        cellsToAdd.push(this.ant.cells[y + 2][x + 2]);
     }
 
     return this.filterUndefinedCells(cellsToAdd);
@@ -146,23 +165,23 @@ Detector.prototype.pickNextCell = function(cellsToPickFrom){
 
     for(var x = 0; x < cellsToPickFrom.length; x++){
 
-        var randomValue = Math.random();
-        var randomValue2 = Math.random();
+        var randomWeight = Math.random();
+        var randomChanceToNotConsiderPheromone = Math.random();
         
-        if(randomValue2 < .95 && cellsToPickFrom[x].pheromone){
+        if(randomChanceToNotConsiderPheromone < .95 && cellsToPickFrom[x].pheromone){
             var toAdd = cellsToPickFrom[x].pheromone;
 
             if(this.ant.trail.indexOf(cellsToPickFrom[x]) != -1){
                 toAdd = toAdd/5;
             }
 
-            randomValue += toAdd;
+            randomWeight += toAdd;
         }
 
-        if(randomValue > highestValue && 
+        if(randomWeight > highestValue && 
             cellsToPickFrom[x] != lastCell){
             
-            highestValue = randomValue;
+            highestValue = randomWeight;
             indexToMoveTo = x;
         }
     }
@@ -170,10 +189,10 @@ Detector.prototype.pickNextCell = function(cellsToPickFrom){
     if(indexToMoveTo == -1){
         for(var x = 0; x < cellsToPickFrom.length; x++){
 
-            var randomValue = Math.random();
+            var randomWeight = Math.random();
             
-            if(randomValue > highestValue){
-                highestValue = randomValue;
+            if(randomWeight > highestValue){
+                highestValue = randomWeight;
                 indexToMoveTo = x;
             }
         }

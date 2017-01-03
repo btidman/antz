@@ -21,19 +21,30 @@ describe("Detector for ant", function(){
     });
 
     it("should know what cells are around the ant", function(){
+        ant = antHelper.createTestAntInBigWorld();
+        detector = new Detector(ant);
+
         var result = detector.detectCells();
+        expect(result).toContain(ant.cells[1][1]);
+        expect(result).toContain(ant.cells[1][2]);
+        expect(result).toContain(ant.cells[1][3]);
+        expect(result).toContain(ant.cells[2][1]);
+        expect(result).toContain(ant.cells[2][2]);
+        expect(result).toContain(ant.cells[2][3]);
+        expect(result).toContain(ant.cells[3][1]);
+        expect(result).toContain(ant.cells[3][2]);
+
+        ant.moveToCell(ant.cells[0][0]);
+
+        var result = detector.detectCells();
+        expect(result).toContain(ant.cells[0][1]);
+        expect(result).toContain(ant.cells[0][2]);
         expect(result).toContain(ant.cells[1][0]);
         expect(result).toContain(ant.cells[1][1]);
-        expect(result).toContain(ant.cells[2][0]);
-
-        ant.moveToCell(ant.cells[1][0]);
-
-        var result = detector.detectCells();
-        expect(result).toContain(ant.cells[0][0]);
-        expect(result).toContain(ant.cells[0][1]);
-        expect(result).toContain(ant.cells[1][1]);
+        expect(result).toContain(ant.cells[1][2]);
         expect(result).toContain(ant.cells[2][0]);
         expect(result).toContain(ant.cells[2][1]);
+        expect(result).toContain(ant.cells[2][2]);
     });
 
     it("can remove undefined from a collection of cells", function(){
@@ -88,7 +99,9 @@ describe("Detector for ant", function(){
 
     it("should occasionally not consider the pheromone in order to generate some new paths", function(){
         ant.cells[1][0].addPheromone(9);
-        spyOn(Math, "random").and.returnValues(0, .95, 
+        spyOn(Math, "random").and.returnValues(0, 0, 
+                                                0, 0,
+                                                0, .95,
                                                 .1, 0,
                                                 0, 0);
         

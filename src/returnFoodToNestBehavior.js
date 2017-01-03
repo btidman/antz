@@ -11,9 +11,9 @@ ReturnFoodToNestBehavior.prototype.doBehavior = function(){
     var pheromone = 4 - Math.log10(this.ant.stepsTowardNest);
 
     nextCell.addPheromone(pheromone);
-    for(var x = 0; x < this.ant.surroundingCells.length; x++){
-        this.ant.surroundingCells[x].addPheromone(pheromone/2);
-    }
+    // for(var x = 0; x < this.ant.surroundingCells.length; x++){
+    //     this.ant.surroundingCells[x].addPheromone(pheromone/2);
+    // }
     this.ant.stepsTowardNest++;
     
     

@@ -13,30 +13,30 @@ Detector.prototype.detectCloseCells = function(){
     var y = this.ant.y;
 
     if(y - 1 >= 0){
-        addCellsFromRowBelow(x, y, cellsToAdd);
+        this.addCellsFromRowBelow(x, y, cellsToAdd);
     }
 
-    addCellsOnLeftAndRight(x,y,cellsToAdd);
+    this.addCellsOnLeftAndRight(x,y,cellsToAdd);
 
     if(y + 1 < maxY){
-        addCellsFromRowAbove(x,y,cellsToAdd);
+        this.addCellsFromRowAbove(x,y,cellsToAdd);
     }
 
     return this.filterUndefinedCells(cellsToAdd);
 }
 
-addCellsOnLeftAndRight = function(x,y,cellsToAdd){
+Detector.prototype.addCellsOnLeftAndRight = function(x,y,cellsToAdd){
     cellsToAdd.push(this.ant.cells[y][x - 1]);
     cellsToAdd.push(this.ant.cells[y][x + 1]);
 }
 
-addCellsFromRowBelow = function(x, y, cellsToAdd){
+Detector.prototype.addCellsFromRowBelow = function(x, y, cellsToAdd){
     cellsToAdd.push(this.ant.cells[y - 1][x - 1]);
     cellsToAdd.push(this.ant.cells[y - 1][x]);
     cellsToAdd.push(this.ant.cells[y - 1][x + 1]);    
 }
 
-addCellsFromRowAbove = function(x, y, cellsToAdd){
+Detector.prototype.addCellsFromRowAbove = function(x, y, cellsToAdd){
     cellsToAdd.push(this.ant.cells[y + 1][x - 1]);
     cellsToAdd.push(this.ant.cells[y + 1][x]);
     cellsToAdd.push(this.ant.cells[y + 1][x + 1]); 
@@ -58,22 +58,17 @@ Detector.prototype.detectCells = function(){
     }
     if(y - 1 >= 0){
         cellsToAdd.push(this.ant.cells[y - 1][x - 2]);
-        cellsToAdd.push(this.ant.cells[y - 1][x - 1]);
-        cellsToAdd.push(this.ant.cells[y - 1][x]);
-        cellsToAdd.push(this.ant.cells[y - 1][x + 1]);
+        this.addCellsFromRowBelow(x, y, cellsToAdd);
         cellsToAdd.push(this.ant.cells[y - 1][x + 2]);
     }
 
     cellsToAdd.push(this.ant.cells[y][x - 2]);
-    cellsToAdd.push(this.ant.cells[y][x - 1]);
-    cellsToAdd.push(this.ant.cells[y][x + 1]);
+    this.addCellsOnLeftAndRight(x,y,cellsToAdd);
     cellsToAdd.push(this.ant.cells[y][x + 2]);
 
     if(y + 1 < maxY){
         cellsToAdd.push(this.ant.cells[y + 1][x - 2]);
-        cellsToAdd.push(this.ant.cells[y + 1][x - 1]);
-        cellsToAdd.push(this.ant.cells[y + 1][x]);
-        cellsToAdd.push(this.ant.cells[y + 1][x + 1]);
+        this.addCellsFromRowAbove(x,y,cellsToAdd);
         cellsToAdd.push(this.ant.cells[y + 1][x + 2]);
     }
     if(y + 2 < maxY){
@@ -126,12 +121,19 @@ Detector.prototype.detectCellsNorthOfLocation = function(){
     var y = this.ant.y;
     
     if(y - 1 >= 0){
+        result.push(this.ant.cells[y - 1][x - 2]);
         result.push(this.ant.cells[y - 1][x - 1]);
         result.push(this.ant.cells[y - 1][x]);
         result.push(this.ant.cells[y - 1][x + 1]);
+        result.push(this.ant.cells[y - 1][x + 2]);
     }
-    result.push(this.ant.cells[y][x + 1]);
-    result.push(this.ant.cells[y][x - 1]);
+    if(y - 2 >= 0){
+        result.push(this.ant.cells[y - 2][x - 2]);
+        result.push(this.ant.cells[y - 2][x - 1]);
+        result.push(this.ant.cells[y - 2][x]);
+        result.push(this.ant.cells[y - 2][x + 1]);
+        result.push(this.ant.cells[y - 2][x + 2]);
+    }
 
     return result;
 }
@@ -143,13 +145,19 @@ Detector.prototype.detectCellsSouthOfLocation = function(){
     var y = this.ant.y;
 
     if(y + 1 < maxY){
+        result.push(this.ant.cells[y + 1][x - 2]);
         result.push(this.ant.cells[y + 1][x - 1]);
         result.push(this.ant.cells[y + 1][x]);
         result.push(this.ant.cells[y + 1][x + 1]);
+        result.push(this.ant.cells[y + 1][x + 2]);
     }
-    result.push(this.ant.cells[y][x + 1]);
-    result.push(this.ant.cells[y][x - 1]);
-
+    if(y + 2  < maxY){
+        result.push(this.ant.cells[y + 2][x - 2]);
+        result.push(this.ant.cells[y + 2][x - 1]);
+        result.push(this.ant.cells[y + 2][x]);
+        result.push(this.ant.cells[y + 2][x + 1]);
+        result.push(this.ant.cells[y + 2][x + 2]);
+    }
     return result;
 }
 
@@ -159,16 +167,26 @@ Detector.prototype.detectCellsEastOfLocation = function(){
     var x = this.ant.x;
     var y = this.ant.y;
 
+    if(y - 2 >= 0){
+        result.push(this.ant.cells[y - 2][x + 1]);
+        result.push(this.ant.cells[y - 2][x + 2]);
+    }
+
     if(y - 1 >= 0){
         result.push(this.ant.cells[y - 1][x + 1]);
-        result.push(this.ant.cells[y - 1][x]);
+        result.push(this.ant.cells[y - 1][x + 2]);
     }
 
     result.push(this.ant.cells[y][x + 1]);
+    result.push(this.ant.cells[y][x + 2]);
     
     if(y + 1 < maxY){
         result.push(this.ant.cells[y + 1][x + 1]);
-        result.push(this.ant.cells[y + 1][x]);
+        result.push(this.ant.cells[y + 1][x + 2]);
+    }
+    if(y + 2 < maxY){
+        result.push(this.ant.cells[y + 2][x + 1]);
+        result.push(this.ant.cells[y + 2][x + 2]);
     }
 
     return result;
@@ -180,16 +198,26 @@ Detector.prototype.detectCellsWestOfLocation = function(){
     var x = this.ant.x;
     var y = this.ant.y;
 
+    if(y - 2 >= 0){
+        result.push(this.ant.cells[y - 2][x - 1]);
+        result.push(this.ant.cells[y - 2][x - 2]);
+    }
+
     if(y - 1 >= 0){
         result.push(this.ant.cells[y - 1][x - 1]);
-        result.push(this.ant.cells[y - 1][x]);
+        result.push(this.ant.cells[y - 1][x - 2]);
     }
 
     result.push(this.ant.cells[y][x - 1]);
+    result.push(this.ant.cells[y][x - 2]);
     
     if(y + 1 < maxY){
         result.push(this.ant.cells[y + 1][x - 1]);
-        result.push(this.ant.cells[y + 1][x]);
+        result.push(this.ant.cells[y + 1][x - 2]);
+    }
+    if(y + 2 < maxY){
+        result.push(this.ant.cells[y + 2][x - 1]);
+        result.push(this.ant.cells[y + 2][x - 2]);
     }
 
     return result;

@@ -6,9 +6,9 @@ function MoveBehavior(ant){
 
 MoveBehavior.prototype.doBehavior = function(){
 
-    //var frontCells = this.ant.detector.detectFrontCells();
+    var frontCells = this.ant.detector.detectFrontCells();
 
-    var nextCell = this.ant.detector.pickNextCell(this.ant.surroundingCells);
+    var nextCell = this.ant.detector.pickNextCell(frontCells);
 
     if(nextCell){
         this.ant.moveToCell(nextCell);

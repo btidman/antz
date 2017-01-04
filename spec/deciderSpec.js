@@ -16,11 +16,20 @@ describe("Decider", function(){
     }); 
 
     it("should return a move behavior when pheromone is in front.", function(){
-        spyOn(ant.detector, "hasPheromoneNearby").and.returnValue(true);
+        spyOn(ant.detector, "hasPheromoneInFront").and.returnValue(true);
 
         var behavior = decider.getNewBehavior(ant);
         
         expect(behavior.type).toEqual("Move");
+    });
+    
+    it("should return a turn behavior when pheromone is nearby but not in front.", function(){
+        spyOn(ant.detector, "hasPheromoneInFront").and.returnValue(false);
+        spyOn(ant.detector, "hasPheromoneNearby").and.returnValue(true);
+
+        var behavior = decider.getNewBehavior(ant);
+        
+        expect(behavior.type).toEqual("Turn");
     });
 
     it("should return a random move Behavior.", function(){

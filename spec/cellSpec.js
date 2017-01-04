@@ -72,6 +72,26 @@ describe("Cell", function(){
         expect(cell.sprite.texture).toEqual(PHEROMONE_TEXTURE);
     });
 
+    it("should remove sprites for other textures when pheromone is added.", function(){
+        spyOn(container, "removeChild");
+        cell.addPheromone(50);
+        expect(container.removeChild).toHaveBeenCalled();
+    });
+
+    it("should not remove sprites for pheromone when pheromone is added.", function(){
+        cell.addPheromone(50);
+        spyOn(container, "removeChild");
+        cell.addPheromone(50);
+        expect(container.removeChild).not.toHaveBeenCalled();
+    });
+
+    it("should not re-add the pheromone sprite every time add pheromone is called", function(){
+        cell.addPheromone(50);
+        spyOn(container, "addChildAt");
+        cell.addPheromone(50);
+        expect(container.addChildAt).not.toHaveBeenCalled();
+    });
+
     it("should not show pheromone anymore when there is none left.", function(){
         cell.addPheromone(.1);
         expect(cell.sprite.renderable).toEqual(true);
@@ -133,6 +153,14 @@ describe("Cell", function(){
         cell.addPheromone(5);
         expect(cell.pheromone).toEqual(4);
     });
+
+    it("should not have negative pheromone as time advances.", function(){
+        cell.addPheromone(0.01);
+        expect(cell.pheromone).toEqual(0.01);
+        cell.advance();
+        expect(cell.pheromone).toEqual(0);
+    });
+
     it("should not add pheromone to food or nest.", function(){
         cell.addFood(1000);
         cell.addPheromone(4);

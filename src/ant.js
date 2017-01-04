@@ -32,7 +32,7 @@ function Ant(x, y, cells, container){
 Ant.prototype.turnRight = function(newDirection){
 
     this.direction++; 
-    if(this.direction > 2){
+    if(this.direction > 3){
         this.direction = 0;
     }
 

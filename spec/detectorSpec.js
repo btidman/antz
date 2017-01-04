@@ -189,23 +189,22 @@ describe("Detector for ant", function(){
         var result = detector.detectFrontCells();
         expect(result).toContain(ant.cells[1][0]);
         expect(result).toContain(ant.cells[1][1]);
-        expect(result).toContain(ant.cells[2][0]);
-        expect(result.length).toEqual(3);
+        expect(result).toContain(ant.cells[0][0]);
+        expect(result).toContain(ant.cells[0][1]);
+        expect(result.length).toEqual(4);
 
         ant.turnRight();
         result = detector.detectFrontCells();
-        expect(result).toContain(ant.cells[1][1]);
-        expect(result.length).toEqual(1);
+        expect(result.length).toEqual(0);
         
         ant.turnRight();
         result = detector.detectFrontCells();
-        expect(result).toContain(ant.cells[2][0]);
-        expect(result.length).toEqual(1);
+        expect(result.length).toEqual(0);
         
         ant.turnRight();
         result = detector.detectFrontCells();
         expect(result.length).toEqual(3);
-        expect(result).toContain(ant.cells[1][1]);
+        expect(result).toContain(ant.cells[0][0]);
         expect(result).toContain(ant.cells[1][0]);
         expect(result).toContain(ant.cells[2][0]);
     });
@@ -215,33 +214,43 @@ describe("Detector for ant", function(){
 
         expect(result).toContain(ant.cells[1][0]);
         expect(result).toContain(ant.cells[1][1]);
-        expect(result).toContain(ant.cells[2][0]);
+        expect(result).toContain(ant.cells[0][0]);
+        expect(result).toContain(ant.cells[0][1]);
         expect(result).toContain(undefined);
-        expect(result.length).toEqual(5);
+        expect(result.length).toEqual(10);
     });
 
     it("should be able to detect what cells are east", function(){
+        ant.moveToCell(ant.cells[1][0]);
         var result = detector.detectCellsEastOfLocation();
         
-        expect(result.length).toEqual(3);
+        expect(result.length).toEqual(6);
+        expect(result).toContain(ant.cells[0][1]);
         expect(result).toContain(ant.cells[1][1]);
+        expect(result).toContain(ant.cells[2][1]);
         expect(result).toContain(undefined);
     });
 
     it("should be able to detect what cells are west", function(){
+        ant.moveToCell(ant.cells[1][1]);
         var result = detector.detectCellsWestOfLocation();
 
-        expect(result.length).toEqual(3);
+        expect(result.length).toEqual(6);
         expect(result).toContain(cells[1][0]);
         expect(result).toContain(cells[2][0]);
-        expect(result).toContain(cells[1][1]);
+        expect(result).toContain(cells[0][0]);
+        expect(result).toContain(undefined);
     });
 
     it("should be able to detect what cells are south", function(){
+        ant.moveToCell(ant.cells[0][1]);
         var result = detector.detectCellsSouthOfLocation();
         expect(result).toContain(undefined);
         expect(result).toContain(cells[2][0]);
-        expect(result.length).toEqual(2);
+        expect(result).toContain(cells[2][1]);
+        expect(result).toContain(cells[1][0]);
+        expect(result).toContain(cells[1][1]);
+        expect(result.length).toEqual(10);
     });
 
     it("should detect and remove lops in trail", function(){

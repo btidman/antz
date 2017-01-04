@@ -67,6 +67,9 @@ Cell.prototype.addPheromone = function(pheromoneAmount){
 Cell.prototype.advance = function(){
     if(this.pheromone > 0){
         this.pheromone = +(this.pheromone - .1).toFixed(2);
+        if(this.pheromone < 0){
+            this.pheromone = 0;
+        }
         var alpha = +(this.pheromone/4).toFixed(2);
         if(alpha >= 1){
             alpha = .99

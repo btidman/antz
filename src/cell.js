@@ -49,7 +49,7 @@ Cell.prototype.addPheromone = function(pheromoneAmount){
         this.sprite.renderable = true;
         var alpha = +(this.pheromone/4).toFixed(2);
         if(alpha >= 1){
-            alpha = .99
+            alpha = 0.99;
         }
         this.sprite.alpha = alpha;
         
@@ -59,10 +59,10 @@ Cell.prototype.addPheromone = function(pheromoneAmount){
 
 Cell.prototype.advance = function(){
     if(this.pheromone > 0){
-        this.pheromone = +(this.pheromone - .1).toFixed(2);
+        this.pheromone = +(this.pheromone - 0.1).toFixed(2);
         var alpha = +(this.pheromone/4).toFixed(2);
         if(alpha >= 1){
-            alpha = .99
+            alpha = 0.99;
         }
         this.sprite.alpha = alpha;
     }

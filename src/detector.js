@@ -12,25 +12,35 @@ Detector.prototype.detectCloseCells = function(){
     var x = this.ant.x;
     var y = this.ant.y;
 
-
     if(y - 1 >= 0){
-        cellsToAdd.push(this.ant.cells[y - 1][x - 1]);
-        cellsToAdd.push(this.ant.cells[y - 1][x]);
-        cellsToAdd.push(this.ant.cells[y - 1][x + 1]);
+        addCellsFromRowBelow(x, y, cellsToAdd);
     }
 
-    cellsToAdd.push(this.ant.cells[y][x - 1]);
-    cellsToAdd.push(this.ant.cells[y][x + 1]);
+    addCellsOnLeftAndRight(x,y,cellsToAdd);
 
     if(y + 1 < maxY){
-        cellsToAdd.push(this.ant.cells[y + 1][x - 1]);
-        cellsToAdd.push(this.ant.cells[y + 1][x]);
-        cellsToAdd.push(this.ant.cells[y + 1][x + 1]);
+        addCellsFromRowAbove(x,y,cellsToAdd);
     }
 
     return this.filterUndefinedCells(cellsToAdd);
 }
 
+addCellsOnLeftAndRight = function(x,y,cellsToAdd){
+    cellsToAdd.push(this.ant.cells[y][x - 1]);
+    cellsToAdd.push(this.ant.cells[y][x + 1]);
+}
+
+addCellsFromRowBelow = function(x, y, cellsToAdd){
+    cellsToAdd.push(this.ant.cells[y - 1][x - 1]);
+    cellsToAdd.push(this.ant.cells[y - 1][x]);
+    cellsToAdd.push(this.ant.cells[y - 1][x + 1]);    
+}
+
+addCellsFromRowAbove = function(x, y, cellsToAdd){
+    cellsToAdd.push(this.ant.cells[y + 1][x - 1]);
+    cellsToAdd.push(this.ant.cells[y + 1][x]);
+    cellsToAdd.push(this.ant.cells[y + 1][x + 1]); 
+}
 
 Detector.prototype.detectCells = function(){
     

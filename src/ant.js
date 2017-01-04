@@ -31,24 +31,20 @@ function Ant(x, y, cells, container){
 
 Ant.prototype.turnRight = function(newDirection){
 
-    var newDirection = this.direction + 1;
-    if(newDirection > 3){
-        newDirection = 0;
+    this.direction++; 
+    if(this.direction > 2){
+        this.direction = 0;
     }
-
-    this.direction = newDirection;
 
     this.tweenRotation(this.sprite.rotation + this.rotate90);
 }
 
-Ant.prototype.turnLeft = function(newDirection){
+Ant.prototype.turnLeft = function(){
 
-    var newDirection = this.direction - 1;
-    if(newDirection < 0){
-        newDirection = 3;
+    this.direction--;
+    if(this.direction < 0){
+        this.direction = 3;
     }
-
-    this.direction = newDirection;
 
     this.tweenRotation(this.sprite.rotation - this.rotate90);
 }
@@ -56,11 +52,6 @@ Ant.prototype.turnLeft = function(newDirection){
 Ant.prototype.tweenRotation = function(newRotation){
     
     this.sprite.rotation = newRotation;
-    // this.tween.to({ tempRotation: newRotation}, antSpeed);
-    // this.tween.onUpdate(function() {
-    //     this.sprite.rotation = this.tempRotation;
-    // });
-    // this.tween.start();
 }
 
 

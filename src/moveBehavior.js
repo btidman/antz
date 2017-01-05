@@ -8,15 +8,18 @@ MoveBehavior.prototype.doBehavior = function(){
 
     var frontCells = this.ant.detector.detectFrontCells();
 
-    var nextCell = this.ant.detector.pickNextCell(frontCells);
+    var landmarkCell = this.ant.detector.pickNextLandMark(frontCells);
+    
+    if(landmarkCell){
+        var closeCells = this.ant.detector.detectCloseCells();
+        var cellToMoveTo = this.ant.detector.findClosestToLandmark(landmarkCell, closeCells);
 
-    if(nextCell){
-        this.ant.moveToCell(nextCell);
+        this.ant.moveToCell(cellToMoveTo);
 
-        if(this.ant.trail.indexOf(nextCell) == -1){
-            this.ant.trail.push(nextCell);  
+        if(this.ant.trail.indexOf(cellToMoveTo) == -1){
+            this.ant.trail.push(cellToMoveTo);  
         }else{ 
-            while(this.ant.trail[this.ant.trail.length - 1] != nextCell){
+            while(this.ant.trail[this.ant.trail.length - 1] != cellToMoveTo){
                 this.ant.trail.pop();
             }
         }

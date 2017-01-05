@@ -223,7 +223,23 @@ Detector.prototype.detectCellsWestOfLocation = function(){
     return result;
 }
 
-Detector.prototype.pickNextCell = function(cellsToPickFrom){
+Detector.prototype.findClosestToLandmark = function(landmarkCell, cellsToPickFrom){
+    var bestDistance = 100000;
+    var result = null;
+    for(var index = 0; index < cellsToPickFrom.length; index++){
+        var xDistance = Math.abs(cellsToPickFrom[index].x - landmarkCell.x);
+        var yDistance = Math.abs(cellsToPickFrom[index].y - landmarkCell.y);
+        var tempTotal = xDistance + yDistance;
+        if(tempTotal < bestDistance){
+            bestDistance = tempTotal;
+            result = cellsToPickFrom[index];
+        }
+    }
+    
+    return result;
+}
+
+Detector.prototype.pickNextLandMark = function(cellsToPickFrom){
     var highestValue = -1;
     var indexToMoveTo = -1;
     var lastCell = this.ant.trail[this.ant.trail.length-2];

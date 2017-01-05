@@ -8,7 +8,7 @@ window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
 window.NEST_TEXTURE = PIXI.Texture.fromImage('../nest.png');
 window.PHEROMONE_TEXTURE = PIXI.Texture.fromImage('../pheromone.png');
 
-window.evaporationSpeed = 1000;
+window.evaporationSpeed = 500;
 window.antSpeed = 5;
 
 

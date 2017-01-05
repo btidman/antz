@@ -75,7 +75,7 @@ describe("Detector for ant", function(){
         spyOn(Math, "random").and.returnValue(.99,0);
         
         ant.detectCells();
-        var actualCell = detector.pickNextCell(ant.surroundingCells);
+        var actualCell = detector.pickNextLandMark(ant.surroundingCells);
         
         expect(Math.random).toHaveBeenCalled();
         expect(actualCell).toEqual(ant.surroundingCells[0]);
@@ -87,10 +87,20 @@ describe("Detector for ant", function(){
         spyOn(Math, "random").and.returnValue(0);
         
         ant.detectCells();
-        var actualCell = detector.pickNextCell(ant.surroundingCells);
+        var actualCell = detector.pickNextLandMark(ant.surroundingCells);
 
         expect(actualCell.x).toEqual(1);
         expect(actualCell.y).toEqual(1);
+    });
+
+    it("should pick the cell that is closest to the landmark.", function(){
+        ant = antHelper.createTestAntInBigWorld();
+        var landmark = ant.cells[1][1];
+        var expected = ant.cells[2][2];
+        ant.detectCells();
+        var cells = ant.detector.detectCloseCells();
+        var actual = detector.findClosestToLandmark(landmark, cells);
+        expect(actual).toEqual(expected);
     });
 
     it("should be more likely to pick a cell that has pheromone on it that's not in the trail", function(){
@@ -107,7 +117,7 @@ describe("Detector for ant", function(){
 
         spyOn(Math, "random").and.returnValue(.1);
         
-        var actualCell = detector.pickNextCell(ant.surroundingCells);
+        var actualCell = detector.pickNextLandMark(ant.surroundingCells);
 
         expect(actualCell.x).toEqual(1);
         expect(actualCell.y).toEqual(0);
@@ -122,7 +132,7 @@ describe("Detector for ant", function(){
                                                 0, 0);
         
         ant.detectCells();
-        var actualCell = detector.pickNextCell(ant.surroundingCells);
+        var actualCell = detector.pickNextLandMark(ant.surroundingCells);
 
         expect(actualCell.x).toEqual(1);
         expect(actualCell.y).toEqual(1);
@@ -139,7 +149,7 @@ describe("Detector for ant", function(){
         ant.moveToCell(ant.cells[1][0]);
         ant.trail.push(ant.cells[1][0]);
         ant.detectCells();
-        var actualCell = detector.pickNextCell(ant.surroundingCells);
+        var actualCell = detector.pickNextLandMark(ant.surroundingCells);
 
         expect(actualCell.x).toEqual(0);
         expect(actualCell.y).toEqual(0);
@@ -153,7 +163,7 @@ describe("Detector for ant", function(){
         ant.moveToCell(ant.cells[1][1]);
         ant.trail.push(ant.cells[1][1]);
         ant.detectCells();
-        var actualCell = detector.pickNextCell(ant.surroundingCells);
+        var actualCell = detector.pickNextLandMark(ant.surroundingCells);
 
         expect(actualCell.x).toEqual(0);
         expect(actualCell.y).toEqual(0);

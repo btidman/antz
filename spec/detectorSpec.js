@@ -18,6 +18,7 @@ describe("Detector for ant", function(){
         ant = antHelper.createTestAnt();
         
         detector = new Detector(ant);
+        ant.surroundingCells = [ant.cells[0][0], ant.cells[0][1], ant.cells[1][0], ant.cells[1][1], ant.cells[2][0]];
     });
 
     it("should know what cells are immediatly close to it", function(){
@@ -70,11 +71,20 @@ describe("Detector for ant", function(){
         expect(result).toContain(newCell);
         expect(result).not.toContain(undefined);
     });
+
+    it("should shuffle the results when removing undefined cells", function(){
+        var newCell = new Cell(5,5, container);
+        var cellsToAdd = [newCell, undefined];
+        spyOn(detector.shuffler, "shuffleArray")
+        
+        var result = detector.filterUndefinedCells(cellsToAdd);
+
+        expect(detector.shuffler.shuffleArray).toHaveBeenCalledWith(result);
+    });
     
     it("can pick a random front cell.", function(){
         spyOn(Math, "random").and.returnValue(.99,0);
         
-        ant.detectCells();
         var actualCell = detector.pickNextLandMark(ant.surroundingCells);
         
         expect(Math.random).toHaveBeenCalled();
@@ -86,7 +96,6 @@ describe("Detector for ant", function(){
         ant.cells[1][1].addPheromone(10);
         spyOn(Math, "random").and.returnValue(0);
         
-        ant.detectCells();
         var actualCell = detector.pickNextLandMark(ant.surroundingCells);
 
         expect(actualCell.x).toEqual(1);
@@ -97,7 +106,7 @@ describe("Detector for ant", function(){
         ant = antHelper.createTestAntInBigWorld();
         var landmark = ant.cells[1][1];
         var expected = ant.cells[2][2];
-        ant.detectCells();
+        
         var cells = ant.detector.detectCloseCells();
         var actual = detector.findClosestToLandmark(landmark, cells);
         expect(actual).toEqual(expected);
@@ -111,8 +120,6 @@ describe("Detector for ant", function(){
         
         ant.trail.push(ant.cells[1][0])
         ant.trail.push(ant.cells[0][1]);
-        
-        ant.detectCells();
 
         spyOn(Math, "random").and.returnValue(.1);
         
@@ -124,13 +131,14 @@ describe("Detector for ant", function(){
 
     it("should occasionally not consider the pheromone in order to generate some new paths", function(){
         ant.cells[1][0].addPheromone(9);
+        
         spyOn(Math, "random").and.returnValues(0, 0, 
                                                 0, 0,
-                                                0, .95,
+                                                0, .96,
                                                 .1, 0,
                                                 0, 0);
         
-        ant.detectCells();
+        
         var actualCell = detector.pickNextLandMark(ant.surroundingCells);
 
         expect(actualCell.x).toEqual(1);
@@ -147,21 +155,22 @@ describe("Detector for ant", function(){
         
         ant.moveToCell(ant.cells[1][0]);
         ant.trail.push(ant.cells[1][0]);
-        ant.detectCells();
+        
         var actualCell = detector.pickNextLandMark(ant.surroundingCells);
 
-        expect(actualCell.x).toEqual(0);
-        expect(actualCell.y).toEqual(0);
+        expect(actualCell.x).not.toEqual(2);
+        expect(actualCell.y).not.toEqual(1);
     });
 
     it("should not pick a cell from the trail if there is pheromone nearby.", function(){
-        spyOn(Math, "random").and.returnValues(0, 0, 0, 0, .99);
+        
         ant.cells[0][0].addPheromone(10);
         ant.moveToCell(ant.cells[1][0]);
         ant.trail.push(ant.cells[1][0]);
         ant.moveToCell(ant.cells[1][1]);
         ant.trail.push(ant.cells[1][1]);
-        ant.detectCells();
+        
+        spyOn(Math, "random").and.returnValues(0, 0, 0, 0, .99);
         var actualCell = detector.pickNextLandMark(ant.surroundingCells);
 
         expect(actualCell.x).toEqual(0);
@@ -276,7 +285,6 @@ describe("Detector for ant", function(){
     it("should detect the best nearby cell with pheromone on it.", function(){
 
         ant.cells[0][0].addPheromone(3);
-        ant.detectCells();
         var bestCell = detector.findBestCell();
         expect(bestCell).toEqual(ant.cells[0][0]);
     });
@@ -286,14 +294,13 @@ describe("Detector for ant", function(){
         ant.cells[0][0].addPheromone(3);
         ant.cells[1][1].addPheromone(.61);
         ant.trail.push(ant.cells[0][0]);
-        ant.detectCells();
         var bestCell = detector.findBestCell();
         expect(bestCell).toEqual(ant.cells[1][1]);
     });
 
     it("should return true when the best cell is in front.", function(){
         ant.cells[0][0].addPheromone(1.5);
-        ant.detectCells();
+        
         var actual = detector.isBestCellInFront();
         expect(actual).toEqual(true);
     });
@@ -301,7 +308,6 @@ describe("Detector for ant", function(){
     it("should return false when the best cell is not in front.", function(){
         ant.cells[0][0].addPheromone(1.5);
         ant.turnRight();
-        ant.detectCells();
         var actual = detector.isBestCellInFront();
         expect(actual).toEqual(false);
     });

@@ -1,7 +1,9 @@
+var ArrayShuffler = require("./arrayShuffler");
 
 function Detector(ant){
 
     this.ant = ant;
+    this.shuffler = new ArrayShuffler();
 }
 
 
@@ -92,15 +94,7 @@ Detector.prototype.filterUndefinedCells = function(newCells){
         }
     }
 
-    var count = result.length,
-        randomnumber,
-        temp;
-    while( count ){
-        randomnumber = Math.random() * count-- | 0;
-        temp = result[count];
-        result[count] = result[randomnumber];
-        result[randomnumber] = temp
-    }
+    this.shuffler.shuffleArray(result);
 
     return result;
 }
@@ -335,7 +329,7 @@ Detector.prototype.findBestCell = function(){
     for(var x = 0; x < this.ant.surroundingCells.length; x++){
         var pheromoneForCell = this.ant.surroundingCells[x].pheromone;
         
-        if(this.ant.trail.indexOf(this.ant.surroundingCells[x]) > 0){
+        if(this.ant.trail.indexOf(this.ant.surroundingCells[x]) >= 0){
             pheromoneForCell = pheromoneForCell/5;
         }
 
@@ -353,7 +347,7 @@ Detector.prototype.isBestCellInFront = function(){
     var result = false;
     var bestCell = this.findBestCell();
     
-    if(frontCells.indexOf(bestCell) > 0){
+    if(frontCells.indexOf(bestCell) >= 0){
         result = true;
     }
 

@@ -110,8 +110,7 @@ describe("Detector for ant", function(){
         ant.cells[0][1].addPheromone(10);
         
         ant.trail.push(ant.cells[1][0])
-        ant.trail.push(ant.cells[1][1]);
-        ant.moveToCell(ant.cells[1][1]);
+        ant.trail.push(ant.cells[0][1]);
         
         ant.detectCells();
 
@@ -120,7 +119,7 @@ describe("Detector for ant", function(){
         var actualCell = detector.pickNextLandMark(ant.surroundingCells);
 
         expect(actualCell.x).toEqual(1);
-        expect(actualCell.y).toEqual(0);
+        expect(actualCell.y).toEqual(1);
     });
 
     it("should occasionally not consider the pheromone in order to generate some new paths", function(){
@@ -272,5 +271,38 @@ describe("Detector for ant", function(){
         detector.detectAndRemoveLoops();
         expect(ant.trail.length).toEqual(1);
         expect(ant.trail).toContain(ant.cells[2][1]);
-    })
+    });
+
+    it("should detect the best nearby cell with pheromone on it.", function(){
+
+        ant.cells[0][0].addPheromone(3);
+        ant.detectCells();
+        var bestCell = detector.findBestCell();
+        expect(bestCell).toEqual(ant.cells[0][0]);
+    });
+
+    it("should devaulue cells already in the ants trail when detecting the best nearby cell with pheromone on it.", function(){
+
+        ant.cells[0][0].addPheromone(3);
+        ant.cells[1][1].addPheromone(.61);
+        ant.trail.push(ant.cells[0][0]);
+        ant.detectCells();
+        var bestCell = detector.findBestCell();
+        expect(bestCell).toEqual(ant.cells[1][1]);
+    });
+
+    it("should return true when the best cell is in front.", function(){
+        ant.cells[0][0].addPheromone(1.5);
+        ant.detectCells();
+        var actual = detector.isBestCellInFront();
+        expect(actual).toEqual(true);
+    });
+
+    it("should return false when the best cell is not in front.", function(){
+        ant.cells[0][0].addPheromone(1.5);
+        ant.turnRight();
+        ant.detectCells();
+        var actual = detector.isBestCellInFront();
+        expect(actual).toEqual(false);
+    });
 });

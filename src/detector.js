@@ -92,6 +92,16 @@ Detector.prototype.filterUndefinedCells = function(newCells){
         }
     }
 
+    var count = result.length,
+        randomnumber,
+        temp;
+    while( count ){
+        randomnumber = Math.random() * count-- | 0;
+        temp = result[count];
+        result[count] = result[randomnumber];
+        result[randomnumber] = temp
+    }
+
     return result;
 }
 
@@ -318,6 +328,37 @@ Detector.prototype.detectAndRemoveLoops = function(){
     }
     this.ant.trail = newTrail;
 }
+
+Detector.prototype.findBestCell = function(){
+    var bestCell = this.ant.surroundingCells[0];
+    var bestCellPheromone = -1;
+    for(var x = 0; x < this.ant.surroundingCells.length; x++){
+        var pheromoneForCell = this.ant.surroundingCells[x].pheromone;
+        
+        if(this.ant.trail.indexOf(this.ant.surroundingCells[x]) > 0){
+            pheromoneForCell = pheromoneForCell/5;
+        }
+
+        if(pheromoneForCell > bestCellPheromone){
+            bestCell = this.ant.surroundingCells[x];
+            bestCellPheromone = pheromoneForCell;
+        }
+    }
+
+    return bestCell;
+}
+
+Detector.prototype.isBestCellInFront = function(){
+    var frontCells = this.detectFrontCells();
+    var result = false;
+    var bestCell = this.findBestCell();
+    
+    if(frontCells.indexOf(bestCell) > 0){
+        result = true;
+    }
+
+    return result;
+} 
 
 // Export node module.
 if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )

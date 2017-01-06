@@ -18,11 +18,18 @@ MoveBehavior.prototype.doBehavior = function(){
 
         if(this.ant.trail.indexOf(cellToMoveTo) == -1){
             this.ant.trail.push(cellToMoveTo);  
-        }else{ 
+        }else{
             while(this.ant.trail[this.ant.trail.length - 1] != cellToMoveTo){
                 this.ant.trail.pop();
             }
         }
+        // else if(cellToMoveTo.pheromone === 0){ 
+        //     while(this.ant.trail[this.ant.trail.length - 1] != cellToMoveTo){
+        //         this.ant.trail.pop();
+        //     }
+        // }else{
+        //     this.ant.trail.push(cellToMoveTo); 
+        // }
 
 
         if(this.ant.trail.length >= this.maxTrailLength){

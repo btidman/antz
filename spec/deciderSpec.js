@@ -16,7 +16,8 @@ describe("Decider", function(){
     }); 
 
     it("should return a move behavior when pheromone is in front.", function(){
-        spyOn(ant.detector, "hasPheromoneInFront").and.returnValue(true);
+        spyOn(ant.detector, "hasPheromoneNearby").and.returnValue(true);
+        spyOn(ant.detector, "isBestCellInFront").and.returnValue(true);
 
         var behavior = decider.getNewBehavior(ant);
         
@@ -24,8 +25,8 @@ describe("Decider", function(){
     });
     
     it("should return a turn behavior when pheromone is nearby but not in front.", function(){
-        spyOn(ant.detector, "hasPheromoneInFront").and.returnValue(false);
         spyOn(ant.detector, "hasPheromoneNearby").and.returnValue(true);
+        spyOn(ant.detector, "isBestCellInFront").and.returnValue(false);
 
         var behavior = decider.getNewBehavior(ant);
         
@@ -33,6 +34,7 @@ describe("Decider", function(){
     });
 
     it("should return a random move Behavior.", function(){
+        spyOn(ant.detector, "hasPheromoneNearby").and.returnValue(false);
         spyOn(Math, "random").and.returnValue(0.25);
 
         var behavior = decider.getNewBehavior(ant);
@@ -41,6 +43,7 @@ describe("Decider", function(){
     });
 
     it("should return a random turn behavior.", function(){
+        spyOn(ant.detector, "hasPheromoneNearby").and.returnValue(false);
         spyOn(Math, "random").and.returnValue(0.24);
 
         var behavior = decider.getNewBehavior(ant);

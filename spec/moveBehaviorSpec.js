@@ -53,7 +53,6 @@ describe("Move Behavior", function(){
         spyOn(ant.detector, "detectFrontCells").and.returnValue(frontCells);
         spyOn(ant.detector, "pickNextLandMark").and.returnValues(ant.cells[1][0], ant.cells[0][0], ant.cells[1][1], ant.cells[2][1]);
         spyOn(ant.detector, "findClosestToLandmark").and.returnValues(ant.cells[1][0], ant.cells[0][0], ant.cells[1][1], ant.cells[2][1]);
-        
 
         moveBehavior.doBehavior();
         ant.detectCells();
@@ -66,6 +65,28 @@ describe("Move Behavior", function(){
         expect(ant.trail.length).toEqual(1);
         expect(ant.trail[0].x).toEqual(1);
         expect(ant.trail[0].y).toEqual(2);
+    });
+
+    it("should not eliminate loops in stored trail if it's following pheromone.", function(){
+        ant.detectCells();
+        var frontCells = ant.surroundingCells;
+        spyOn(ant.detector, "detectFrontCells").and.returnValue(frontCells);
+        spyOn(ant.detector, "pickNextLandMark").and.returnValues(ant.cells[1][0], ant.cells[0][0], ant.cells[1][1], ant.cells[2][1]);
+        spyOn(ant.detector, "findClosestToLandmark").and.returnValues(ant.cells[1][0], ant.cells[0][0], ant.cells[1][1], ant.cells[2][1]);
+
+        moveBehavior.doBehavior();
+        ant.detectCells();
+        moveBehavior.doBehavior();
+        ant.detectCells();
+        moveBehavior.doBehavior();
+        ant.detectCells();
+        ant.cells[2][1].addPheromone(2);
+        moveBehavior.doBehavior();
+        
+
+        expect(ant.trail.length).toEqual(5);
+        expect(ant.trail[4].x).toEqual(1);
+        expect(ant.trail[4].y).toEqual(2);
     });
     
     it("should pick a landmark cell to move towards.", function(){

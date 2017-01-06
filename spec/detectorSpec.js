@@ -18,7 +18,12 @@ describe("Detector for ant", function(){
         ant = antHelper.createTestAnt();
         
         detector = new Detector(ant);
+        detector.sightRange = 2;
         ant.surroundingCells = [ant.cells[0][0], ant.cells[0][1], ant.cells[1][0], ant.cells[1][1], ant.cells[2][0]];
+    });
+
+    it("should have a sight range of 2", function(){
+        expect(detector.sightRange).toEqual(2);
     });
 
     it("should know what cells are immediatly close to it", function(){

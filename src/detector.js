@@ -4,82 +4,79 @@ function Detector(ant){
 
     this.ant = ant;
     this.shuffler = new ArrayShuffler();
+    this.sightRange = 5;
 }
 
 
 Detector.prototype.detectCloseCells = function(){
     
-    var maxY = this.ant.cells.length;
     var cellsToAdd = [];
     var x = this.ant.x;
     var y = this.ant.y;
 
-    if(y - 1 >= 0){
-        this.addCellsFromRowBelow(x, y, cellsToAdd);
-    }
-
-    this.addCellsOnLeftAndRight(x,y,cellsToAdd);
-
-    if(y + 1 < maxY){
-        this.addCellsFromRowAbove(x,y,cellsToAdd);
-    }
-
+    this.addCellsFromAbove(x, y, cellsToAdd, 1);
+    this.addCellsOnLeftAndRight(x,y,cellsToAdd, 1);
+    this.addCellsFromBelow(x,y,cellsToAdd, 1);
+    
     return this.filterUndefinedCells(cellsToAdd);
 }
 
-Detector.prototype.addCellsOnLeftAndRight = function(x,y,cellsToAdd){
-    cellsToAdd.push(this.ant.cells[y][x - 1]);
-    cellsToAdd.push(this.ant.cells[y][x + 1]);
+Detector.prototype.addCellsOnLeftAndRight = function(x,y,cellsToAdd, range){
+    
+
+    for(var toAdd = range; toAdd > 0; toAdd--){
+        cellsToAdd.push(this.ant.cells[y][x + toAdd]);
+    }
+
+    for(var toSubtract = range; toSubtract > 0; toSubtract--){
+        cellsToAdd.push(this.ant.cells[y][x - toSubtract]);
+    }
+    
 }
 
-Detector.prototype.addCellsFromRowBelow = function(x, y, cellsToAdd){
-    cellsToAdd.push(this.ant.cells[y - 1][x - 1]);
-    cellsToAdd.push(this.ant.cells[y - 1][x]);
-    cellsToAdd.push(this.ant.cells[y - 1][x + 1]);    
+Detector.prototype.addCellsFromAbove = function(x, y, cellsToAdd, range){
+
+    for(var yToAdd = range; yToAdd > 0; yToAdd --){
+        if(y - yToAdd >= 0){
+            for(var toAdd = range; toAdd > 0; toAdd--){
+                cellsToAdd.push(this.ant.cells[y - yToAdd][x + toAdd]);
+            }
+
+            for(var toSubtract = range; toSubtract > 0; toSubtract--){
+                cellsToAdd.push(this.ant.cells[y - yToAdd][x - toSubtract]);
+            }
+            cellsToAdd.push(this.ant.cells[y - yToAdd][x]);
+        }
+    }
 }
 
-Detector.prototype.addCellsFromRowAbove = function(x, y, cellsToAdd){
-    cellsToAdd.push(this.ant.cells[y + 1][x - 1]);
-    cellsToAdd.push(this.ant.cells[y + 1][x]);
-    cellsToAdd.push(this.ant.cells[y + 1][x + 1]); 
+Detector.prototype.addCellsFromBelow = function(x, y, cellsToAdd, range){
+    var maxY = this.ant.cells.length;
+
+    for(var yToAdd = range; yToAdd > 0; yToAdd --){
+        if(y + yToAdd < maxY){
+            for(var toAdd = range; toAdd > 0; toAdd--){
+                cellsToAdd.push(this.ant.cells[y + yToAdd][x + toAdd]);
+            }
+
+            for(var toSubtract = range; toSubtract > 0; toSubtract--){
+                cellsToAdd.push(this.ant.cells[y + yToAdd][x - toSubtract]);
+            }
+            cellsToAdd.push(this.ant.cells[y + yToAdd][x]);
+        }
+    }
 }
 
 Detector.prototype.detectCells = function(){
     
-    var maxY = this.ant.cells.length;
     var cellsToAdd = [];
     var x = this.ant.x;
     var y = this.ant.y;
 
-    if(y - 2 >= 0){
-        cellsToAdd.push(this.ant.cells[y - 2][x - 2]);
-        cellsToAdd.push(this.ant.cells[y - 2][x - 1]);
-        cellsToAdd.push(this.ant.cells[y - 2][x]);
-        cellsToAdd.push(this.ant.cells[y - 2][x + 1]);
-        cellsToAdd.push(this.ant.cells[y - 2][x + 2]);
-    }
-    if(y - 1 >= 0){
-        cellsToAdd.push(this.ant.cells[y - 1][x - 2]);
-        this.addCellsFromRowBelow(x, y, cellsToAdd);
-        cellsToAdd.push(this.ant.cells[y - 1][x + 2]);
-    }
+    this.addCellsFromAbove(x, y, cellsToAdd, this.sightRange);
+    this.addCellsOnLeftAndRight(x,y,cellsToAdd, this.sightRange);
+    this.addCellsFromBelow(x,y,cellsToAdd, this.sightRange);
 
-    cellsToAdd.push(this.ant.cells[y][x - 2]);
-    this.addCellsOnLeftAndRight(x,y,cellsToAdd);
-    cellsToAdd.push(this.ant.cells[y][x + 2]);
-
-    if(y + 1 < maxY){
-        cellsToAdd.push(this.ant.cells[y + 1][x - 2]);
-        this.addCellsFromRowAbove(x,y,cellsToAdd);
-        cellsToAdd.push(this.ant.cells[y + 1][x + 2]);
-    }
-    if(y + 2 < maxY){
-        cellsToAdd.push(this.ant.cells[y + 2][x - 2]);
-        cellsToAdd.push(this.ant.cells[y + 2][x - 1]);
-        cellsToAdd.push(this.ant.cells[y + 2][x]);
-        cellsToAdd.push(this.ant.cells[y + 2][x + 1]);
-        cellsToAdd.push(this.ant.cells[y + 2][x + 2]);
-    }
 
     return this.filterUndefinedCells(cellsToAdd);
 }
@@ -124,44 +121,18 @@ Detector.prototype.detectCellsNorthOfLocation = function(){
     var x = this.ant.x;
     var y = this.ant.y;
     
-    if(y - 1 >= 0){
-        result.push(this.ant.cells[y - 1][x - 2]);
-        result.push(this.ant.cells[y - 1][x - 1]);
-        result.push(this.ant.cells[y - 1][x]);
-        result.push(this.ant.cells[y - 1][x + 1]);
-        result.push(this.ant.cells[y - 1][x + 2]);
-    }
-    if(y - 2 >= 0){
-        result.push(this.ant.cells[y - 2][x - 2]);
-        result.push(this.ant.cells[y - 2][x - 1]);
-        result.push(this.ant.cells[y - 2][x]);
-        result.push(this.ant.cells[y - 2][x + 1]);
-        result.push(this.ant.cells[y - 2][x + 2]);
-    }
+    this.addCellsFromAbove(x, y, result, this.sightRange);
 
     return result;
 }
 
 Detector.prototype.detectCellsSouthOfLocation = function(){
     var result = [];
-    var maxY = this.ant.cells.length;
     var x = this.ant.x;
     var y = this.ant.y;
 
-    if(y + 1 < maxY){
-        result.push(this.ant.cells[y + 1][x - 2]);
-        result.push(this.ant.cells[y + 1][x - 1]);
-        result.push(this.ant.cells[y + 1][x]);
-        result.push(this.ant.cells[y + 1][x + 1]);
-        result.push(this.ant.cells[y + 1][x + 2]);
-    }
-    if(y + 2  < maxY){
-        result.push(this.ant.cells[y + 2][x - 2]);
-        result.push(this.ant.cells[y + 2][x - 1]);
-        result.push(this.ant.cells[y + 2][x]);
-        result.push(this.ant.cells[y + 2][x + 1]);
-        result.push(this.ant.cells[y + 2][x + 2]);
-    }
+    this.addCellsFromBelow(x,y,result, this.sightRange);
+
     return result;
 }
 
@@ -171,26 +142,20 @@ Detector.prototype.detectCellsEastOfLocation = function(){
     var x = this.ant.x;
     var y = this.ant.y;
 
-    if(y - 2 >= 0){
-        result.push(this.ant.cells[y - 2][x + 1]);
-        result.push(this.ant.cells[y - 2][x + 2]);
+    for(var toAddY = this.sightRange; toAddY >= 0; toAddY--){
+        if(y + toAddY < maxY){
+            for(var toAdd = this.sightRange; toAdd > 0; toAdd--){
+                result.push(this.ant.cells[y + toAddY][x + toAdd]);
+            }
+        }
     }
 
-    if(y - 1 >= 0){
-        result.push(this.ant.cells[y - 1][x + 1]);
-        result.push(this.ant.cells[y - 1][x + 2]);
-    }
-
-    result.push(this.ant.cells[y][x + 1]);
-    result.push(this.ant.cells[y][x + 2]);
-    
-    if(y + 1 < maxY){
-        result.push(this.ant.cells[y + 1][x + 1]);
-        result.push(this.ant.cells[y + 1][x + 2]);
-    }
-    if(y + 2 < maxY){
-        result.push(this.ant.cells[y + 2][x + 1]);
-        result.push(this.ant.cells[y + 2][x + 2]);
+    for(var toSubtractY = this.sightRange; toSubtractY > 0; toSubtractY--){
+        if(y - toSubtractY >= 0){
+            for(var toAdd = this.sightRange; toAdd > 0; toAdd--){
+                result.push(this.ant.cells[y -toSubtractY][x + toAdd]);
+            }
+        }
     }
 
     return result;
@@ -202,26 +167,20 @@ Detector.prototype.detectCellsWestOfLocation = function(){
     var x = this.ant.x;
     var y = this.ant.y;
 
-    if(y - 2 >= 0){
-        result.push(this.ant.cells[y - 2][x - 1]);
-        result.push(this.ant.cells[y - 2][x - 2]);
+    for(var toAddY = this.sightRange; toAddY >= 0; toAddY--){
+        if(y + toAddY < maxY){
+            for(var toAdd = this.sightRange; toAdd > 0; toAdd--){
+                result.push(this.ant.cells[y + toAddY][x - toAdd]);
+            }
+        }
     }
 
-    if(y - 1 >= 0){
-        result.push(this.ant.cells[y - 1][x - 1]);
-        result.push(this.ant.cells[y - 1][x - 2]);
-    }
-
-    result.push(this.ant.cells[y][x - 1]);
-    result.push(this.ant.cells[y][x - 2]);
-    
-    if(y + 1 < maxY){
-        result.push(this.ant.cells[y + 1][x - 1]);
-        result.push(this.ant.cells[y + 1][x - 2]);
-    }
-    if(y + 2 < maxY){
-        result.push(this.ant.cells[y + 2][x - 1]);
-        result.push(this.ant.cells[y + 2][x - 2]);
+    for(var toSubtractY = this.sightRange; toSubtractY > 0; toSubtractY--){
+        if(y - toSubtractY >= 0){
+            for(var toAdd = this.sightRange; toAdd > 0; toAdd--){
+                result.push(this.ant.cells[y -toSubtractY][x - toAdd]);
+            }
+        }
     }
 
     return result;

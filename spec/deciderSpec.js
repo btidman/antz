@@ -53,7 +53,8 @@ describe("Decider", function(){
 
     it("should return the pick up food behavior when food is in front of the ant.", function(){
         
-        ant.surroundingCells[0].food = 100;
+
+        spyOn(ant.detector, "isFoodNearby").and.returnValue(true);
 
         var behavior = decider.getNewBehavior(ant);
 

@@ -316,4 +316,15 @@ describe("Detector for ant", function(){
         var actual = detector.isBestCellInFront();
         expect(actual).toEqual(false);
     });
+
+    it("should return true when there is food near it.", function(){
+        ant.cells[1][1].addFood(1000);
+        var actual = detector.isFoodNearby();
+        expect(actual).toEqual(true);
+    });
+    it("should return false when there is not food near it.", function(){
+        ant.cells[0][0].addFood(1000);
+        var actual = detector.isFoodNearby();
+        expect(actual).toEqual(false);
+    });
 });

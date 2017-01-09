@@ -313,6 +313,17 @@ Detector.prototype.isBestCellInFront = function(){
     return result;
 } 
 
+Detector.prototype.isFoodNearby = function(){
+    var hasFoodNextToIt = false;
+    var closeCells = this.detectCloseCells();
+    for(var x = 0; x < closeCells.length; x++){
+        if(closeCells[x].food > 0){
+            hasFoodNextToIt = true;
+        }
+    }
+    return hasFoodNextToIt;
+}
+
 // Export node module.
 if ( typeof module !== 'undefined' && module.hasOwnProperty('exports') )
 {

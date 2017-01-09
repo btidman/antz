@@ -16,24 +16,12 @@ Decider.prototype.getNewBehavior = function(ant){
     var result = null;
 
     var randomValue = Math.random();
-    var hasFoodNextToIt = false;
-
-    if(ant.hasFood){
-        if(ant.cells[ant.y][ant.x].nest){
-            return new DropFoodBehavior(ant);
-        }
-        else{
-            return new ReturnFoodToNestBehavior(ant);
-        }
-    }
-
-    for(var x = 0; x < ant.surroundingCells.length; x++){
-        if(ant.surroundingCells[x].food > 0){
-            hasFoodNextToIt = true;
-        }
-    }
-
-    if(hasFoodNextToIt){
+    
+    if(ant.hasFood && ant.cells[ant.y][ant.x].nest){
+        return new DropFoodBehavior(ant);
+    }else if(ant.hasFood){
+        return new ReturnFoodToNestBehavior(ant);
+    }else if(ant.detector.isFoodNearby()){
         return new GetFoodBehavior(ant);
     }else if(ant.returnToNest){
         return new ReturnToNestBehavior(ant);

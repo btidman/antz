@@ -294,6 +294,18 @@ describe("Detector for ant", function(){
         expect(bestCell).toEqual(ant.cells[0][0]);
     });
 
+    it("should value cells in the opposite direction of ant slightly less than those in front of it.", function(){
+        ant.cells[0][0].addPheromone(2.9);
+        ant.cells[1][0].addPheromone(3);
+        ant.cells[1][1].addPheromone(3);
+        ant.cells[2][0].addPheromone(3);
+        ant.cells[2][1].addPheromone(3);
+        ant.moveToCell(ant.cells[1][1]);
+        ant.detectCells();
+        var bestCell = detector.findBestCell();
+        expect(bestCell).toEqual(ant.cells[0][0]);
+    });
+
     it("should devaulue cells already in the ants trail when detecting the best nearby cell with pheromone on it.", function(){
 
         ant.cells[0][0].addPheromone(3);
@@ -322,9 +334,39 @@ describe("Detector for ant", function(){
         var actual = detector.isFoodNearby();
         expect(actual).toEqual(true);
     });
+
     it("should return false when there is not food near it.", function(){
         ant.cells[0][0].addFood(1000);
         var actual = detector.isFoodNearby();
         expect(actual).toEqual(false);
+    });
+
+    it("should know what direction is opposite of the current direction of ant.", function(){
+        var actual = detector.getOppositeDirection();
+        expect(actual).toEqual(Direction.South);
+        
+        ant.turnRight();
+        actual = detector.getOppositeDirection();
+        expect(actual).toEqual(Direction.West);
+
+        ant.turnRight();
+        actual = detector.getOppositeDirection();
+        expect(actual).toEqual(Direction.North);
+
+        ant.turnRight();
+        actual = detector.getOppositeDirection();
+        expect(actual).toEqual(Direction.East);
+    });
+
+    it("should know what cells are behind it.", function(){
+        ant.moveToCell(ant.cells[1][1]);
+        ant.detectCells();
+        var actual = detector.detectBackCells();
+
+        expect(actual.length).toEqual(3);
+        expect(actual).toContain(ant.cells[1][0]);
+        expect(actual).toContain(ant.cells[2][0]);
+        expect(actual).toContain(ant.cells[2][1]);
+
     });
 });

@@ -1,4 +1,6 @@
 var ArrayShuffler = require("./arrayShuffler");
+var Direction = require("./directionEnum");
+
 
 function Detector(ant){
 
@@ -211,9 +213,9 @@ Detector.prototype.pickNextLandMark = function(cellsToPickFrom){
     for(var x = 0; x < cellsToPickFrom.length; x++){
 
         var randomWeight = Math.random();
-        var randomChanceToNotConsiderPheromone = Math.random();
-        
-        if(randomChanceToNotConsiderPheromone < .95 && cellsToPickFrom[x].pheromone){
+        //var randomChanceToNotConsiderPheromone = Math.random();
+        //randomChanceToNotConsiderPheromone < .95 && 
+        if(cellsToPickFrom[x].pheromone){
             var toAdd = cellsToPickFrom[x].pheromone;
 
             if(this.ant.trail.indexOf(cellsToPickFrom[x]) != -1){
@@ -283,10 +285,15 @@ Detector.prototype.detectAndRemoveLoops = function(){
 }
 
 Detector.prototype.findBestCell = function(){
+    var backCells = this.detectBackCells();
     var bestCell = this.ant.surroundingCells[0];
     var bestCellPheromone = -1;
     for(var x = 0; x < this.ant.surroundingCells.length; x++){
         var pheromoneForCell = this.ant.surroundingCells[x].pheromone;
+
+        if(backCells.indexOf(this.ant.surroundingCells[x]) >=0){
+            pheromoneForCell = pheromoneForCell/1.1;
+        }
         
         if(this.ant.trail.indexOf(this.ant.surroundingCells[x]) >= 0){
             pheromoneForCell = pheromoneForCell/5;
@@ -322,6 +329,35 @@ Detector.prototype.isFoodNearby = function(){
         }
     }
     return hasFoodNextToIt;
+}
+
+Detector.prototype.detectBackCells = function(){
+    var frontCells = this.detectFrontCells();
+    var backCells = [];
+
+    for(var x = 0; x < this.ant.surroundingCells.length; x++){
+        if(frontCells.indexOf(this.ant.surroundingCells[x]) === -1){
+            backCells.push(this.ant.surroundingCells[x]);
+        }
+    }
+
+    return backCells;
+}
+
+Detector.prototype.getOppositeDirection = function(){
+    if(ant.direction == Direction.North){
+        return Direction.South;
+    }
+    else if(ant.direction == Direction.East){
+        return Direction.West;
+    }
+    else if(ant.direction == Direction.South){
+        return Direction.North;
+    }
+    else if(ant.direction == Direction.West){
+        return Direction.East;
+    }
+    return null;
 }
 
 // Export node module.

@@ -7,6 +7,7 @@ DropFoodBehavior.prototype.doBehavior = function(){
 
     this.ant.hasFood = false;
     this.ant.trail.push(this.ant.cells[this.ant.y][this.ant.x]);
+    this.ant.cells[this.ant.y][this.ant.x].nest.addFood(10);
     this.ant.stepsTowardNest = 0;
 }
 

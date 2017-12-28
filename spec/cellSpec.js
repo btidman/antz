@@ -7,6 +7,7 @@ describe("Cell", function(){
 
     var cell;
     var container = new PIXI.Container();
+    window.showPheromone = true;
     window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
     window.NEST_TEXTURE = PIXI.Texture.fromImage('../nest.png');
     window.PHEROMONE_TEXTURE = PIXI.Texture.fromImage('../pheromone.png');
@@ -48,6 +49,8 @@ describe("Cell", function(){
     it("should have pheromone added to the cell.", function(){
         cell.addPheromone(2);
         expect(cell.pheromone).toEqual(2);
+        expect(cell.sprite.renderable).toEqual(true);
+        expect(cell.sprite.texture).toEqual(PHEROMONE_TEXTURE);
     });
 
     it("should lose pheromone as time advances.", function(){

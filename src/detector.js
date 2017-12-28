@@ -213,9 +213,9 @@ Detector.prototype.pickNextLandMark = function(cellsToPickFrom){
     for(var x = 0; x < cellsToPickFrom.length; x++){
 
         var randomWeight = Math.random();
-        //var randomChanceToNotConsiderPheromone = Math.random();
-        //randomChanceToNotConsiderPheromone < .95 && 
-        if(cellsToPickFrom[x].pheromone){
+        var randomChanceToNotConsiderPheromone = Math.random();
+        
+        if(randomChanceToNotConsiderPheromone < .95 && cellsToPickFrom[x].pheromone){
             var toAdd = cellsToPickFrom[x].pheromone;
 
             if(this.ant.trail.indexOf(cellsToPickFrom[x]) != -1){

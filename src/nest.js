@@ -7,12 +7,25 @@ function Nest(cell, allCells, container){
     this.allCells = allCells;
     this.container = container;
     this.ants = [];
+    this.food = 0;
+
+
+    this.basicText = new PIXI.Text("Foodz: 0");
+    this.basicText.x = 100;
+    this.basicText.y = 10;
+    
+    this.container.addChild(this.basicText);
 }
 
 Nest.prototype.addAnt = function(){
     var ant = new Ant(this.cell.x,this.cell.y,this.allCells, this.container);
     this.ants.push(ant);
     ant.advance();
+}
+
+Nest.prototype.addFood = function(foodAdded){
+    this.food += foodAdded;
+    this.basicText.text = "Foodz: " + this.food;
 }
 
 // Export node module.

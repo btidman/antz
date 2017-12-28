@@ -10,7 +10,7 @@ describe("Drop Food Behavior", function(){
     var helper = new AntHelper();
 
     beforeEach(function() { 
-        ant = helper.createTestAnt();
+        ant = helper.createTestAntOnNest();
         ant.trail = [];
         ant.detectCells();
         dropFoodBehavior = new DropFoodBehavior(ant); 
@@ -36,5 +36,14 @@ describe("Drop Food Behavior", function(){
         ant.stepsTowardNest = 10;
         dropFoodBehavior.doBehavior();
         expect(ant.stepsTowardNest).toEqual(0);
+    });
+
+    it("should drop food into the nest", function(){
+        var nestCell = ant.cells[2][1];
+        spyOn(nestCell.nest, "addFood");
+        
+        dropFoodBehavior.doBehavior();
+
+        expect(nestCell.nest.addFood).toHaveBeenCalled();
     });
 });

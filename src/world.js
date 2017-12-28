@@ -16,6 +16,12 @@ function World(width, height){
     this.cells = [];
     this.nest = null;
 
+    this.basicText = new PIXI.Text("Antz: 0");
+    this.basicText.x = 10;
+    this.basicText.y = 10;
+    
+    this.stage.addChild(this.basicText);
+
     for(row = 0; row < this.height; row++){
         this.cells.push([]);
         for (col  = 0; col < this.width; col++){
@@ -40,6 +46,9 @@ World.prototype.addAnt = function(){
     if(this.nest){
         this.nest.addAnt();
     }
+
+    this.basicText.text = "Antz: " + this.nest.ants.length;
+    
 }
 
 World.prototype.addFood = function(x, y, amountOfFood){

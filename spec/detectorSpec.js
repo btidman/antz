@@ -135,7 +135,7 @@ describe("Detector for ant", function(){
     });
 
     it("should occasionally not consider the pheromone in order to generate some new paths", function(){
-        ant.cells[1][0].addPheromone(9);
+        ant.cells[1][0].addPheromone(8);
         
         spyOn(Math, "random").and.returnValues(0, 0, 
                                                 0, 0,

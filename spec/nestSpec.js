@@ -35,4 +35,9 @@ describe("Nest", function(){
         expect(nest.ants[0].x).toEqual(cell.x);
         expect(nest.ants[0].y).toEqual(cell.y);
     });
+
+    it("should store dropped food", function(){
+        nest.addFood(10);
+        expect(nest.food).toEqual(10);
+    });
 });

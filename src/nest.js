@@ -17,7 +17,7 @@ function Nest(cell, allCells, container){
 }
 
 Nest.prototype.addAnt = function(){
-    var ant = new Ant(this.cell.x,this.cell.y,this.allCells, this.container);
+    var ant = new Ant(this.cell.x,this.cell.y, this.allCells,this, this.container);
     this.ants.push(ant);
     this.food -= 100;
     if(this.food < 0){

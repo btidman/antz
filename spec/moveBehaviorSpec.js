@@ -117,4 +117,17 @@ describe("Move Behavior", function(){
 
         expect(ant.returnToNest).toEqual(true);
     });
+
+    it("should increment the step count on the ant", function(){
+        ant.steps = 0;
+        moveBehavior.doBehavior();
+        expect(ant.steps).toEqual(1);
+    });
+
+    it("should kill the ant when it takes 10000 steps", function(){
+        spyOn(ant, "death");
+        ant.steps = 19999;
+        moveBehavior.doBehavior();
+        expect(ant.death).toHaveBeenCalled();
+    });
 });

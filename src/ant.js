@@ -3,9 +3,10 @@ var Detector = require("./detector");
 var Decider = require("./decider");
 var TWEEN = require('tween.js');
 
-function Ant(x, y, cells, container){
+function Ant(x, y, cells, nest, container){
     this.x = x;
     this.y = y;
+    this.nest = nest;
     this.direction = Direction.North;
     this.cells = cells;
     this.container = container;
@@ -27,6 +28,8 @@ function Ant(x, y, cells, container){
     this.rotate90 = Math.PI/2;
     this.tween = new TWEEN.Tween(this);
     this.stepsTowardNest = 0;
+    this.status = "alive";
+    this.steps = 0;
 }
 
 Ant.prototype.turnRight = function(newDirection){
@@ -84,11 +87,24 @@ Ant.prototype.advance = function(){
     var behavior = this.decider.getNewBehavior(this);
     behavior.doBehavior();
 
+    
     setTimeout(function(ant) {
-        ant.advance();
+        if(ant.status === "alive"){
+            ant.advance();
+        }
+        else{
+            console.log("dead");
+        }
     }, antSpeed, this);
 }
 
+Ant.prototype.death = function(){
+    this.status = "death";
+    this.container.removeChild(this.sprite);
+    this.nest.ants = this.nest.ants.filter(function(ant){
+        return ant.status === "alive";
+    });
+}
 
 
 // Export node module.

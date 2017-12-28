@@ -15,7 +15,8 @@ describe("Ant", function(){
     window.antSpeed = 500;
     
     beforeEach(function(){
-        ant = helper.createTestAnt();
+        ant = helper.createTestAntOnNest();
+        
         container = ant.container;
         cells = ant.cells;
     });
@@ -99,4 +100,20 @@ describe("Ant", function(){
         expect(ant.trail[0].x).toEqual(1);
         expect(ant.trail[0].y).toEqual(2);
     });    
+
+    it("should die when death is called", function(){
+        
+        spyOn(container, "removeChild");
+        var antCount = ant.nest.ants.length;
+        ant.death();
+        expect(ant.status).toEqual("death");
+        expect(container.removeChild).toHaveBeenCalledWith(ant.sprite);
+        expect(ant.nest.ants.length).toEqual(antCount - 1);
+        
+    });
+
+
+    it("should have a reference to it's nest", function(){
+        expect(this.nest).not.toBeNull;
+    });
 });

@@ -19,11 +19,6 @@ MoveBehavior.prototype.doBehavior = function(){
         if(this.ant.trail.indexOf(cellToMoveTo) == -1){
             this.ant.trail.push(cellToMoveTo);  
         }
-        // else{
-        //     while(this.ant.trail[this.ant.trail.length - 1] != cellToMoveTo){
-        //         this.ant.trail.pop();
-        //     }
-        // }
         else if(cellToMoveTo.pheromone === 0){ 
             while(this.ant.trail[this.ant.trail.length - 1] != cellToMoveTo){
                 this.ant.trail.pop();
@@ -36,6 +31,10 @@ MoveBehavior.prototype.doBehavior = function(){
         if(this.ant.trail.length >= this.maxTrailLength){
             this.ant.returnToNest = true;
         }
+    }
+    this.ant.steps++;
+    if(this.ant.steps >= 20000){
+        this.ant.death();
     }
 }
 

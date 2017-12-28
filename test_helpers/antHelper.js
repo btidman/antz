@@ -17,7 +17,7 @@ AntHelper.prototype.createTestAnt = function(){
     cells.push([new Cell(0,1, container), new Cell(1,1, container)]);
     cells.push([new Cell(0,2, container), new Cell(1,2, container)]);
 
-    ant = new Ant(1,2,cells,container);
+    ant = new Ant(1,2,cells,cells[2][1],container);
 
     return ant;
 }
@@ -36,7 +36,8 @@ AntHelper.prototype.createTestAntOnNest = function(){
     
     nestCell.addNest(new Nest(nestCell, cells, container));
 
-    ant = new Ant(1,2,cells,container);
+    ant = new Ant(1,2,cells,nestCell.nest,container);
+    nestCell.nest.ants.push(ant);
 
     return ant;
 }
@@ -53,7 +54,7 @@ AntHelper.prototype.createTestAntInBigWorld = function(){
     cells.push([new Cell(0,2, container), new Cell(1,2, container), new Cell(2,1, container), new Cell(3,1, container)]);
     cells.push([new Cell(0,3, container), new Cell(1,3, container), new Cell(2,3, container), new Cell(3,3, container)]);
 
-    ant = new Ant(3,3,cells,container);
+    ant = new Ant(3,3,cells,cells[3][3],container);
 
     return ant;
 }

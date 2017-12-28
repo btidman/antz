@@ -11,7 +11,7 @@ function Nest(cell, allCells, container){
 
 
     this.basicText = new PIXI.Text("Foodz: 0");
-    this.basicText.x = 100;
+    this.basicText.x = 120;
     this.basicText.y = 10;
     
     this.container.addChild(this.basicText);

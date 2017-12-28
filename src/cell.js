@@ -10,7 +10,7 @@ function Cell(x, y, container){
 }
 
 Cell.prototype.addFood = function(amountOfFood){
-    this.food = amountOfFood;
+    this.food += amountOfFood;
     if(this.food > 0){
         this.container.removeChild(this.sprite);
         this.sprite = new PIXI.Sprite(FOOD_TEXTURE);
@@ -18,6 +18,8 @@ Cell.prototype.addFood = function(amountOfFood){
         this.sprite.y = (10 * this.y);
         this.sprite.renderable = true;
         this.container.addChild(this.sprite);
+    }else {
+        this.container.removeChild(this.sprite);
     }
 }
 

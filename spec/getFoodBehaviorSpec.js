@@ -11,6 +11,8 @@ describe("Get food behavior.", function(){
     beforeEach(function(){
         
         ant = antHelper.createTestAnt(ant);
+        ant.detectCells();
+        
         spyOn(ant, "advance");
         getFoodBehavior = new GetFoodBehavior(ant);
     });
@@ -27,6 +29,15 @@ describe("Get food behavior.", function(){
 
         getFoodBehavior.doBehavior();
         expect(ant.hasFood).toEqual(true);
+    });
+
+    it("should remove food from the cell", function(){
+        var foodCell = ant.cells[2][0];
+        foodCell.addFood(100);
+        expect(foodCell.food).toEqual(100);
+        
+        getFoodBehavior.doBehavior();
+        expect(foodCell.food).toEqual(90);
     });
 
     it("should detect and remove loops from trail.", function(){

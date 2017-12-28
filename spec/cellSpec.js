@@ -34,6 +34,17 @@ describe("Cell", function(){
         expect(cell.sprite.renderable).toEqual(true);
     });
 
+    it("should remove the food sprite when the food runs out", function(){
+        spyOn(container, "removeChild");
+        cell.addFood(1000);
+        expect(cell.sprite.renderable).toEqual(true);
+        expect(cell.sprite.texture).toEqual(FOOD_TEXTURE);
+        
+        cell.addFood(-1000);
+        
+        expect(container.removeChild).toHaveBeenCalledWith(cell.sprite);
+    });
+
     it("should add a nest", function(){
         var allCells = [[cell]];
         var nest = new Nest(cell, allCells, container);

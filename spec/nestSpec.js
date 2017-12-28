@@ -40,4 +40,16 @@ describe("Nest", function(){
         nest.addFood(10);
         expect(nest.food).toEqual(10);
     });
+
+    it("should add an ant when 100 food is reached", function(){
+        spyOn(nest, "addAnt");
+        nest.addFood(100);
+        expect(nest.addAnt).toHaveBeenCalled();
+    });
+
+    it("should reduce food by 100 (min 0) when addAnt is called", function(){
+        nest.addFood(50);
+        nest.addAnt();
+        expect(nest.food).toEqual(0);
+    });
 });

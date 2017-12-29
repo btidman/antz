@@ -16,8 +16,6 @@ function World(width, height){
     this.cells = [];
     this.nest = null;
 
-    
-
     for(row = 0; row < this.height; row++){
         this.cells.push([]);
         for (col  = 0; col < this.width; col++){
@@ -26,6 +24,7 @@ function World(width, height){
         }
     }
 }
+
 
 World.prototype.draw = function (){
     //Add the canvas to the HTML document

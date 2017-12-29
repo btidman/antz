@@ -23,17 +23,29 @@ Nest.prototype.addAnt = function(){
     if(this.food < 0){
         this.food = 0;
     }
-    this.basicText.text = "Antz: " + this.ants.length + "  Foodz: " + this.food;
+    this.updateText();
     ant.advance();
 }
 
 Nest.prototype.addFood = function(foodAdded){
     this.food += foodAdded;
-    this.basicText.text = "Antz: " + this.ants.length + "  Foodz: " + this.food;
 
     if(this.food >= 100){
         this.addAnt();
     }
+    this.updateText();
+}
+
+Nest.prototype.filterDeadAntz = function(){
+    this.ants = this.ants.filter(function(ant){
+        return ant.status === "alive";
+    });
+
+    this.updateText();
+}
+
+Nest.prototype.updateText = function(){
+    this.basicText.text = "Antz: " + this.ants.length + "  Foodz: " + this.food;
 }
 
 // Export node module.

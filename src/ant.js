@@ -92,18 +92,13 @@ Ant.prototype.advance = function(){
         if(ant.status === "alive"){
             ant.advance();
         }
-        else{
-            console.log("dead");
-        }
     }, antSpeed, this);
 }
 
 Ant.prototype.death = function(){
     this.status = "death";
     this.container.removeChild(this.sprite);
-    this.nest.ants = this.nest.ants.filter(function(ant){
-        return ant.status === "alive";
-    });
+    this.nest.filterDeadAntz();
 }
 
 

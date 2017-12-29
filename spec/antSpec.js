@@ -104,11 +104,11 @@ describe("Ant", function(){
     it("should die when death is called", function(){
         
         spyOn(container, "removeChild");
-        var antCount = ant.nest.ants.length;
+        spyOn(ant.nest, "filterDeadAntz");
         ant.death();
         expect(ant.status).toEqual("death");
         expect(container.removeChild).toHaveBeenCalledWith(ant.sprite);
-        expect(ant.nest.ants.length).toEqual(antCount - 1);
+        expect(ant.nest.filterDeadAntz).toHaveBeenCalledWith();
         
     });
 

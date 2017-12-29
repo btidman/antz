@@ -29,16 +29,19 @@ describe("Nest", function(){
     });
 
     it("should be able to add ants", function(){
-        
+        spyOn(nest, "updateText");
         nest.addAnt();
         expect(nest.ants.length).toEqual(1);
         expect(nest.ants[0].x).toEqual(cell.x);
         expect(nest.ants[0].y).toEqual(cell.y);
+        expect(nest.updateText).toHaveBeenCalled();
     });
 
     it("should store dropped food", function(){
+        spyOn(nest, "updateText");
         nest.addFood(10);
         expect(nest.food).toEqual(10);
+        expect(nest.updateText).toHaveBeenCalled();
     });
 
     it("should add an ant when 100 food is reached", function(){
@@ -51,5 +54,35 @@ describe("Nest", function(){
         nest.addFood(50);
         nest.addAnt();
         expect(nest.food).toEqual(0);
+    });
+
+    it("should remove dead ants from the collection when filterDeadAntz is called", function(){
+
+        spyOn(nest, "updateText");
+        nest.addAnt();
+        var antCount = nest.ants.length;
+        nest.ants[0].death();
+        nest.filterDeadAntz();
+        expect(nest.ants.length).toEqual(antCount - 1);
+        expect(nest.updateText).toHaveBeenCalled();
+    });
+
+    it("should update the text displayed on the screen", function(){
+
+        nest.updateText();
+        expect(nest.basicText.text).toEqual("Antz: " + nest.ants.length + "  Foodz: " + nest.food);
+        
+        nest.addFood(90);
+        nest.updateText();
+        expect(nest.basicText.text).toEqual("Antz: " + nest.ants.length + "  Foodz: " + nest.food);
+
+        nest.addAnt();
+        nest.updateText();
+        expect(nest.basicText.text).toEqual("Antz: " + nest.ants.length + "  Foodz: " + nest.food);
+
+        nest.ants[0].death();
+        nest.filterDeadAntz();
+        nest.updateText();
+        expect(nest.basicText.text).toEqual("Antz: " + nest.ants.length + "  Foodz: " + nest.food);
     });
 });

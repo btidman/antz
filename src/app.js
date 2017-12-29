@@ -40,6 +40,10 @@ function animate () {
     requestAnimationFrame( animate );
     TWEEN.update();
     world.renderer.render(world.stage);
+    var randomValue = Math.random();
+    if(randomValue<.001){
+        world.addFood(Math.round(300*Math.random()),Math.round(300*Math.random()),Math.round(2000*Math.random()));
+    }
 }
 
 window.setupAndStart = function setupAndStart(){

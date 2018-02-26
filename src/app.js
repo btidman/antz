@@ -7,6 +7,7 @@ window.ANT_TEXTURE = PIXI.Texture.fromImage('../ant.png');
 window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
 window.NEST_TEXTURE = PIXI.Texture.fromImage('../nest.png');
 window.PHEROMONE_TEXTURE = PIXI.Texture.fromImage('../pheromone.png');
+window.OBSTICLE_TEXTURE = PIXI.Texture.fromImage('../obsticle.png');
 
 window.appSpeed = 10;
 window.showPheromone = true;

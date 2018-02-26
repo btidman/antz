@@ -11,6 +11,7 @@ describe("Cell", function(){
     window.FOOD_TEXTURE = PIXI.Texture.fromImage('../food.png');
     window.NEST_TEXTURE = PIXI.Texture.fromImage('../nest.png');
     window.PHEROMONE_TEXTURE = PIXI.Texture.fromImage('../pheromone.png');
+    window.OBSTICLE_TEXTURE = PIXI.Texture.fromImage('../obsticle.png');
     
     beforeEach(function() { cell = new Cell(0, 0, container); }); 
 
@@ -180,5 +181,16 @@ describe("Cell", function(){
         cell.addPheromone(4);
         expect(cell.pheromone).toEqual(0);
         expect(cell.sprite.texture).toEqual(FOOD_TEXTURE);
+    });
+
+    it("should make the cell as an obsticle when addObsticle is called", function(){
+
+        cell.addObsticle();
+        expect(cell.isObsticle).toEqual(true);
+    });
+
+    it("should have the obsticle sprite when addObsticle is called", function(){
+        cell.addObsticle();
+        expect(cell.sprite.texture).toEqual(OBSTICLE_TEXTURE);
     });
 });

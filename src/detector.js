@@ -20,7 +20,7 @@ Detector.prototype.detectCloseCells = function(){
     this.addCellsOnLeftAndRight(x,y,cellsToAdd, 1);
     this.addCellsFromBelow(x,y,cellsToAdd, 1);
     
-    return this.filterUndefinedCells(cellsToAdd);
+    return this.filterCells(cellsToAdd);
 }
 
 Detector.prototype.addCellsOnLeftAndRight = function(x,y,cellsToAdd, range){
@@ -80,15 +80,15 @@ Detector.prototype.detectCells = function(){
     this.addCellsFromBelow(x,y,cellsToAdd, this.sightRange);
 
 
-    return this.filterUndefinedCells(cellsToAdd);
+    return this.filterCells(cellsToAdd);
 }
 
-Detector.prototype.filterUndefinedCells = function(newCells){
+Detector.prototype.filterCells = function(newCells){
 
     var result = [];
 
     for(var x = 0; x < newCells.length; x++){
-        if(newCells[x]){
+        if(newCells[x] && !newCells[x].isObsticle){
             result.push(newCells[x]);
         }
     }
@@ -115,7 +115,7 @@ Detector.prototype.detectFrontCells = function(){
         cellsToAdd = this.detectCellsWestOfLocation();
     }
 
-    return this.filterUndefinedCells(cellsToAdd);
+    return this.filterCells(cellsToAdd);
 }
 
 Detector.prototype.detectCellsNorthOfLocation = function(){

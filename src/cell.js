@@ -5,6 +5,7 @@ function Cell(x, y, container){
     this.food = 0;
     this.container = container;
     this.pheromone = 0;
+    this.isObsticle = false;
 
     this.sprite = null; 
 }
@@ -86,6 +87,17 @@ Cell.prototype.advance = function(){
         this.container.removeChild(this.sprite);
         
     }
+}
+
+Cell.prototype.addObsticle = function(){
+    this.isObsticle = true;
+
+    this.container.removeChild(this.sprite);
+    this.sprite = new PIXI.Sprite(OBSTICLE_TEXTURE);
+    this.sprite.x = (10 * this.x);
+    this.sprite.y = (10 * this.y);
+    this.sprite.renderable = true;
+    this.container.addChild(this.sprite);
 }
 
 // Export node module.

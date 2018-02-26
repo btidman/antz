@@ -72,9 +72,19 @@ describe("Detector for ant", function(){
     it("can remove undefined from a collection of cells", function(){
         var newCell = new Cell(5,5, container);
         var cellsToAdd = [newCell, undefined];
-        var result = detector.filterUndefinedCells(cellsToAdd);
+        var result = detector.filterCells(cellsToAdd);
         expect(result).toContain(newCell);
         expect(result).not.toContain(undefined);
+    });
+
+    it("can remove obsticles from a collection of cells", function(){
+        var newCell = new Cell(5,5, container);
+        var newCellObsticle = new Cell(5,6, container);
+        newCellObsticle.addObsticle();
+        var cellsToAdd = [newCell, newCellObsticle];
+        var result = detector.filterCells(cellsToAdd);
+        expect(result).toContain(newCell);
+        expect(result).not.toContain(newCellObsticle);
     });
 
     it("should shuffle the results when removing undefined cells", function(){
@@ -82,7 +92,7 @@ describe("Detector for ant", function(){
         var cellsToAdd = [newCell, undefined];
         spyOn(detector.shuffler, "shuffleArray")
         
-        var result = detector.filterUndefinedCells(cellsToAdd);
+        var result = detector.filterCells(cellsToAdd);
 
         expect(detector.shuffler.shuffleArray).toHaveBeenCalledWith(result);
     });

@@ -80,5 +80,16 @@ describe("World", function(){
             }
         }
     });
-    
+
+    it("should add an obsticle at the coordinates", function(){
+        
+        //THIS TEST IS FAILING BECAUSE I MADE THE OBSTICLE SPACE BIGGER;
+        spyOn(world.cells[2][1], "addObsticle");
+        world.addObsticleAtCords(1, 2);
+        expect(world.cells[2][1].addObsticle).toHaveBeenCalled();
+
+
+        world.addObsticleAtCords(1.4, 1.5);
+        expect(world.cells[2][1].addObsticle).toHaveBeenCalled();
+    });
 });

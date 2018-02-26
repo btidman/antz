@@ -1,6 +1,7 @@
 var Cell = require("./cell.js");
 var Ant = require("./ant.js");
 var Nest = require("./nest.js");
+var Detector = require("./detector.js");
 
 function World(width, height){
     this.width = width;
@@ -11,10 +12,22 @@ function World(width, height){
     this.stage = new PIXI.Container();
     this.container = new PIXI.Container();
     this.stage.addChild(this.container);
+    this.stage.world = this;
     
     this.ants = [];
     this.cells = [];
     this.nest = null;
+
+    this.stage.interactive = true;
+    this.stage.hitArea = new PIXI.Rectangle(0, 0, this.renderer.width, this.renderer.height );
+
+    this.stage.on('pointermove', function(data){
+        
+        if(data.data.originalEvent.buttons === 1){
+            this.world.addObsticleAtCords(data.data.global.x/10, data.data.global.y/10);
+        }
+    });
+
 
     for(row = 0; row < this.height; row++){
         this.cells.push([]);
@@ -25,6 +38,21 @@ function World(width, height){
     }
 }
 
+World.prototype.addObsticleAtCords = function(x, y){
+    x = Math.round(x);
+    Y = Math.round(y);
+    this.cells[y+1][x+1].addObsticle();
+    this.cells[y+1][x].addObsticle();
+    this.cells[y+1][x-1].addObsticle();
+
+    this.cells[y][x+1].addObsticle();
+    this.cells[y][x].addObsticle();
+    this.cells[y][x-1].addObsticle();
+
+    this.cells[y-1][x+1].addObsticle();
+    this.cells[y-1][x].addObsticle();
+    this.cells[y-1][x-1].addObsticle();
+}
 
 World.prototype.draw = function (){
     //Add the canvas to the HTML document
